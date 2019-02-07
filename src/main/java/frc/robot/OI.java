@@ -31,8 +31,6 @@ public class OI {
   public Button stick2Button2 = new JoystickButton(stick2, 2);
   public Button stick2Button7 = new JoystickButton(stick2, 7);
   public Button stick2Button8 = new JoystickButton(stick2, 8);
-  public Button stick2Button3 = new JoystickButton(stick2, 3);
-
   // There are a few additional built in buttons you can use. Additionally,
   // by subclassing Button you can create custom triggers and bind those to
   // commands the same as any other Button.

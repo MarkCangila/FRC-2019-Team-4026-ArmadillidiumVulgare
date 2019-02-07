@@ -37,6 +37,7 @@ public class DriveTrainSubsystem extends Subsystem {
     //have victors follow
     rightDriveMotorVictor.follow(rightDriveMotorTalon);
     leftDriveMotorVictor.follow(leftDriveMotorTalon);
+    
   }
 
   public void leftPower(double requestedPower) {
