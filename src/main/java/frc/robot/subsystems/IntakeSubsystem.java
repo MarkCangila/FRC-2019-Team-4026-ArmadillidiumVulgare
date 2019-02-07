@@ -11,6 +11,9 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+
+import edu.wpi.first.wpilibj.Compressor;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.Portmap;
 import frc.robot.commands.HatchGrabberCMDS;
@@ -20,11 +23,14 @@ public class IntakeSubsystem extends Subsystem {
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
   public WPI_TalonSRX rightIntakeMotor = new WPI_TalonSRX(Portmap.HATCHGRABBER);
+  public DoubleSolenoid ejector = new DoubleSolenoid(Portmap.EJECTOR_OUT, Portmap.EJECTOR_IN);
+  public Compressor compressor = new Compressor();
 
+  
   private final int gearRatio = 1;
   private final int timeoutMS = 30;
   private final double kF = 0;
-  private final double kP = 0;
+  private final double kP = 0.05;
   private final double kD = 0;
   private final double kI = 0;
   private final boolean sensorPhase = true;
@@ -34,6 +40,7 @@ public class IntakeSubsystem extends Subsystem {
   private final int loopID = 0;
 
   public IntakeSubsystem() {
+    ejector.set(DoubleSolenoid.Value.kReverse);
     rightIntakeMotor.setNeutralMode(NeutralMode.Brake);
     rightIntakeMotor.configSelectedFeedbackSensor(
         FeedbackDevice.CTRE_MagEncoder_Relative, loopID, timeoutMS);

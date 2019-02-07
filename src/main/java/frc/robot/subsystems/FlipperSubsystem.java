@@ -9,10 +9,17 @@ import frc.robot.Portmap;
 import frc.robot.commands.FlipperCMDS;
 
 public class FlipperSubsystem extends Subsystem {
-  public WPI_TalonSRX rightFlipper = new WPI_TalonSRX(Portmap.RIGHTFLIPPER);
-  public WPI_TalonSRX leftFlipper = new WPI_TalonSRX(Portmap.LEFTFLIPPER);
+  double flipperPower = 0;
+
+  //New rule, the Command class is no longer allowed to speak directly to the motor controllers. 
+  //It must change power by calling the setFlipperPower method.
+  private WPI_TalonSRX rightFlipper = new WPI_TalonSRX(Portmap.RIGHTFLIPPER);
+  private WPI_TalonSRX leftFlipper = new WPI_TalonSRX(Portmap.LEFTFLIPPER);
 
   private final int timeoutMS = 30;
+  private final int currentLimit = 60; //Max current in amps
+  private final int currentDuration = 30;
+  public final int softLimitForAutoFlip = 0; //Set this to the encoder value recorded when the robot tips.
   private final double kF = 0;
   private final double kP = 0;
   private final double kD = 0;
@@ -32,9 +39,8 @@ public class FlipperSubsystem extends Subsystem {
     rightFlipper.setSensorPhase(rightSensorPhase);
     leftFlipper.setSensorPhase(leftSensorPhase);
 
-    rightFlipper.setInverted(rightInverted);
-    leftFlipper.setInverted(leftInverted);
-
+    
+/*
     rightFlipper.configNominalOutputForward(0, 30);
     rightFlipper.configNominalOutputReverse(0, 30);
     leftFlipper.configNominalOutputForward(0, 30);
@@ -56,36 +62,68 @@ public class FlipperSubsystem extends Subsystem {
     leftFlipper.config_kP(loopID, kP, timeoutMS);
     leftFlipper.config_kD(loopID, kD, timeoutMS);
     leftFlipper.config_kI(loopID, kI, timeoutMS);
-
+      */
     int absolutePositionRight = rightFlipper.getSensorCollection().getPulseWidthPosition();
     int absolutePositionLeft = leftFlipper.getSensorCollection().getPulseWidthPosition();
 
+    
+    leftFlipper.setInverted(true);
+
+
+    leftFlipper.configPeakCurrentLimit(currentLimit);
+    leftFlipper.configPeakCurrentDuration(currentDuration);
+    leftFlipper.configContinuousCurrentLimit(60);
+
+    rightFlipper.configPeakCurrentLimit(currentLimit);
+    rightFlipper.configPeakCurrentDuration(currentDuration);
+    rightFlipper.configContinuousCurrentLimit(60);
+
     absolutePositionLeft &= 0xFFFFFF;
     absolutePositionRight &= 0xFFFFFF;
-
-    if (rightSensorPhase) {
-      absolutePositionRight *= -1;
-    }
-    if (leftSensorPhase) {
-      absolutePositionLeft *= -1;
-    }
-    if (rightInverted) {
-      absolutePositionRight *= -1;
-    }
-    if (leftInverted) {
-      absolutePositionLeft *= -1;
-    }
 
     rightFlipper.setSelectedSensorPosition(absolutePositionRight, loopID, timeoutMS);
     leftFlipper.setSelectedSensorPosition(absolutePositionLeft, loopID, timeoutMS);
     rightFlipper.setNeutralMode(NeutralMode.Brake);
     leftFlipper.setNeutralMode(NeutralMode.Brake);
+
+
   }
+
+
 
   @Override
   protected void initDefaultCommand() {
     setDefaultCommand(new FlipperCMDS.ManualFlip());
+  
   }
+
+  @Override
+  public void periodic() {
+    updateMotorControllers();
+    printTelemetry();
+    super.periodic();
+  }
+
+  public void setFlipperPower(double power){
+    flipperPower = power;
+  }
+
+  public void stopFlipper(){
+    setFlipperPower(0);
+  }
+
+  public int getPosition(){
+    //Right now only the right flipper has it's encoder connected
+   return rightFlipper.getSelectedSensorPosition();
+  }
+
+  private void updateMotorControllers(){
+    rightFlipper.set(flipperPower);
+    leftFlipper.set(flipperPower);
+  }
+
+
+  
 
   public void printTelemetry() {
     SmartDashboard.putNumber("Encoder Value Right", rightFlipper.getSelectedSensorPosition(loopID));

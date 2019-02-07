@@ -25,12 +25,13 @@ public class OI {
   // number it is.
   public Joystick stick = new Joystick(0);
   public Joystick stick2 = new Joystick(1);
+  public Button stick1Button2 = new JoystickButton(stick, 2);
+  public Button stick1Button8 = new JoystickButton(stick, 8);
   public Button stick2Button1 = new JoystickButton(stick2, 1);
   public Button stick2Button2 = new JoystickButton(stick2, 2);
   public Button stick2Button7 = new JoystickButton(stick2, 7);
   public Button stick2Button8 = new JoystickButton(stick2, 8);
-  public Button stick1Button2 = new JoystickButton(stick, 2);
-  public Button stick1Button7 = new JoystickButton(stick, 7);
+  public Button stick2Button3 = new JoystickButton(stick2, 3);
 
   // There are a few additional built in buttons you can use. Additionally,
   // by subclassing Button you can create custom triggers and bind those to
