@@ -12,7 +12,11 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.commands.DriveTrainCMDS;
+import frc.robot.commands.HatchGrabberCMDS;
 import frc.robot.subsystems.DriveTrainSubsystem;
+import frc.robot.subsystems.FlipperSubsystem;
+import frc.robot.subsystems.IntakeSubsystem;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -23,6 +27,8 @@ import frc.robot.subsystems.DriveTrainSubsystem;
  */
 public class Robot extends TimedRobot {
   public static DriveTrainSubsystem driveTrain = new DriveTrainSubsystem();
+  public static FlipperSubsystem flipperSubsystem = new FlipperSubsystem();
+  public static IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
   public static OI oi;
 
   Command m_autonomousCommand;
@@ -36,7 +42,13 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     oi = new OI();
     // chooser.addOption("My Auto", new MyAutoCommand());
+    oi.stick2Button1.whileHeld(new HatchGrabberCMDS.GoDownCMD());
+    oi.stick2Button2.whenPressed(new HatchGrabberCMDS.StowCMD());
+    oi.stick2Button8.whileHeld(new HatchGrabberCMDS.Intake());
+    oi.stick2Button7.whileHeld(new HatchGrabberCMDS.Outake());
+    oi.stick1Button7.whileHeld(new DriveTrainCMDS.StraightDrive());
     SmartDashboard.putData("Auto mode", m_chooser);
+  
   }
 
   /**

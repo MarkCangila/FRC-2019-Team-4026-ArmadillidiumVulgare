@@ -7,6 +7,7 @@ public class DriveTrainCMDS {
   public static class StraightDrive extends Command{
     double power;
     public StraightDrive(){
+      requires(Robot.driveTrain);
     }
 
     protected void initialize(){}
