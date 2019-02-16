@@ -3,6 +3,8 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Portmap;
@@ -16,10 +18,16 @@ public class FlipperSubsystem extends Subsystem {
   private WPI_TalonSRX rightFlipper = new WPI_TalonSRX(Portmap.RIGHTFLIPPER);
   private WPI_TalonSRX leftFlipper = new WPI_TalonSRX(Portmap.LEFTFLIPPER);
 
+  private DigitalInput reverseLimitSwitch = new DigitalInput(Portmap.FLIPPER_REVERSE_LIMIT);
+  private DigitalInput forewardLimitSwitch = new DigitalInput(Portmap.FLIPPER_FOREWARD_LIMIT);
+
   private final int timeoutMS = 30;
   private final int currentLimit = 60; //Max current in amps
   private final int currentDuration = 30;
   public final int softLimitForAutoFlip = 0; //Set this to the encoder value recorded when the robot tips.
+  private static final double ACCEPTABLE_ERROR = 14;
+  private static final int FOREWARD_LIMIT_ENC = 4000; //CHANGE THIS
+
   private final double kF = 0;
   private final double kP = 0;
   private final double kD = 0;
@@ -63,10 +71,24 @@ public class FlipperSubsystem extends Subsystem {
     leftFlipper.config_kD(loopID, kD, timeoutMS);
     leftFlipper.config_kI(loopID, kI, timeoutMS);
       */
-    int absolutePositionRight = rightFlipper.getSensorCollection().getPulseWidthPosition();
-    int absolutePositionLeft = leftFlipper.getSensorCollection().getPulseWidthPosition();
+  
+
+    leftFlipper.configForwardSoftLimitThreshold(FOREWARD_LIMIT_ENC);
+    rightFlipper.configForwardSoftLimitThreshold(FOREWARD_LIMIT_ENC);
+
+    leftFlipper.configForwardSoftLimitEnable(true);
+    rightFlipper.configForwardSoftLimitEnable(true);
+
+
+    leftFlipper.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, loopID, timeoutMS);
+    leftFlipper.setSensorPhase(true);
+
+    rightFlipper.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, loopID, timeoutMS);
+    rightFlipper.setSensorPhase(true);
 
     
+    
+    rightFlipper.setInverted(false);
     leftFlipper.setInverted(true);
 
 
@@ -78,11 +100,11 @@ public class FlipperSubsystem extends Subsystem {
     rightFlipper.configPeakCurrentDuration(currentDuration);
     rightFlipper.configContinuousCurrentLimit(60);
 
-    absolutePositionLeft &= 0xFFFFFF;
-    absolutePositionRight &= 0xFFFFFF;
+  
 
-    rightFlipper.setSelectedSensorPosition(absolutePositionRight, loopID, timeoutMS);
-    leftFlipper.setSelectedSensorPosition(absolutePositionLeft, loopID, timeoutMS);
+    rightFlipper.setSelectedSensorPosition(0, loopID, timeoutMS);
+    leftFlipper.setSelectedSensorPosition(0, loopID, timeoutMS);
+
     rightFlipper.setNeutralMode(NeutralMode.Brake);
     leftFlipper.setNeutralMode(NeutralMode.Brake);
 
@@ -97,10 +119,16 @@ public class FlipperSubsystem extends Subsystem {
   
   }
 
+  public void initEnable(){
+    rightFlipper.setSelectedSensorPosition(0, loopID, timeoutMS);
+    leftFlipper.setSelectedSensorPosition(0, loopID, timeoutMS);
+  }
+
   @Override
   public void periodic() {
     updateMotorControllers();
     printTelemetry();
+    checkLimitSwitches();
     super.periodic();
   }
 
@@ -118,8 +146,40 @@ public class FlipperSubsystem extends Subsystem {
   }
 
   private void updateMotorControllers(){
+    double rightPos = Math.abs(rightFlipper.getSelectedSensorPosition(loopID));
+    double leftPos = Math.abs(leftFlipper.getSelectedSensorPosition(loopID));
+    double rightPower = flipperPower;
+    double leftPower = flipperPower;
+
+
+    if(flipperPower > 0){
+      if (rightPos - leftPos > ACCEPTABLE_ERROR){
+        leftPower = 0;
+      } else if (rightPos - leftPos < ACCEPTABLE_ERROR){
+        rightPower = 0;
+      }
+    }else if (flipperPower < 0){
+      if (rightPos - leftPos > ACCEPTABLE_ERROR){
+        rightPower = 0;
+      } else if (rightPos - leftPos < ACCEPTABLE_ERROR){
+        leftPower = 0;
+      }
+    }
+
     rightFlipper.set(flipperPower);
     leftFlipper.set(flipperPower);
+  }
+
+  private void checkLimitSwitches(){
+    if (flipperPower < 0 && !forewardLimitSwitch.get()){
+      rightFlipper.setSelectedSensorPosition(0, loopID, timeoutMS);
+      leftFlipper.setSelectedSensorPosition(0, loopID, timeoutMS);
+      flipperPower = 0;
+    }
+
+    if (flipperPower < 0 && !reverseLimitSwitch.get()){
+      flipperPower = 0;
+    }
   }
 
 
