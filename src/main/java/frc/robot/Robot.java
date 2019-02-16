@@ -52,7 +52,7 @@ public class Robot extends TimedRobot {
   Command m_autonomousCommand;
   SendableChooser<Command> m_chooser = new SendableChooser<>();
 
-  public static DriveTrain driveTrainSubsystem;
+  public static DriveTrain driveTrainSubsystem = new DriveTrainSubsystem2019();
   SendableChooser<DriveTrain> robotChooser = new SendableChooser<>();
 
   /**
@@ -73,10 +73,10 @@ public class Robot extends TimedRobot {
     oi.stick2Button9.whileHeld(new FlipperCMDS.AutoFlip());
     m_chooser.setDefaultOption("Default Auto", new ExampleCommand());
     // chooser.addOption("My Auto", new MyAutoCommand());
-    robotChooser.setDefaultOption("Main Bot", new DriveTrainSubsystem2019());
-    robotChooser.addOption("Pratice Bot", new DriveTrainSubsystemPractice());
+    //robotChooser.setDefaultOption("Main Bot", new DriveTrainSubsystem2019());
+    //robotChooser.addOption("Pratice Bot", new DriveTrainSubsystemPractice());
     SmartDashboard.putData("Auto mode", m_chooser);
-    SmartDashboard.putData("Robot type", robotChooser);
+    //SmartDashboard.putData("Robot type", robotChooser);
     CameraServer.getInstance().startAutomaticCapture();
 
 
