@@ -14,12 +14,12 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Portmap;
 import frc.robot.commands.DriveTrainCMDS;
 
-public class DriveTrainSubsystem2019 extends Subsystem {
+public class DriveTrainSubsystemPractice extends DriveTrain {
 
   final WPI_TalonSRX rightDriveMotorTalon;
   final WPI_TalonSRX leftDriveMotorTalon;
-  final VictorSPX rightDriveMotorVictor;
-  final VictorSPX leftDriveMotorVictor;
+  final WPI_TalonSRX rightDriveMotorTalon2;
+  final WPI_TalonSRX leftDriveMotorTalon2;
 
   static final double MAXPOWERCHANGE = .075;
   
@@ -38,10 +38,10 @@ public class DriveTrainSubsystem2019 extends Subsystem {
     navx.setAngleAdjustment(180);
 
 
-    rightDriveMotorTalon = new WPI_TalonSRX(Portmap.RIGHTDRIVEVICTOR); 
-    leftDriveMotorTalon = new WPI_TalonSRX(Portmap.LEFTDRIVEVICTOR);
-    rightDriveMotorTalon2 = new WPI_TalonSRX(Portmap.RIGHTDRIVETALON2PRACTICE);
-    leftDriveMotorTalon2 = new WPI_TalonSRX(Portmap.LEFTDRIVETALON2PRACTICE);
+    rightDriveMotorTalon = new WPI_TalonSRX(Portmap.RIGHTDRIVETALON); 
+    leftDriveMotorTalon = new WPI_TalonSRX(Portmap.LEFTDRIVETALON);
+    rightDriveMotorTalon2 = new WPI_TalonSRX(Portmap.RIGHTDRIVEVICTOR);
+    leftDriveMotorTalon2 = new WPI_TalonSRX(Portmap.LEFTDRIVEVICTOR);
     // rightDriveMotorVictor.follow(rightDriveMotorTalon);
     // leftDriveMotorVictor.follow(leftDriveMotorTalon);
     // rightDriveMotorTalon.setInverted(true);

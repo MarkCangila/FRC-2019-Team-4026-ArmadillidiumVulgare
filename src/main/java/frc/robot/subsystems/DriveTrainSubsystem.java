@@ -7,7 +7,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.Portmap;
 import frc.robot.commands.DriveTrainCMDS;
 
-public class DriveTrainSubsystem extends Subsystem {
+public class DriveTrainSubsystem extends Subsystem{
 
   final WPI_TalonSRX rightDriveMotorTalon;
   final WPI_TalonSRX leftDriveMotorTalon;
@@ -22,10 +22,10 @@ public class DriveTrainSubsystem extends Subsystem {
 
   public DriveTrainSubsystem() {
     //Asign Motors
-    rightDriveMotorTalon = new WPI_TalonSRX(Portmap.RIGHTDRIVE);
-    leftDriveMotorTalon = new WPI_TalonSRX(Portmap.LEFTDRIVE);
-    rightDriveMotorVictor = new VictorSPX(Portmap.RIGHTDRIVE);
-    leftDriveMotorVictor = new VictorSPX(Portmap.LEFTDRIVE);
+    rightDriveMotorTalon = new WPI_TalonSRX(Portmap.RIGHTDRIVETALON);
+    leftDriveMotorTalon = new WPI_TalonSRX(Portmap.LEFTDRIVETALON);
+    rightDriveMotorVictor = new VictorSPX(Portmap.RIGHTDRIVEVICTOR);
+    leftDriveMotorVictor = new VictorSPX(Portmap.LEFTDRIVEVICTOR);
     //Set neutral modes
     rightDriveMotorTalon.setNeutralMode(NeutralMode.Brake);
     leftDriveMotorTalon.setNeutralMode(NeutralMode.Brake);

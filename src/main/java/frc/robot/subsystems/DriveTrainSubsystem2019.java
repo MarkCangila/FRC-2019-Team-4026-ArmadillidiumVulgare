@@ -14,7 +14,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Portmap;
 import frc.robot.commands.DriveTrainCMDS;
 
-public class DriveTrainSubsystem2019 extends Subsystem {
+public class DriveTrainSubsystem2019 extends DriveTrain {
 
   final WPI_TalonSRX rightDriveMotorTalon;
   final WPI_TalonSRX leftDriveMotorTalon;

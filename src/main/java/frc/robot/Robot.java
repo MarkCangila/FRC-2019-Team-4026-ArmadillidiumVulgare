@@ -22,9 +22,12 @@ import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.HatchGrabberCMDS;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import frc.robot.subsystems.DriveTrainSubsystem2019;
+import frc.robot.subsystems.DriveTrainSubsystemPractice;
 import frc.robot.subsystems.FlipperSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.VisionSystem;
+import frc.robot.subsystems.GyroSubsystem;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -35,11 +38,12 @@ import frc.robot.subsystems.VisionSystem;
 public class Robot extends TimedRobot {
   public static IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
   // public static DriveTrainSubsystem2018 driveTrainSubsystem = new DriveTrainSubsystem2018();
-  public static DriveTrainSubsystem2019 driveTrainSubsystem = new DriveTrainSubsystem2019();
+  //public static DriveTrainSubsystem2019 driveTrainSubsystem = new DriveTrainSubsystem2019();
   public static VisionSystem visionSystem = new VisionSystem();
   public static PowerDistributionPanel PDP = new PowerDistributionPanel(0);
   public static FlipperSubsystem flipperSubsystem = new FlipperSubsystem();
-  public static BuiltInAccelerometer Accelerometer = new BuiltInAccelerometer(Range.k8G);  
+  public static BuiltInAccelerometer Accelerometer = new BuiltInAccelerometer(Range.k8G);
+  public static GyroSubsystem gyroSubsystem = null; 
   
   
   public static OI oi;
@@ -48,7 +52,7 @@ public class Robot extends TimedRobot {
   Command m_autonomousCommand;
   SendableChooser<Command> m_chooser = new SendableChooser<>();
 
-  DriveTrain driveTrainSubsystem;
+  public static DriveTrain driveTrainSubsystem;
   SendableChooser<DriveTrain> robotChooser = new SendableChooser<>();
 
   /**
@@ -68,7 +72,7 @@ public class Robot extends TimedRobot {
     oi.stick2Button8.whileHeld(new HatchGrabberCMDS.Eject());
     m_chooser.setDefaultOption("Default Auto", new ExampleCommand());
     // chooser.addOption("My Auto", new MyAutoCommand());
-    robotChooser.setDefaultOption("Main Bot", new DriveTrainSubsystem2019()));
+    robotChooser.setDefaultOption("Main Bot", new DriveTrainSubsystem2019());
     robotChooser.addOption("Pratice Bot", new DriveTrainSubsystemPractice());
     SmartDashboard.putData("Auto mode", m_chooser);
     SmartDashboard.putData("Robot type", robotChooser);
