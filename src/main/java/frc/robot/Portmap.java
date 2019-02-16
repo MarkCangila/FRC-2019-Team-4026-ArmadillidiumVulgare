@@ -16,6 +16,8 @@ public class Portmap {
 
   //Digital Inputs
   public static final int HATCH_REVERSE_LIMIT = 4;
+  public static final int FLIPPER_REVERSE_LIMIT = 5;
+  public static final int FLIPPER_FOREWARD_LIMIT = 6;
   //Analog sensors
   // public static final int GYRO = 1;
 }

@@ -19,6 +19,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.DriveTrainCMDS;
 import frc.robot.commands.ExampleCommand;
+import frc.robot.commands.FlipperCMDS;
 import frc.robot.commands.HatchGrabberCMDS;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import frc.robot.subsystems.DriveTrainSubsystem2019;
@@ -64,6 +65,7 @@ public class Robot extends TimedRobot {
     oi.stick2Button3.whileHeld(new HatchGrabberCMDS.GoUpCMD());
     oi.stick1Button8.whileHeld(new DriveTrainCMDS.DriveStraight());
     oi.stick2Button8.whileHeld(new HatchGrabberCMDS.Eject());
+    oi.stick2Button9.whileHeld(new FlipperCMDS.AutoFlip());
     m_chooser.setDefaultOption("Default Auto", new ExampleCommand());
     // chooser.addOption("My Auto", new MyAutoCommand());
     SmartDashboard.putData("Auto mode", m_chooser);
@@ -130,6 +132,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
+    flipperSubsystem.initEnable();
     // This makes sure that the autonomous stops running when
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
