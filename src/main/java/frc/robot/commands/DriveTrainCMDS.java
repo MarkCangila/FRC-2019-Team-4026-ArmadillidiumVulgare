@@ -103,7 +103,7 @@ public class DriveTrainCMDS {
     }
 
     protected void initialize() {
-      targetAngle = Robot.driveTrainSubsystem.navx.getAngle();
+   //targetAngle = Robot.driveTrainSubsystem.navx.getAngle();
     }
 
     @Override
@@ -111,8 +111,8 @@ public class DriveTrainCMDS {
 
       //Power when driving straight is the averaging of the stick values
       power = (Robot.oi.stick.getThrottle() + Robot.oi.stick.getY()) / 2;
-      Robot.driveTrainSubsystem.keepDriveStraight(power, power, targetAngle);
-    
+      //Robot.driveTrainSubsystem.keepDriveStraight(power, power, targetAngle);
+      Robot.driveTrainSubsystem.dumbDriveStraight(power);
     }
 
     @Override

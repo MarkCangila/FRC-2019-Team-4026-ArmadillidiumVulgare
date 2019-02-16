@@ -111,6 +111,10 @@ public class DriveTrainSubsystem2019 extends DriveTrain {
 
 
 
+  public void dumbDriveStraight(double power){
+    rightPower(power);
+    leftPower(power);
+  }
 
   public void keepDriveStraight(double leftDriveVel, double rightDriveVel, double targetAngle) {
 

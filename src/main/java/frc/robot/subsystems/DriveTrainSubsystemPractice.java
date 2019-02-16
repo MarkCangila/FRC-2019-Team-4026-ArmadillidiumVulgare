@@ -25,6 +25,11 @@ public class DriveTrainSubsystemPractice extends DriveTrain {
   
   public AHRS navx;
 
+  
+  public void dumbDriveStraight(double power) {
+    
+  }
+  
   @Override
   protected void initDefaultCommand() {
     setDefaultCommand(new DriveTrainCMDS.TankDrive());

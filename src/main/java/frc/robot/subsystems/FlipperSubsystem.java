@@ -25,7 +25,7 @@ public class FlipperSubsystem extends Subsystem {
   private final int currentLimit = 60; //Max current in amps
   private final int currentDuration = 30;
   public final int softLimitForAutoFlip = 0; //Set this to the encoder value recorded when the robot tips.
-  private static final double ACCEPTABLE_ERROR = 14;
+  private static final double ACCEPTABLE_ERROR = 100;
   private static final int FOREWARD_LIMIT_ENC = 4000; //CHANGE THIS
 
   private final double kF = 0;
@@ -76,8 +76,8 @@ public class FlipperSubsystem extends Subsystem {
     leftFlipper.configForwardSoftLimitThreshold(FOREWARD_LIMIT_ENC);
     rightFlipper.configForwardSoftLimitThreshold(FOREWARD_LIMIT_ENC);
 
-    leftFlipper.configForwardSoftLimitEnable(true);
-    rightFlipper.configForwardSoftLimitEnable(true);
+    leftFlipper.configForwardSoftLimitEnable(false);
+    rightFlipper.configForwardSoftLimitEnable(false);
 
 
     leftFlipper.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, loopID, timeoutMS);
@@ -88,8 +88,8 @@ public class FlipperSubsystem extends Subsystem {
 
     
     
-    rightFlipper.setInverted(false);
-    leftFlipper.setInverted(true);
+    rightFlipper.setInverted(true);
+    leftFlipper.setInverted(false);
 
 
     leftFlipper.configPeakCurrentLimit(currentLimit);
@@ -128,7 +128,7 @@ public class FlipperSubsystem extends Subsystem {
   public void periodic() {
     updateMotorControllers();
     printTelemetry();
-    checkLimitSwitches();
+    //checkLimitSwitches();
     super.periodic();
   }
 
@@ -151,7 +151,7 @@ public class FlipperSubsystem extends Subsystem {
     double rightPower = flipperPower;
     double leftPower = flipperPower;
 
-
+/*
     if(flipperPower > 0){
       if (rightPos - leftPos > ACCEPTABLE_ERROR){
         leftPower = 0;
@@ -165,19 +165,32 @@ public class FlipperSubsystem extends Subsystem {
         leftPower = 0;
       }
     }
+*/
+    if (flipperPower < 0 && reverseLimitSwitch.get()){
+      rightFlipper.setSelectedSensorPosition(0, loopID, timeoutMS);
+      leftFlipper.setSelectedSensorPosition(0, loopID, timeoutMS);
+      rightPower = 0;
+      leftPower = 0;
+    }
 
-    rightFlipper.set(flipperPower);
-    leftFlipper.set(flipperPower);
+    if (flipperPower > 0 && forewardLimitSwitch.get()){
+      rightPower = 0;
+      leftPower = 0;    
+    }
+
+    rightFlipper.set(rightPower);
+    leftFlipper.set(leftPower);
   }
+  
 
   private void checkLimitSwitches(){
-    if (flipperPower < 0 && !reverseLimitSwitch.get()){
+    if (flipperPower < 0 && reverseLimitSwitch.get()){
       rightFlipper.setSelectedSensorPosition(0, loopID, timeoutMS);
       leftFlipper.setSelectedSensorPosition(0, loopID, timeoutMS);
       flipperPower = 0;
     }
 
-    if (flipperPower < 0 && !forewardLimitSwitch.get()){
+    if (flipperPower < 0 && forewardLimitSwitch.get()){
       flipperPower = 0;
     }
   }
@@ -190,5 +203,8 @@ public class FlipperSubsystem extends Subsystem {
     SmartDashboard.putNumber("Encoder Value Left", leftFlipper.getSelectedSensorPosition(loopID));
     SmartDashboard.putNumber("Speed Right", rightFlipper.get());
     SmartDashboard.putNumber("Speed Left", leftFlipper.get());
+    SmartDashboard.putBoolean("Reverse Limit", reverseLimitSwitch.get());
+    SmartDashboard.putBoolean("Front Limit", forewardLimitSwitch.get());
+
   }
 }
