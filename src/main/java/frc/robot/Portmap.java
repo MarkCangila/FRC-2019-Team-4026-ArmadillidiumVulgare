@@ -3,9 +3,9 @@ package frc.robot;
 public class Portmap {
   //Motor controllers on CAN
   public static final int LEFTDRIVETALON = 1;
-  public static final int LEFTDRIVEVICTOR = 1;
+  public static final int LEFTDRIVEVICTOR = 6;
   public static final int RIGHTDRIVETALON = 2;
-  public static final int RIGHTDRIVEVICTOR = 2;
+  public static final int RIGHTDRIVEVICTOR = 7;
   public static final int HATCHGRABBER = 5;
   public static final int LEFTFLIPPER = 3;
   public static final int RIGHTFLIPPER = 4;

@@ -25,7 +25,6 @@ import frc.robot.subsystems.DriveTrainSubsystem2019;
 import frc.robot.subsystems.FlipperSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.VisionSystem;
-import edu.wpi.first.cameraserver.CameraServer;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -49,6 +48,9 @@ public class Robot extends TimedRobot {
   Command m_autonomousCommand;
   SendableChooser<Command> m_chooser = new SendableChooser<>();
 
+  DriveTrain driveTrainSubsystem;
+  SendableChooser<DriveTrain> robotChooser = new SendableChooser<>();
+
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
@@ -66,7 +68,10 @@ public class Robot extends TimedRobot {
     oi.stick2Button8.whileHeld(new HatchGrabberCMDS.Eject());
     m_chooser.setDefaultOption("Default Auto", new ExampleCommand());
     // chooser.addOption("My Auto", new MyAutoCommand());
+    robotChooser.setDefaultOption("Main Bot", new DriveTrainSubsystem2019()));
+    robotChooser.addOption("Pratice Bot", new DriveTrainSubsystemPractice());
     SmartDashboard.putData("Auto mode", m_chooser);
+    SmartDashboard.putData("Robot type", robotChooser);
     CameraServer.getInstance().startAutomaticCapture();
 
 
@@ -107,6 +112,8 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     m_autonomousCommand = m_chooser.getSelected();
+
+    driveTrainSubsystem = robotChooser.getSelected();
 
     /*
      * String autoSelected = SmartDashboard.getString("Auto Selector",
