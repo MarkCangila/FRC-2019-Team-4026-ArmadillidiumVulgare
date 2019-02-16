@@ -44,10 +44,10 @@ public class Robot extends TimedRobot {
   public static PowerDistributionPanel PDP = new PowerDistributionPanel(0);
   public static FlipperSubsystem flipperSubsystem = new FlipperSubsystem();
   public static BuiltInAccelerometer Accelerometer = new BuiltInAccelerometer(Range.k8G);
-  
+
+  public static List<Trajectory> paths;
   
   public static OI oi;
-  
 
   Command m_autonomousCommand;
   SendableChooser<Command> m_chooser = new SendableChooser<>();
@@ -117,7 +117,7 @@ public class Robot extends TimedRobot {
   public void autonomousInit() {
     m_autonomousCommand = m_chooser.getSelected();
 
-    driveTrainSubsystem = robotChooser.getSelected();
+    //driveTrainSubsystem = robotChooser.getSelected();
 
     /*
      * String autoSelected = SmartDashboard.getString("Auto Selector",
