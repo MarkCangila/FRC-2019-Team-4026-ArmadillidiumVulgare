@@ -171,13 +171,13 @@ public class FlipperSubsystem extends Subsystem {
   }
 
   private void checkLimitSwitches(){
-    if (flipperPower < 0 && !forewardLimitSwitch.get()){
+    if (flipperPower < 0 && !reverseLimitSwitch.get()){
       rightFlipper.setSelectedSensorPosition(0, loopID, timeoutMS);
       leftFlipper.setSelectedSensorPosition(0, loopID, timeoutMS);
       flipperPower = 0;
     }
 
-    if (flipperPower < 0 && !reverseLimitSwitch.get()){
+    if (flipperPower < 0 && !forewardLimitSwitch.get()){
       flipperPower = 0;
     }
   }

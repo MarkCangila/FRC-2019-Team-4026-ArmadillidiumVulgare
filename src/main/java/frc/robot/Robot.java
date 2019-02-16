@@ -28,7 +28,7 @@ import frc.robot.subsystems.FlipperSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.VisionSystem;
-import frc.robot.subsystems.GyroSubsystem;
+//import frc.robot.subsystems.GyroSubsystem;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -44,7 +44,6 @@ public class Robot extends TimedRobot {
   public static PowerDistributionPanel PDP = new PowerDistributionPanel(0);
   public static FlipperSubsystem flipperSubsystem = new FlipperSubsystem();
   public static BuiltInAccelerometer Accelerometer = new BuiltInAccelerometer(Range.k8G);
-  public static GyroSubsystem gyroSubsystem = null; 
   
   
   public static OI oi;
