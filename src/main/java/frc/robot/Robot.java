@@ -52,8 +52,7 @@ public class Robot extends TimedRobot {
   Command m_autonomousCommand;
   SendableChooser<Command> m_chooser = new SendableChooser<>();
 
-  public static DriveTrain driveTrainSubsystem = new DriveTrainSubsystem2019();
-  SendableChooser<DriveTrain> robotChooser = new SendableChooser<>();
+  public static DriveTrain driveTrainSubsystem = new DriveTrainSubsystemPractice();
 
   /**
    * This function is run when the robot is first started up and should be used for any
