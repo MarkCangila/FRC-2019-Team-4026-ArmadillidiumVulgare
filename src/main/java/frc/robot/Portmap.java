@@ -1,7 +1,7 @@
 package frc.robot;
 
 public class Portmap {
-  //Motor controllers
+  //Motor controllers on CAN
   public static final int LEFTDRIVETALON = 1;
   public static final int LEFTDRIVEVICTOR = 1;
   public static final int RIGHTDRIVETALON = 2;
@@ -13,6 +13,9 @@ public class Portmap {
   //Solenoids
   public static final int EJECTOR_OUT = 1;
   public static final int EJECTOR_IN = 0;
+
+  //Digital Inputs
+  public static final int HATCH_REVERSE_LIMIT = 4;
   //Analog sensors
   // public static final int GYRO = 1;
 }

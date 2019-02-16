@@ -3,7 +3,14 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import com.kauailabs.navx.frc.AHRS;
+
+import edu.wpi.first.wpilibj.Sendable;
+import edu.wpi.first.wpilibj.SerialPort;
+import com.kauailabs.navx.frc.AHRS.SerialDataType;
+
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Portmap;
 import frc.robot.commands.DriveTrainCMDS;
 
@@ -13,7 +20,10 @@ public class DriveTrainSubsystem2019 extends Subsystem {
   final WPI_TalonSRX leftDriveMotorTalon;
   final VictorSPX rightDriveMotorVictor;
   final VictorSPX leftDriveMotorVictor;
+
   static final double MAXPOWERCHANGE = .075;
+  
+  public AHRS navx;
 
   @Override
   protected void initDefaultCommand() {
@@ -21,6 +31,13 @@ public class DriveTrainSubsystem2019 extends Subsystem {
   }
 
   public DriveTrainSubsystem2019() {
+
+    navx = new AHRS(SerialPort.Port.kMXP, SerialDataType.kProcessedData, (byte)50);
+
+    //This assumes the robot will start backwards at the beginning of the match.
+    navx.setAngleAdjustment(180);
+
+
     rightDriveMotorTalon = new WPI_TalonSRX(Portmap.RIGHTDRIVETALON);
     leftDriveMotorTalon = new WPI_TalonSRX(Portmap.LEFTDRIVETALON);
     rightDriveMotorVictor = new VictorSPX(Portmap.RIGHTDRIVEVICTOR);
@@ -38,6 +55,11 @@ public class DriveTrainSubsystem2019 extends Subsystem {
     leftDriveMotorVictor.follow(leftDriveMotorTalon);
   }
 
+  @Override
+  public void periodic() {
+    updateSmartDashboard();
+  }
+
   public void leftPower(double requestedPower) {
     double currentPower = leftDriveMotorTalon.get();
     double newPower;
@@ -48,10 +70,10 @@ public class DriveTrainSubsystem2019 extends Subsystem {
     } else {
       newPower = requestedPower;
     }
-    System.out.println(
-        String.format(
-            "Left:requestedPower: %.2f, resultingPower: %.2f, currentPower: %.2f",
-            requestedPower, newPower, currentPower));
+    //System.out.println(
+      //  String.format(
+        //    "Left:requestedPower: %.2f, resultingPower: %.2f, currentPower: %.2f",
+          //  requestedPower, newPower, currentPower));
     leftDriveMotorTalon.set(newPower);
   }
 
@@ -65,10 +87,10 @@ public class DriveTrainSubsystem2019 extends Subsystem {
     } else {
       newPower = requestedPower;
     }
-    System.out.println(
-        String.format(
-            "Right:requestedPower: %.2f, resultingPower: %.2f, currentPower: %.2f",
-            requestedPower, newPower, currentPower));
+    //System.out.println(
+      //  String.format(
+        //    "Right:requestedPower: %.2f, resultingPower: %.2f, currentPower: %.2f",
+          //  requestedPower, newPower, currentPower));
     rightDriveMotorTalon.set(newPower);
   }
 
@@ -77,4 +99,50 @@ public class DriveTrainSubsystem2019 extends Subsystem {
     rightDriveMotorTalon.set(0);
     leftDriveMotorTalon.set(0);
   }
+
+  private void updateSmartDashboard(){
+    Sendable dataForGyro = navx;
+
+    SmartDashboard.putBoolean("NAVX CONNECTED", navx.isConnected());
+    SmartDashboard.putData("Gyro", dataForGyro);
+    SmartDashboard.putNumber("Heading", navx.getYaw());
+  }
+
+
+
+
+
+  public void keepDriveStraight(double leftDriveVel, double rightDriveVel, double targetAngle) {
+
+		double error = 0, correctionFactor;
+		error = targetAngle + navx.getAngle();
+		correctionFactor = (error / 75.0);
+
+		// todo - best practice - conditions on a separate line should be
+		// wrapped in brackets
+		if (leftDriveVel > 0.9)
+			leftDriveVel = 0.9;
+		else if (leftDriveVel < -0.9)
+			leftDriveVel = -0.9;
+
+		// todo - best practice - conditions on a separate line should be
+		// wrapped in brackets
+		if (rightDriveVel > 0.9)
+			rightDriveVel = 0.9;
+		else if (rightDriveVel < -0.9)
+			rightDriveVel = -0.9;
+
+		if (targetAngle > (navx.getAngle() - 0.5) || targetAngle < (navx.getAngle() + 0.5)) {
+			rightPower(((leftDriveVel) - correctionFactor));
+			leftPower((rightDriveVel + correctionFactor));
+		} else {
+			rightPower(leftDriveVel);
+			leftPower(rightDriveVel);
+		}
+  }
+  
+  public double getAngle(){
+   return navx.getAngle();
+  }
+
 }

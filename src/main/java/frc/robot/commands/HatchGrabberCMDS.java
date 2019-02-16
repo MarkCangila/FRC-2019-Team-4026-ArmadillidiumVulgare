@@ -19,48 +19,12 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 
 /** An example command. You can replace me with your own command. */
 public class HatchGrabberCMDS {
-  public static class Intake extends Command {
-    long stopTime_NS;
-
-    public Intake() {
-      // Use requires() here to declare subsystem dependencies
-      requires(Robot.intakeSubsystem);
-    }
-
-    // Called just before this Command runs the first time
-    @Override
-    protected void initialize() {}
-
-    // Called repeatedly when this Command is scheduled to run
-    @Override
-    protected void execute() {
-      Robot.intakeSubsystem.intake();
-    }
-
-    // Make this return true when this Command no longer needs to run execute()
-    @Override
-    protected boolean isFinished() {
-      return false;
-    }
-
-    // Called once after isFinished returns true
-    @Override
-    protected void end() {
-      Robot.intakeSubsystem.stop();
-    }
-
-    // Called when another command which requires one or more of the same
-    // subsystems is scheduled to run
-    @Override
-    protected void interrupted() {
-      end();
-    }
-  }
+  
   public static class Eject extends Command{
 
     public Eject(){
       // Use requires() here to declare subsystem dependencies
-      requires(Robot.intakeSubsystem);
+      //requires(Robot.intakeSubsystem);
     }
 
     // Called just before this Command runs the first time
@@ -95,25 +59,6 @@ public class HatchGrabberCMDS {
     }
   }
 
-  public static class Outake extends Command {
-    public Outake() {
-      requires(Robot.intakeSubsystem);
-    }
-
-    @Override
-    public void initialize() {}
-
-    @Override
-    protected void execute() {
-      Robot.intakeSubsystem.outtake();
-    }
-
-    @Override
-    public boolean isFinished() {
-      return false;
-    }
-  }
-
   public static class StopCMD extends Command {
     public StopCMD() {
       requires(Robot.intakeSubsystem);
@@ -124,20 +69,9 @@ public class HatchGrabberCMDS {
 
     @Override
     protected void execute() {
-      if (Robot.intakeSubsystem.rightIntakeMotor.getControlMode() == ControlMode.Position) {
-        Robot.intakeSubsystem.goUp();
-      } else {
+    
         Robot.intakeSubsystem.stop();
-      }
 
-      Robot.intakeSubsystem.ejector.set(DoubleSolenoid.Value.kReverse);
-
-      SmartDashboard.putNumber(
-          "Absolute Position",
-          Robot.intakeSubsystem.rightIntakeMotor.getSensorCollection().getPulseWidthPosition());
-      SmartDashboard.putNumber(
-          "Encoder Ticks Relative",
-          Robot.intakeSubsystem.rightIntakeMotor.getSelectedSensorPosition(0));
     }
 
     @Override
@@ -157,7 +91,9 @@ public class HatchGrabberCMDS {
     }
 
     @Override
-    protected void execute() {}
+    protected void execute() {
+      Robot.intakeSubsystem.goUp();
+    }
 
     @Override
     protected boolean isFinished() {
@@ -176,13 +112,34 @@ public class HatchGrabberCMDS {
     }
 
     @Override
-    protected void execute() {}
+    protected void execute() {
+      Robot.intakeSubsystem.goDown();
+    }
 
     @Override
     protected boolean isFinished() {
       return false;
     }
   }
+public static class AlmostDownCMD extends Command{
+
+  public AlmostDownCMD(){
+    requires(Robot.intakeSubsystem);
+  }
+
+  protected void initialize(){
+    Robot.intakeSubsystem.goAlmostDown();
+  }
+  protected void execute() {
+    Robot.intakeSubsystem.goAlmostDown();
+  }
+  protected boolean isFinished() {
+    return false;
+  }
+
+
+
+}
 
   public static class StowCMD extends Command {
     public StowCMD() {
@@ -191,19 +148,44 @@ public class HatchGrabberCMDS {
 
     @Override
     protected void initialize() {
-      if (Robot.intakeSubsystem.stowed) {
-        Robot.intakeSubsystem.unStow();
-      } else {
         Robot.intakeSubsystem.stow();
       }
-    }
 
     @Override
-    protected void execute() {}
+    protected void execute() {
+      Robot.intakeSubsystem.stow();
+    }
 
     @Override
     protected boolean isFinished() {
       return false;
     }
   }
+  public static class ManualControlCMD extends Command{
+    public ManualControlCMD() {
+      requires(Robot.intakeSubsystem);
+    }
+
+    @Override
+    protected void initialize() {
+        
+      }
+
+    @Override
+    protected void execute() {
+      Robot.intakeSubsystem.rightIntakeMotor.set(Robot.oi.stick2.getY() * .75);
+    }
+
+    @Override
+    protected void interrupted() {
+      Robot.intakeSubsystem.stop();
+      super.interrupted();
+    }
+
+    @Override
+    protected boolean isFinished() {
+      return false;
+    }
+  }
+  
 }

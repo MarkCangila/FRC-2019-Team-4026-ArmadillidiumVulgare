@@ -7,6 +7,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.BuiltInAccelerometer;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -22,8 +23,9 @@ import frc.robot.commands.HatchGrabberCMDS;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import frc.robot.subsystems.DriveTrainSubsystem2019;
 import frc.robot.subsystems.FlipperSubsystem;
-import frc.robot.subsystems.GyroSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.VisionSystem;
+import edu.wpi.first.cameraserver.CameraServer;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -35,10 +37,12 @@ public class Robot extends TimedRobot {
   public static IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
   // public static DriveTrainSubsystem2018 driveTrainSubsystem = new DriveTrainSubsystem2018();
   public static DriveTrainSubsystem2019 driveTrainSubsystem = new DriveTrainSubsystem2019();
-  public PowerDistributionPanel PDP = new PowerDistributionPanel(0);
+  public static VisionSystem visionSystem = new VisionSystem();
+  public static PowerDistributionPanel PDP = new PowerDistributionPanel(0);
   public static FlipperSubsystem flipperSubsystem = new FlipperSubsystem();
-  public static GyroSubsystem gyroSubsystem = null; // = new GyroSubsystem();
   public static BuiltInAccelerometer Accelerometer = new BuiltInAccelerometer(Range.k8G);  
+  
+  
   public static OI oi;
   
 
@@ -51,19 +55,21 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
-    System.out.println("Hello");
+    
 
     oi = new OI();
     oi.stick2Button1.whileHeld(new HatchGrabberCMDS.GoDownCMD());
-    oi.stick2Button2.whenPressed(new HatchGrabberCMDS.StowCMD());
-    oi.stick2Button8.whileHeld(new HatchGrabberCMDS.Intake());
-    oi.stick2Button7.whileHeld(new HatchGrabberCMDS.Outake());
-    oi.stick2Button3.whileHeld(new HatchGrabberCMDS.Eject());
+    oi.stick2Button2.whileHeld(new HatchGrabberCMDS.StowCMD());
+    oi.stick2Button4.whileHeld(new HatchGrabberCMDS.AlmostDownCMD());
+    oi.stick2Button3.whileHeld(new HatchGrabberCMDS.GoUpCMD());
     oi.stick1Button8.whileHeld(new DriveTrainCMDS.DriveStraight());
-
+    oi.stick2Button8.whileHeld(new HatchGrabberCMDS.Eject());
     m_chooser.setDefaultOption("Default Auto", new ExampleCommand());
     // chooser.addOption("My Auto", new MyAutoCommand());
     SmartDashboard.putData("Auto mode", m_chooser);
+    CameraServer.getInstance().startAutomaticCapture();
+
+
   }
 
   /**

@@ -2,6 +2,7 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
+import frc.robot.subsystems.DriveTrainSubsystem2019;
 
 public class DriveTrainCMDS {
   public static class Turn extends Command {
@@ -17,7 +18,7 @@ public class DriveTrainCMDS {
       System.out.println("Constructor Called");
       requires(Robot.driveTrainSubsystem);
       // startingYaw = Robot.gyroSubsystem.getRotation();
-      startingAngle = Robot.gyroSubsystem.getAngle();
+      startingAngle = Robot.driveTrainSubsystem.getAngle();
       distance = dist;
       direction = direct;
       // This conditional operator adds to the starting yaw when turning right and vice versa when
@@ -52,7 +53,8 @@ public class DriveTrainCMDS {
     protected boolean isFinished() {
       // TODO: Confirm that getAngle just counts up. If it doesn't it will be a lot harder and goal
       // will be required.
-      return (float) (Robot.gyroSubsystem.getAngle() - startingAngle) > distance;
+      //Read the documentation, I have confirmed -Walden
+      return (float) (Robot.driveTrainSubsystem.getAngle() - startingAngle) > distance;
     }
 
     @Override
@@ -92,7 +94,7 @@ public class DriveTrainCMDS {
   }
 
   public static class DriveStraight extends Command {
-
+    double targetAngle;
     double power;
 
     public DriveStraight() {
@@ -100,13 +102,17 @@ public class DriveTrainCMDS {
       requires(Robot.driveTrainSubsystem);
     }
 
-    protected void initialize() {}
+    protected void initialize() {
+      targetAngle = Robot.driveTrainSubsystem.navx.getAngle();
+    }
 
     @Override
     protected void execute() {
-      power = (Robot.oi.stick.getThrottle() + Robot.oi.stick.getY()) / 2; 
-      Robot.driveTrainSubsystem.leftPower(power);
-      Robot.driveTrainSubsystem.rightPower(power);
+
+      //Power when driving straight is the averaging of the stick values
+      power = (Robot.oi.stick.getThrottle() + Robot.oi.stick.getY()) / 2;
+      Robot.driveTrainSubsystem.keepDriveStraight(power, power, targetAngle);
+    
     }
 
     @Override
