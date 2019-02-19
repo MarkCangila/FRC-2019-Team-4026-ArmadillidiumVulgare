@@ -11,8 +11,6 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
-
-import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
@@ -30,8 +28,8 @@ public class IntakeSubsystem extends Subsystem {
   public Compressor compressor = new Compressor();
   private DigitalInput reverseLimit = new DigitalInput(Portmap.HATCH_REVERSE_LIMIT);
   private final int STOW_POSITION = 0;
-  private final int UP_POSITION = 1900; //CHANGE THIS
-  private final int DOWN_POSITION = 3800; //CHange this
+  private final int UP_POSITION = 1900; // CHANGE THIS
+  private final int DOWN_POSITION = 3800; // CHange this
   private final int ALMOST_DOWN_POSITION = 1850;
 
   private final int gearRatio = 1;
@@ -70,7 +68,6 @@ public class IntakeSubsystem extends Subsystem {
     rightIntakeMotor.config_kI(loopID, kI, timeoutMS);
     rightIntakeMotor.configForwardSoftLimitEnable(false);
     rightIntakeMotor.configReverseSoftLimitEnable(false);
-    
 
     int absolutePosition = rightIntakeMotor.getSensorCollection().getPulseWidthPosition();
 
@@ -83,11 +80,12 @@ public class IntakeSubsystem extends Subsystem {
       absolutePosition *= -1;
     }
 
-    //rightIntakeMotor.setSelectedSensorPosition(0, loopID, timeoutMS);
+    // rightIntakeMotor.setSelectedSensorPosition(0, loopID, timeoutMS);
   }
+
   @Override
-  public void periodic(){
-  
+  public void periodic() {
+
     /*
     kF = SmartDashboard.getNumber("F", 0);
     kP = SmartDashboard.getNumber("P", 0);
@@ -105,58 +103,51 @@ public class IntakeSubsystem extends Subsystem {
     if(resetEncoder){
       rightIntakeMotor.setSelectedSensorPosition(0, loopID, 30);
     }
-    
+
     */
     printTelemetry();
   }
-  
+
   public void goDown() {
-    
-      double targetPosition = DOWN_POSITION;
-      rightIntakeMotor.set(ControlMode.Position, targetPosition);
-     // atGround = true;
-    
+
+    double targetPosition = DOWN_POSITION;
+    rightIntakeMotor.set(ControlMode.Position, targetPosition);
+    // atGround = true;
+
   }
 
-  public void goAlmostDown(){
+  public void goAlmostDown() {
     double targetPosition = ALMOST_DOWN_POSITION;
     rightIntakeMotor.set(ControlMode.Position, targetPosition);
-
   }
 
-
-
   public void goUp() {
-  
+
     double targetPosition = UP_POSITION;
     rightIntakeMotor.set(ControlMode.Position, targetPosition);
     atGround = false;
   }
 
-
-/*
-  public void unStow() {
-    if (!stowed) {
-      return;
+  /*
+    public void unStow() {
+      if (!stowed) {
+        return;
+      }
+      double targetPosition = .17055555 * gearRatio * 4096;
+      rightIntakeMotor.set(ControlMode.Position, targetPosition);
+      stowed = false;
     }
-    double targetPosition = .17055555 * gearRatio * 4096;
-    rightIntakeMotor.set(ControlMode.Position, targetPosition);
-    stowed = false;
-  }
-*/
+  */
   public void stow() {
-    
+
     double targetPosition = STOW_POSITION;
-    if (reverseLimit.get()){
+    if (reverseLimit.get()) {
       rightIntakeMotor.set(ControlMode.PercentOutput, -.4);
 
-    }else{
+    } else {
       rightIntakeMotor.set(ControlMode.PercentOutput, 0);
       rightIntakeMotor.setSelectedSensorPosition(0, loopID, timeoutMS);
-
     }
-
-    
   }
 
   public void stop() {
@@ -167,11 +158,10 @@ public class IntakeSubsystem extends Subsystem {
   public void initDefaultCommand() {
     setDefaultCommand(new HatchGrabberCMDS.ManualControlCMD());
   }
-  
 
-  public void printTelemetry(){
+  public void printTelemetry() {
     SmartDashboard.putNumber("Encoder Value Hatch", rightIntakeMotor.getSelectedSensorPosition());
-   // SmartDashboard.putNumber("Target Hatch", rightIntakeMotor.getClosedLoopTarget());
+    // SmartDashboard.putNumber("Target Hatch", rightIntakeMotor.getClosedLoopTarget());
     SmartDashboard.putNumber("Error Hatch", rightIntakeMotor.getClosedLoopError());
   }
 }

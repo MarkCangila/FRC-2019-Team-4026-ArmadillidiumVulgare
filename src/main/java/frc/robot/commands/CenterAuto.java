@@ -10,9 +10,7 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
 public class CenterAuto extends CommandGroup {
-  /**
-   * Add your docs here.
-   */
+  /** Add your docs here. */
   public CenterAuto() {
     addSequential(new DriveTrainCMDS.DriveStraightDist(100, .9, .2, 0));
   }
