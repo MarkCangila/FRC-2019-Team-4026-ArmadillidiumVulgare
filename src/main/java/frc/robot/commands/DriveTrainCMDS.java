@@ -83,8 +83,8 @@ public class DriveTrainCMDS {
 
     @Override
     protected void execute() {
-      Robot.driveTrainSubsystem.leftPower(Robot.oi.stick.getThrottle());
-      Robot.driveTrainSubsystem.rightPower(Robot.oi.stick.getY());
+      Robot.driveTrainSubsystem.rightPower(-Robot.oi.stick.getThrottle());
+      Robot.driveTrainSubsystem.leftPower(-Robot.oi.stick.getY());
     }
 
     @Override

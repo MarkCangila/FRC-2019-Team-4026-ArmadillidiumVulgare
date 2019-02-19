@@ -4,12 +4,12 @@ plugins {
     id "com.diffplug.gradle.spotless" version "3.17.0"
 }
 
-spotless {
-  java {
-    target '**/*.java'
-    googleJavaFormat()
-  }
-}
+//spotless {
+  //java {
+ //   target '**/*.java'
+   // googleJavaFormat()
+ // }
+//}
 
 def ROBOT_MAIN_CLASS = "frc.robot.Main"
 

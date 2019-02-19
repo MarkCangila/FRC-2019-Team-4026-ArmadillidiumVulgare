@@ -52,17 +52,17 @@ public class DriveTrainSubsystemPractice extends DriveTrain {
     leftDriveMotorTalon = new WPI_TalonSRX(Portmap.LEFTDRIVETALON);
     rightDriveMotorTalon2 = new WPI_TalonSRX(Portmap.RIGHTDRIVEVICTOR);
     leftDriveMotorTalon2 = new WPI_TalonSRX(Portmap.LEFTDRIVEVICTOR);
-    // rightDriveMotorTalon2.follow(rightDriveMotorTalon);
-    // leftDriveMotorTalon2.follow(leftDriveMotorTalon);
+    //rightDriveMotorTalon2.follow(rightDriveMotorTalon);
+    //leftDriveMotorTalon2.follow(leftDriveMotorTalon);
     // rightDriveMotorTalon.setInverted(true);
     rightDriveMotorTalon.setNeutralMode(NeutralMode.Brake);
     leftDriveMotorTalon.setNeutralMode(NeutralMode.Brake);
     rightDriveMotorTalon2.setNeutralMode(NeutralMode.Brake);
     leftDriveMotorTalon2.setNeutralMode(NeutralMode.Brake);
-    rightDriveMotorTalon.setInverted(true);
-    rightDriveMotorTalon2.setInverted(true);
     rightDriveMotorTalon2.follow(rightDriveMotorTalon);
     leftDriveMotorTalon2.follow(leftDriveMotorTalon);
+    rightDriveMotorTalon.setInverted(true);
+    rightDriveMotorTalon2.setInverted(true);
 
     navx.calibrate();
     resetEncoders();
@@ -82,18 +82,19 @@ public class DriveTrainSubsystemPractice extends DriveTrain {
     //requestedPower = requestedPower;
     double currentPower = leftDriveMotorTalon.get();
     double newPower;
-    if (requestedPower < currentPower) {
-      newPower = Math.max(requestedPower, currentPower - MAXPOWERCHANGE);
-    } else if (requestedPower > currentPower) {
-      newPower = Math.min(requestedPower, currentPower + MAXPOWERCHANGE);
-    } else {
+    //if (requestedPower < currentPower) {
+      //newPower = Math.max(requestedPower, currentPower - MAXPOWERCHANGE);
+    //} else if (requestedPower > currentPower) {
+      //newPower = Math.min(requestedPower, currentPower + MAXPOWERCHANGE);
+    //} else {
       newPower = requestedPower;
-    }
-    //System.out.println(
-      //  String.format(
-        //    "Left:requestedPower: %.2f, resultingPower: %.2f, currentPower: %.2f",
-          //  requestedPower, newPower, currentPower));
+    //}
+    System.out.println(
+        String.format(
+            "Left:requestedPower: %.2f, resultingPower: %.2f, currentPower: %.2f",
+            requestedPower, newPower, currentPower));
     leftDriveMotorTalon.set(newPower);
+    updateSmartDashboard();
   }
 
   public void rightPower(double requestedPower) {
@@ -120,14 +121,19 @@ public class DriveTrainSubsystemPractice extends DriveTrain {
     leftDriveMotorTalon.set(0);
   }
 
-  private void updateSmartDashboard(){
+  public void updateSmartDashboard(){
     Sendable dataForGyro = navx;
 
    // SmartDashboard.putBoolean("NAVX CONNECTED", navx.isConnected());
     SmartDashboard.putData("Gyro", dataForGyro);
     SmartDashboard.putNumber("Heading", navx.getAngle());
+    SmartDashboard.putNumber("Test", 1);
     SmartDashboard.putNumber("Right Encoder", rightEncoder.get());
     SmartDashboard.putNumber("Left Encoder", leftEncoder.get());
+    SmartDashboard.putNumber("Talon1RightCurrent", rightDriveMotorTalon.getOutputCurrent());
+    SmartDashboard.putNumber("Talon2RightCurrent", rightDriveMotorTalon2.getOutputCurrent());
+    SmartDashboard.putNumber("Talon1LeftCurrent", leftDriveMotorTalon.getOutputCurrent());
+    SmartDashboard.putNumber("Talon2LeftCurrent", leftDriveMotorTalon2.getOutputCurrent());
   }
 
 
