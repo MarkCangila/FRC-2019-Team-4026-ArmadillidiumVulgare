@@ -11,8 +11,8 @@ public class FlipperCMDS {
 
     @Override
     protected void execute() {
-      Robot.flipperSubsystem.setFlipperPower((Robot.oi.stick2.getThrottle() * 0.5));
-      Robot.flipperSubsystem.setFlipperPower(Robot.oi.stick2.getThrottle() * 0.5);
+      Robot.flipperSubsystem.setFlipperPower((Robot.oi.stick2.getThrottle() * 0.65));
+      Robot.flipperSubsystem.setFlipperPower(Robot.oi.stick2.getThrottle() * 0.65);
      
     }
 

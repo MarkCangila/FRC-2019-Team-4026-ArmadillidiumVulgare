@@ -23,7 +23,7 @@ public class FlipperSubsystem extends Subsystem {
 
   private final int timeoutMS = 30;
   private final int currentLimit = 60; //Max current in amps
-  private final int currentDuration = 30;
+  private final int currentDuration = 350;
   public final int softLimitForAutoFlip = 0; //Set this to the encoder value recorded when the robot tips.
   private static final double ACCEPTABLE_ERROR = 100;
   private static final int FOREWARD_LIMIT_ENC = 4000; //CHANGE THIS
@@ -94,11 +94,11 @@ public class FlipperSubsystem extends Subsystem {
 
     leftFlipper.configPeakCurrentLimit(currentLimit);
     leftFlipper.configPeakCurrentDuration(currentDuration);
-    leftFlipper.configContinuousCurrentLimit(60);
+    leftFlipper.configContinuousCurrentLimit(65);
 
     rightFlipper.configPeakCurrentLimit(currentLimit);
     rightFlipper.configPeakCurrentDuration(currentDuration);
-    rightFlipper.configContinuousCurrentLimit(60);
+    rightFlipper.configContinuousCurrentLimit(65);
 
   
 

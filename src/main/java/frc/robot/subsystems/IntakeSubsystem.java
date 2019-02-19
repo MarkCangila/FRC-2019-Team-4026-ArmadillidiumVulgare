@@ -30,7 +30,7 @@ public class IntakeSubsystem extends Subsystem {
   public Compressor compressor = new Compressor();
   private DigitalInput reverseLimit = new DigitalInput(Portmap.HATCH_REVERSE_LIMIT);
   private final int STOW_POSITION = 0;
-  private final int UP_POSITION = 1850; //CHANGE THIS
+  private final int UP_POSITION = 1900; //CHANGE THIS
   private final int DOWN_POSITION = 3800; //CHange this
   private final int ALMOST_DOWN_POSITION = 1850;
 

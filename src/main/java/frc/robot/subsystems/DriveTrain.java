@@ -18,6 +18,15 @@ public abstract class DriveTrain extends Subsystem {
 
     public abstract void dumbDriveStraight(double power);
 
+    public abstract int getEncoderLeft();
+
+    public abstract int getEncoderRight();
+
+    public abstract void resetEncoders();
+
+    public static final double TICKS_PER_INCH = 13.3333333333333;
+
+
     public abstract double getAngle();
 
     public AHRS navx;

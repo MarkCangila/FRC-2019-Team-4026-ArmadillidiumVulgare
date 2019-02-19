@@ -5,6 +5,7 @@ import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.kauailabs.navx.frc.AHRS;
 
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Sendable;
 import edu.wpi.first.wpilibj.SerialPort;
 import com.kauailabs.navx.frc.AHRS.SerialDataType;
@@ -21,6 +22,9 @@ public class DriveTrainSubsystemPractice extends DriveTrain {
   final WPI_TalonSRX rightDriveMotorTalon2;
   final WPI_TalonSRX leftDriveMotorTalon2;
 
+  Encoder rightEncoder;
+  Encoder leftEncoder;
+  
   static final double MAXPOWERCHANGE = .075;
   
   public AHRS navx;
@@ -29,10 +33,10 @@ public class DriveTrainSubsystemPractice extends DriveTrain {
   public void dumbDriveStraight(double power) {
     
   }
-  
+
   @Override
   protected void initDefaultCommand() {
-    setDefaultCommand(new DriveTrainCMDS.TankDrive());
+    setDefaultCommand(new DriveTrainCMDS.ArcadeDriveCMD());
   }
 
   public DriveTrainSubsystemPractice() {
@@ -42,11 +46,12 @@ public class DriveTrainSubsystemPractice extends DriveTrain {
     //This assumes the robot will start backwards at the beginning of the match.
     navx.setAngleAdjustment(180);
 
-
-    rightDriveMotorTalon = new WPI_TalonSRX(Portmap.RIGHTDRIVETALON); 
-    leftDriveMotorTalon = new WPI_TalonSRX(Portmap.LEFTDRIVETALON);
-    rightDriveMotorTalon2 = new WPI_TalonSRX(Portmap.RIGHTDRIVEVICTOR);
-    leftDriveMotorTalon2 = new WPI_TalonSRX(Portmap.LEFTDRIVEVICTOR);
+    rightEncoder = new Encoder(Portmap.RIGHT_ENCODER_1, Portmap.RIGHT_ENCODER_2, false);
+		leftEncoder = new Encoder(Portmap.LEFT_ENCODER_1, Portmap.LEFT_ENCODER_2, true);
+    rightDriveMotorTalon = new WPI_TalonSRX(Portmap.LEFTDRIVETALON); 
+    leftDriveMotorTalon = new WPI_TalonSRX(Portmap.RIGHTDRIVETALON);
+    rightDriveMotorTalon2 = new WPI_TalonSRX(Portmap.LEFTDRIVEVICTOR);
+    leftDriveMotorTalon2 = new WPI_TalonSRX(Portmap.RIGHTDRIVEVICTOR);
     // rightDriveMotorVictor.follow(rightDriveMotorTalon);
     // leftDriveMotorVictor.follow(leftDriveMotorTalon);
     // rightDriveMotorTalon.setInverted(true);
@@ -66,6 +71,7 @@ public class DriveTrainSubsystemPractice extends DriveTrain {
   }
 
   public void leftPower(double requestedPower) {
+    //requestedPower = requestedPower;
     double currentPower = leftDriveMotorTalon.get();
     double newPower;
     if (requestedPower < currentPower) {
@@ -83,6 +89,7 @@ public class DriveTrainSubsystemPractice extends DriveTrain {
   }
 
   public void rightPower(double requestedPower) {
+    //requestedPower = requestedPower;
     double currentPower = rightDriveMotorTalon.get();
     double newPower;
     if (requestedPower < currentPower) {
@@ -148,6 +155,20 @@ public class DriveTrainSubsystemPractice extends DriveTrain {
   
   public double getAngle(){
    return navx.getAngle();
+  }
+
+  public int getEncoderRight(){
+    return rightEncoder.get();
+  }
+
+  public int getEncoderLeft(){
+    return leftEncoder.get();
+  }
+
+  public void resetEncoders(){
+    rightEncoder.reset();
+    leftEncoder.reset();
+
   }
 
 }

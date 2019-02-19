@@ -5,25 +5,31 @@ import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.kauailabs.navx.frc.AHRS;
 
+import edu.wpi.first.wpilibj.AnalogGyro;
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Sendable;
 import edu.wpi.first.wpilibj.SerialPort;
 import com.kauailabs.navx.frc.AHRS.SerialDataType;
-
+import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Portmap;
 import frc.robot.commands.DriveTrainCMDS;
 
 public class DriveTrainSubsystem2019 extends DriveTrain {
-
+  public final double TICKS_PER_INCH = 13.3333333333333;
   final WPI_TalonSRX rightDriveMotorTalon;
   final WPI_TalonSRX leftDriveMotorTalon;
   final VictorSPX rightDriveMotorVictor;
   final VictorSPX leftDriveMotorVictor;
 
+  Encoder rightEncoder;
+  Encoder leftEncoder;
+  
   static final double MAXPOWERCHANGE = .075;
   
-  public AHRS navx;
+  public AnalogGyro navx;
 
   @Override
   protected void initDefaultCommand() {
@@ -31,12 +37,16 @@ public class DriveTrainSubsystem2019 extends DriveTrain {
   }
 
   public DriveTrainSubsystem2019() {
+  //  System.out.println();
 
-    navx = new AHRS(SerialPort.Port.kMXP, SerialDataType.kProcessedData, (byte)50);
+    navx = new AnalogGyro(Portmap.GYRO);
+
 
     //This assumes the robot will start backwards at the beginning of the match.
-    navx.setAngleAdjustment(180);
-
+    //navx.setAngleAdjustment(180);
+    
+    rightEncoder = new Encoder(Portmap.RIGHT_ENCODER_1, Portmap.RIGHT_ENCODER_2, false);
+		leftEncoder = new Encoder(Portmap.LEFT_ENCODER_1, Portmap.LEFT_ENCODER_2, true);
 
     rightDriveMotorTalon = new WPI_TalonSRX(Portmap.RIGHTDRIVETALON);
     leftDriveMotorTalon = new WPI_TalonSRX(Portmap.LEFTDRIVETALON);
@@ -53,7 +63,13 @@ public class DriveTrainSubsystem2019 extends DriveTrain {
     rightDriveMotorVictor.setInverted(true);
     rightDriveMotorVictor.follow(rightDriveMotorTalon);
     leftDriveMotorVictor.follow(leftDriveMotorTalon);
+
+    navx.calibrate();
+    resetEncoders();
   }
+
+   
+
 
   @Override
   public void periodic() {
@@ -103,9 +119,11 @@ public class DriveTrainSubsystem2019 extends DriveTrain {
   private void updateSmartDashboard(){
     Sendable dataForGyro = navx;
 
-    SmartDashboard.putBoolean("NAVX CONNECTED", navx.isConnected());
+   // SmartDashboard.putBoolean("NAVX CONNECTED", navx.isConnected());
     SmartDashboard.putData("Gyro", dataForGyro);
-    SmartDashboard.putNumber("Heading", navx.getYaw());
+    SmartDashboard.putNumber("Heading", navx.getAngle());
+    SmartDashboard.putNumber("Right Encoder", rightEncoder.get());
+    SmartDashboard.putNumber("Left Encoder", leftEncoder.get());
   }
 
 
@@ -117,9 +135,9 @@ public class DriveTrainSubsystem2019 extends DriveTrain {
   }
 
   public void keepDriveStraight(double leftDriveVel, double rightDriveVel, double targetAngle) {
-
+    System.out.println("Drive straight "+ leftDriveVel);
 		double error = 0, correctionFactor;
-		error = targetAngle + navx.getAngle();
+		error = targetAngle - navx.getAngle();
 		correctionFactor = (error / 75.0);
 
 		// todo - best practice - conditions on a separate line should be
@@ -137,16 +155,30 @@ public class DriveTrainSubsystem2019 extends DriveTrain {
 			rightDriveVel = -0.9;
 
 		if (targetAngle > (navx.getAngle() - 0.5) || targetAngle < (navx.getAngle() + 0.5)) {
-			rightPower(((leftDriveVel) - correctionFactor));
-			leftPower((rightDriveVel + correctionFactor));
+			rightPower(((rightDriveVel) - correctionFactor));
+			leftPower((leftDriveVel + correctionFactor));
 		} else {
-			rightPower(leftDriveVel);
-			leftPower(rightDriveVel);
+			rightPower(rightDriveVel);
+			leftPower(leftDriveVel);
 		}
   }
   
   public double getAngle(){
    return navx.getAngle();
+  }
+
+  public int getEncoderRight(){
+    return rightEncoder.get();
+  }
+
+  public int getEncoderLeft(){
+    return leftEncoder.get();
+  }
+
+  public void resetEncoders(){
+    rightEncoder.reset();
+    leftEncoder.reset();
+
   }
 
 }
