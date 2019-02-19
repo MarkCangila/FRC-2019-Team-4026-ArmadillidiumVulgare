@@ -1,9 +1,14 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
+import frc.robot.Path;
 import frc.robot.Portmap;
 import frc.robot.Robot;
 import frc.robot.subsystems.DriveTrainSubsystem2019;
+import jaci.pathfinder.Pathfinder;
+import jaci.pathfinder.PathfinderFRC;
+import jaci.pathfinder.Trajectory;
+import jaci.pathfinder.followers.EncoderFollower;
 
 public class DriveTrainCMDS {
   public static class Turn extends Command {
@@ -189,6 +194,56 @@ public class DriveTrainCMDS {
     @Override
     public boolean isFinished(){
       return isFinished;
+    }
+  }
+
+  public static class FollowPathCMD extends Command {
+    private Path path;
+    private EncoderFollower leftFollower;
+    private EncoderFollower rightFollower;
+
+    public FollowPathCMD(Path inPath) {
+      path = inPath;
+      requires(Robot.driveTrainSubsystem);
+    }
+
+    @Override
+    protected void initialize() {
+      leftFollower = new EncoderFollower(path.leftTrajectory);
+      rightFollower = new EncoderFollower(path.rightTrajectory);
+
+      leftFollower.configureEncoder(Robot.driveTrainSubsystem.leftEncoder.get(), Robot.k_ticksPerRev, Robot.k_wheelDiameter);
+      rightFollower.configureEncoder(Robot.driveTrainSubsystem.rightEncoder.get(), Robot.k_ticksPerRev, Robot.k_wheelDiameter);
+      leftFollower.configurePIDVA(1.0, 0.0, 0.0, 1 / Robot.k_maxVelocity, 0);
+      rightFollower.configurePIDVA(1.0, 0.0, 0.0, 1 / Robot.k_maxVelocity, 0);
+    }
+
+    @Override
+    protected void execute() {
+      double left_speed = leftFollower.calculate(Robot.driveTrainSubsystem.leftEncoder.get());
+      double right_speed = rightFollower.calculate(Robot.driveTrainSubsystem.rightEncoder.get());
+      // Maybe make this negative if +180 is to the left
+      double heading = Robot.driveTrainSubsystem.getAngle();
+      double desired_heading = Pathfinder.r2d(leftFollower.getHeading());
+      double heading_difference = Pathfinder.boundHalfDegrees(desired_heading - heading);
+      double turn = 0.8 * (-1.0 / 80.0) * heading_difference;
+      Robot.driveTrainSubsystem.leftPower(-(left_speed - turn));
+      Robot.driveTrainSubsystem.rightPower(-(right_speed + turn));
+    }
+
+    @Override
+    protected boolean isFinished() {
+      return (leftFollower.isFinished() && rightFollower.isFinished());
+    }
+
+    @Override
+    protected void end() {
+      Robot.driveTrainSubsystem.stop();
+    }
+
+    @Override
+    protected void interrupted() {
+      end();
     }
   }
 }

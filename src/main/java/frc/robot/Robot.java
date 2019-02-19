@@ -7,6 +7,11 @@
 
 package frc.robot;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.BuiltInAccelerometer;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
@@ -29,7 +34,9 @@ import frc.robot.subsystems.FlipperSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.VisionSystem;
+import jaci.pathfinder.PathfinderFRC;
 //import frc.robot.subsystems.GyroSubsystem;
+import jaci.pathfinder.Trajectory;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -47,12 +54,21 @@ public class Robot extends TimedRobot {
   public static FlipperSubsystem flipperSubsystem = new FlipperSubsystem();
   public static BuiltInAccelerometer Accelerometer = new BuiltInAccelerometer(Range.k8G);
 
-  public static List<Trajectory> paths;
+  public static LinkedHashMap<String, Path> paths = new LinkedHashMap();
+  public final static String[] pathNames = {"TestPathInsane", "TestPathNotInsane"};
   
   public static OI oi;
 
+  String chosenPath;
+
+  public static final double k_maxVelocity = 3.772;
+  public static final int k_ticksPerRev = 4096;
+  public static final double k_wheelDiameter = 0.1524;
+
   Command m_autonomousCommand;
   SendableChooser<Command> m_chooser = new SendableChooser<>();
+
+  SendableChooser<String> path_chooser = new SendableChooser<>();
 
   SendableChooser<DriveTrain> robotChooser = new SendableChooser<>();
 
@@ -62,7 +78,15 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
-    
+    for (String pathName : pathNames) {
+      try {
+        paths.put(pathName, new Path(PathfinderFRC.getTrajectory(pathName + ".right"), PathfinderFRC.getTrajectory(pathName + ".left")));
+      }
+      catch (IOException ioe) {
+        System.out.println("Path name doesn't exist " + ioe);
+      }
+    }
+
     oi = new OI();
     oi.stick2Button1.whileHeld(new HatchGrabberCMDS.GoDownCMD());
     oi.stick2Button2.whileHeld(new HatchGrabberCMDS.StowCMD());
@@ -79,7 +103,9 @@ public class Robot extends TimedRobot {
     SmartDashboard.putData("Auto mode", m_chooser);
     //SmartDashboard.putData("Robot type", robotChooser);
     //CameraServer.getInstance().startAutomaticCapture();
-
+    path_chooser.setDefaultOption("Not Insane Path", "TestPathNotInsane");
+    path_chooser.addOption("Insane Path", "TestPathInsane");
+    path_chooser.addOption("No Path", null);
     //driveTrainSubsystem = new DriveTrainSubsystem2019();
 
   }
@@ -120,6 +146,13 @@ public class Robot extends TimedRobot {
   public void autonomousInit() {
     m_autonomousCommand = m_chooser.getSelected();
     driveTrainSubsystem.resetEncoders();
+
+    chosenPath = path_chooser.getSelected();
+    Command pathFollower;
+    if (chosenPath != null) {
+      pathFollower = new DriveTrainCMDS.FollowPathCMD(paths.get(chosenPath));
+      pathFollower.start();
+    }
     
     /*
      * String autoSelected = SmartDashboard.getString("Auto Selector",
