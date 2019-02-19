@@ -7,32 +7,24 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.Robot;
-import frc.robot.subsystems.IntakeSubsystem;
-
-import com.ctre.phoenix.motorcontrol.ControlMode;
-
 import edu.wpi.first.wpilibj.DoubleSolenoid;
-
+import edu.wpi.first.wpilibj.command.Command;
+import frc.robot.Robot;
 
 /** An example command. You can replace me with your own command. */
 public class HatchGrabberCMDS {
-  
-  public static class Eject extends Command{
 
-    public Eject(){
+  public static class Eject extends Command {
+
+    public Eject() {
       // Use requires() here to declare subsystem dependencies
-      //requires(Robot.intakeSubsystem);
+      // requires(Robot.intakeSubsystem);
     }
 
     // Called just before this Command runs the first time
     @Override
-    protected void initialize() {
-      
-    }
-      
+    protected void initialize() {}
+
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
@@ -69,9 +61,8 @@ public class HatchGrabberCMDS {
 
     @Override
     protected void execute() {
-    
-        Robot.intakeSubsystem.stop();
 
+      Robot.intakeSubsystem.stop();
     }
 
     @Override
@@ -121,25 +112,25 @@ public class HatchGrabberCMDS {
       return false;
     }
   }
-public static class AlmostDownCMD extends Command{
 
-  public AlmostDownCMD(){
-    requires(Robot.intakeSubsystem);
+  public static class AlmostDownCMD extends Command {
+
+    public AlmostDownCMD() {
+      requires(Robot.intakeSubsystem);
+    }
+
+    protected void initialize() {
+      Robot.intakeSubsystem.goAlmostDown();
+    }
+
+    protected void execute() {
+      Robot.intakeSubsystem.goAlmostDown();
+    }
+
+    protected boolean isFinished() {
+      return false;
+    }
   }
-
-  protected void initialize(){
-    Robot.intakeSubsystem.goAlmostDown();
-  }
-  protected void execute() {
-    Robot.intakeSubsystem.goAlmostDown();
-  }
-  protected boolean isFinished() {
-    return false;
-  }
-
-
-
-}
 
   public static class StowCMD extends Command {
     public StowCMD() {
@@ -148,8 +139,8 @@ public static class AlmostDownCMD extends Command{
 
     @Override
     protected void initialize() {
-        Robot.intakeSubsystem.stow();
-      }
+      Robot.intakeSubsystem.stow();
+    }
 
     @Override
     protected void execute() {
@@ -161,15 +152,14 @@ public static class AlmostDownCMD extends Command{
       return false;
     }
   }
-  public static class ManualControlCMD extends Command{
+
+  public static class ManualControlCMD extends Command {
     public ManualControlCMD() {
       requires(Robot.intakeSubsystem);
     }
 
     @Override
-    protected void initialize() {
-        
-      }
+    protected void initialize() {}
 
     @Override
     protected void execute() {
@@ -187,5 +177,4 @@ public static class AlmostDownCMD extends Command{
       return false;
     }
   }
-  
 }

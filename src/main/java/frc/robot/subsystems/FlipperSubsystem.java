@@ -1,4 +1,4 @@
-package frc.robot.subsystems;
+/*package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
@@ -48,30 +48,30 @@ public class FlipperSubsystem extends Subsystem {
     leftFlipper.setSensorPhase(leftSensorPhase);
 
     
-/*
-    rightFlipper.configNominalOutputForward(0, 30);
-    rightFlipper.configNominalOutputReverse(0, 30);
-    leftFlipper.configNominalOutputForward(0, 30);
-    leftFlipper.configNominalOutputReverse(0, 30);
+///*
+//    rightFlipper.configNominalOutputForward(0, 30);
+//    rightFlipper.configNominalOutputReverse(0, 30);
+//    leftFlipper.configNominalOutputForward(0, 30);
+//    leftFlipper.configNominalOutputReverse(0, 30);
+//
+  //  rightFlipper.configPeakOutputForward(1, 30);
+    //rightFlipper.configPeakOutputReverse(-1, 30);
+ //   leftFlipper.configPeakOutputForward(1, 30);
+  //  leftFlipper.configPeakOutputReverse(-1, 30);
 
-    rightFlipper.configPeakOutputForward(1, 30);
-    rightFlipper.configPeakOutputReverse(-1, 30);
-    leftFlipper.configPeakOutputForward(1, 30);
-    leftFlipper.configPeakOutputReverse(-1, 30);
+//    rightFlipper.configAllowableClosedloopError(0, loopID, timeoutMS);
+  //  leftFlipper.configAllowableClosedloopError(0, loopID, timeoutMS);
 
-    rightFlipper.configAllowableClosedloopError(0, loopID, timeoutMS);
-    leftFlipper.configAllowableClosedloopError(0, loopID, timeoutMS);
-
-    rightFlipper.config_kF(loopID, kF, timeoutMS);
-    rightFlipper.config_kP(loopID, kP, timeoutMS);
-    rightFlipper.config_kD(loopID, kD, timeoutMS);
-    rightFlipper.config_kI(loopID, kI, timeoutMS);
-    leftFlipper.config_kF(loopID, kF, timeoutMS);
-    leftFlipper.config_kP(loopID, kP, timeoutMS);
-    leftFlipper.config_kD(loopID, kD, timeoutMS);
-    leftFlipper.config_kI(loopID, kI, timeoutMS);
-      */
-  
+    //rightFlipper.config_kF(loopID, kF, timeoutMS);
+    //rightFlipper.config_kP(loopID, kP, timeoutMS);
+    //rightFlipper.config_kD(loopID, kD, timeoutMS);
+    //rightFlipper.config_kI(loopID, kI, timeoutMS);
+    //leftFlipper.config_kF(loopID, kF, timeoutMS);
+    //leftFlipper.config_kP(loopID, kP, timeoutMS);
+    //leftFlipper.config_kD(loopID, kD, timeoutMS);
+    //leftFlipper.config_kI(loopID, kI, timeoutMS);
+   //   */
+  /*
 
     leftFlipper.configForwardSoftLimitThreshold(FOREWARD_LIMIT_ENC);
     rightFlipper.configForwardSoftLimitThreshold(FOREWARD_LIMIT_ENC);
@@ -149,23 +149,24 @@ public class FlipperSubsystem extends Subsystem {
     double rightPos = Math.abs(rightFlipper.getSelectedSensorPosition(loopID));
     double leftPos = Math.abs(leftFlipper.getSelectedSensorPosition(loopID));
     double rightPower = flipperPower;
-    double leftPower = flipperPower;
+    double leftPower = flipperPower; */
 
+///*
+//    if(flipperPower > 0){
+  //    if (rightPos - leftPos > ACCEPTABLE_ERROR){
+    //    leftPower = 0;
+      //} else if (rightPos - leftPos < ACCEPTABLE_ERROR){
+    //    rightPower = 0;
+    //  }
+   // }else if (flipperPower < 0){
+    //  if (rightPos - leftPos > ACCEPTABLE_ERROR){
+     //   rightPower = 0;
+    //  } else if (rightPos - leftPos < ACCEPTABLE_ERROR){
+    //    leftPower = 0;
+    //  }
+   // }
+//*/
 /*
-    if(flipperPower > 0){
-      if (rightPos - leftPos > ACCEPTABLE_ERROR){
-        leftPower = 0;
-      } else if (rightPos - leftPos < ACCEPTABLE_ERROR){
-        rightPower = 0;
-      }
-    }else if (flipperPower < 0){
-      if (rightPos - leftPos > ACCEPTABLE_ERROR){
-        rightPower = 0;
-      } else if (rightPos - leftPos < ACCEPTABLE_ERROR){
-        leftPower = 0;
-      }
-    }
-*/
     if (flipperPower < 0 && reverseLimitSwitch.get()){
       rightFlipper.setSelectedSensorPosition(0, loopID, timeoutMS);
       leftFlipper.setSelectedSensorPosition(0, loopID, timeoutMS);
@@ -208,3 +209,4 @@ public class FlipperSubsystem extends Subsystem {
 
   }
 }
+*/

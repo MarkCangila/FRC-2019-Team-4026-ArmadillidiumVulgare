@@ -7,20 +7,16 @@
 
 package frc.robot;
 
-/**
- * Add your docs here.
- */
-
-
+/** Add your docs here. */
 public class HatchLocation {
-    public double distance;
-    public double angle;
-    public double otherAngle;
-    public String identifier;
-    
-public HatchLocation(){}
+  public double distance;
+  public double angle;
+  public double otherAngle;
+  public String identifier;
 
-    public String toString(){
-        return (String) (identifier + ": " + distance + "ft, " + angle + " dgrs");
-    }
+  public HatchLocation() {}
+
+  public String toString() {
+    return (String) (identifier + ": " + distance + "ft, " + angle + " dgrs");
+  }
 }

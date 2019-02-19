@@ -20,12 +20,12 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.CenterAuto;
 import frc.robot.commands.DriveTrainCMDS;
 import frc.robot.commands.ExampleCommand;
-import frc.robot.commands.FlipperCMDS;
+//import frc.robot.commands.FlipperCMDS;
 import frc.robot.commands.HatchGrabberCMDS;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import frc.robot.subsystems.DriveTrainSubsystem2019;
 import frc.robot.subsystems.DriveTrainSubsystemPractice;
-import frc.robot.subsystems.FlipperSubsystem;
+//import frc.robot.subsystems.FlipperSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.VisionSystem;
@@ -44,7 +44,7 @@ public class Robot extends TimedRobot {
   //public static DriveTrainSubsystem2019 driveTrainSubsystem = new DriveTrainSubsystem2019();
   public static VisionSystem visionSystem = new VisionSystem();
   public static PowerDistributionPanel PDP = new PowerDistributionPanel(0);
-  public static FlipperSubsystem flipperSubsystem = new FlipperSubsystem();
+  //public static FlipperSubsystem flipperSubsystem = new FlipperSubsystem();
   public static BuiltInAccelerometer Accelerometer = new BuiltInAccelerometer(Range.k8G);
   
   
@@ -70,7 +70,7 @@ public class Robot extends TimedRobot {
     oi.stick2Button3.whileHeld(new HatchGrabberCMDS.GoUpCMD());
     oi.stick1Button8.whileHeld(new DriveTrainCMDS.DriveStraight());
     oi.stick2Button8.whileHeld(new HatchGrabberCMDS.Eject());
-    oi.stick2Button9.whileHeld(new FlipperCMDS.AutoFlip());
+    //oi.stick2Button9.whileHeld(new FlipperCMDS.AutoFlip());
     m_chooser.setDefaultOption("Default Auto", new CenterAuto());
     m_chooser.setDefaultOption("Left Far Auto", new ExampleCommand());
     // chooser.addOption("My Auto", new MyAutoCommand());
@@ -143,7 +143,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
-    flipperSubsystem.initEnable();
+   // flipperSubsystem.initEnable();
     // This makes sure that the autonomous stops running when
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove

@@ -5,6 +5,7 @@ import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.kauailabs.navx.frc.AHRS;
 
+import edu.wpi.first.wpilibj.AnalogGyro;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Sendable;
 import edu.wpi.first.wpilibj.SerialPort;
@@ -17,6 +18,7 @@ import frc.robot.commands.DriveTrainCMDS;
 
 public class DriveTrainSubsystemPractice extends DriveTrain {
 
+  public final double TICKS_PER_INCH = 13.3333333333333;
   final WPI_TalonSRX rightDriveMotorTalon;
   final WPI_TalonSRX leftDriveMotorTalon;
   final WPI_TalonSRX rightDriveMotorTalon2;
@@ -27,33 +29,31 @@ public class DriveTrainSubsystemPractice extends DriveTrain {
   
   static final double MAXPOWERCHANGE = .075;
   
-  public AHRS navx;
+  public AnalogGyro navx;
 
-  
-  public void dumbDriveStraight(double power) {
-    
-  }
 
   @Override
   protected void initDefaultCommand() {
-    setDefaultCommand(new DriveTrainCMDS.ArcadeDriveCMD());
+    setDefaultCommand(new DriveTrainCMDS.TankDrive());
   }
 
   public DriveTrainSubsystemPractice() {
 
-    navx = new AHRS(SerialPort.Port.kMXP, SerialDataType.kProcessedData, (byte)50);
+    navx = new AnalogGyro(Portmap.GYRO);
+
 
     //This assumes the robot will start backwards at the beginning of the match.
-    navx.setAngleAdjustment(180);
-
+    //navx.setAngleAdjustment(180);
+    
     rightEncoder = new Encoder(Portmap.RIGHT_ENCODER_1, Portmap.RIGHT_ENCODER_2, false);
 		leftEncoder = new Encoder(Portmap.LEFT_ENCODER_1, Portmap.LEFT_ENCODER_2, true);
-    rightDriveMotorTalon = new WPI_TalonSRX(Portmap.LEFTDRIVETALON); 
-    leftDriveMotorTalon = new WPI_TalonSRX(Portmap.RIGHTDRIVETALON);
-    rightDriveMotorTalon2 = new WPI_TalonSRX(Portmap.LEFTDRIVEVICTOR);
-    leftDriveMotorTalon2 = new WPI_TalonSRX(Portmap.RIGHTDRIVEVICTOR);
-    // rightDriveMotorVictor.follow(rightDriveMotorTalon);
-    // leftDriveMotorVictor.follow(leftDriveMotorTalon);
+
+    rightDriveMotorTalon = new WPI_TalonSRX(Portmap.RIGHTDRIVETALON);
+    leftDriveMotorTalon = new WPI_TalonSRX(Portmap.LEFTDRIVETALON);
+    rightDriveMotorTalon2 = new WPI_TalonSRX(Portmap.RIGHTDRIVEVICTOR);
+    leftDriveMotorTalon2 = new WPI_TalonSRX(Portmap.LEFTDRIVEVICTOR);
+    // rightDriveMotorTalon2.follow(rightDriveMotorTalon);
+    // leftDriveMotorTalon2.follow(leftDriveMotorTalon);
     // rightDriveMotorTalon.setInverted(true);
     rightDriveMotorTalon.setNeutralMode(NeutralMode.Brake);
     leftDriveMotorTalon.setNeutralMode(NeutralMode.Brake);
@@ -63,11 +63,19 @@ public class DriveTrainSubsystemPractice extends DriveTrain {
     rightDriveMotorTalon2.setInverted(true);
     rightDriveMotorTalon2.follow(rightDriveMotorTalon);
     leftDriveMotorTalon2.follow(leftDriveMotorTalon);
+
+    navx.calibrate();
+    resetEncoders();
   }
 
   @Override
   public void periodic() {
     updateSmartDashboard();
+  }
+
+  public void dumbDriveStraight(double power){
+    rightPower(power);
+    leftPower(power);
   }
 
   public void leftPower(double requestedPower) {
@@ -115,9 +123,11 @@ public class DriveTrainSubsystemPractice extends DriveTrain {
   private void updateSmartDashboard(){
     Sendable dataForGyro = navx;
 
-    SmartDashboard.putBoolean("NAVX CONNECTED", navx.isConnected());
+   // SmartDashboard.putBoolean("NAVX CONNECTED", navx.isConnected());
     SmartDashboard.putData("Gyro", dataForGyro);
-    SmartDashboard.putNumber("Heading", navx.getYaw());
+    SmartDashboard.putNumber("Heading", navx.getAngle());
+    SmartDashboard.putNumber("Right Encoder", rightEncoder.get());
+    SmartDashboard.putNumber("Left Encoder", leftEncoder.get());
   }
 
 

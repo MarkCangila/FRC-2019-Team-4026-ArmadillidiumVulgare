@@ -1,4 +1,4 @@
-package frc.robot.commands;
+/*package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
@@ -13,7 +13,7 @@ public class FlipperCMDS {
     protected void execute() {
       Robot.flipperSubsystem.setFlipperPower((Robot.oi.stick2.getThrottle() * 0.65));
       Robot.flipperSubsystem.setFlipperPower(Robot.oi.stick2.getThrottle() * 0.65);
-     
+
     }
 
     @Override
@@ -40,7 +40,7 @@ public class FlipperCMDS {
 
     @Override
     protected void initialize(){
-      
+
     }
 
     protected void execute (){
@@ -73,10 +73,10 @@ public class FlipperCMDS {
           break;
       case 4:
         Robot.flipperSubsystem.stopFlipper();
-        
+
       break;
 
-          
+
       }
 
     }
@@ -89,5 +89,6 @@ public class FlipperCMDS {
       return true;
     }
   }
-}
+}set
 
+*/
