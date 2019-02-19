@@ -1,6 +1,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
+import frc.robot.Portmap;
 import frc.robot.Robot;
 import frc.robot.subsystems.DriveTrainSubsystem2019;
 
@@ -79,7 +80,8 @@ public class DriveTrainCMDS {
       requires(Robot.driveTrainSubsystem);
     }
 
-    protected void initialize() {}
+    protected void initialize() {
+    }
 
     @Override
     protected void execute() {
@@ -103,7 +105,8 @@ public class DriveTrainCMDS {
     }
 
     protected void initialize() {
-      targetAngle = Robot.driveTrainSubsystem.navx.getAngle();
+      targetAngle = Robot.driveTrainSubsystem.getAngle();
+   //targetAngle = Robot.driveTrainSubsystem.navx.getAngle();
     }
 
     @Override
@@ -112,12 +115,80 @@ public class DriveTrainCMDS {
       //Power when driving straight is the averaging of the stick values
       power = (Robot.oi.stick.getThrottle() + Robot.oi.stick.getY()) / 2;
       Robot.driveTrainSubsystem.keepDriveStraight(power, power, targetAngle);
-    
+      //Robot.driveTrainSubsystem.dumbDriveStraight(power);
     }
 
     @Override
     protected boolean isFinished() {
       return false;
+    }
+
+
+  }
+
+  public static class ArcadeDriveCMD extends Command{
+    double rightPower, leftPower;
+
+    public ArcadeDriveCMD() {
+      // Use requires() here to declare subsystem dependencies
+      requires(Robot.driveTrainSubsystem);
+    }
+
+    protected void initialize() {}
+
+    @Override
+    protected void execute() {
+      rightPower = Robot.oi.stick.getY() - Robot.oi.stick.getZ()*.75;
+      leftPower = Robot.oi.stick.getY() + Robot.oi.stick.getZ()*.75;
+      rightPower = Portmap.clipOneToOne(rightPower);
+      leftPower = Portmap.clipOneToOne(leftPower);
+      Robot.driveTrainSubsystem.leftPower(leftPower);
+      Robot.driveTrainSubsystem.rightPower(rightPower);
+    }
+
+    @Override
+    protected boolean isFinished() {
+      return false;
+    }
+  }
+
+  public static class DriveStraightDist extends Command{
+    
+  
+    private double heading, ticks, maxPower, minPower;
+    private double averageEncoders;
+    private boolean isFinished;
+    public DriveStraightDist(double distanceInch, double maxPowerVal, double minPowerVal, double headingVal){
+      requires(Robot.driveTrainSubsystem);
+      ticks = distanceInch * Robot.driveTrainSubsystem.TICKS_PER_INCH;
+      heading = headingVal;
+      maxPower = maxPowerVal;
+      minPower = minPowerVal;
+
+    }
+    @Override
+    public void initialize(){
+      Robot.driveTrainSubsystem.resetEncoders();
+
+    }
+
+    public void execute(){
+      System.out.println("Max power "+ maxPower);
+      averageEncoders = (Robot.driveTrainSubsystem.getEncoderLeft() + Robot.driveTrainSubsystem.getEncoderRight()) / 2;
+      double error = ticks - averageEncoders;
+      if (error > 150){
+        Robot.driveTrainSubsystem.keepDriveStraight(-maxPower, -maxPower, heading);
+      }else if(error < 150 && error > 15){
+        Robot.driveTrainSubsystem.keepDriveStraight(-minPower, -minPower, heading);
+      }else if(error < 15){
+       Robot.driveTrainSubsystem.stop();
+        isFinished = true;
+      }
+    System.out.println("Drive Error" + error);
+  }
+    @Override
+    public boolean isFinished(){
+      return isFinished;
     }
   }
 }
