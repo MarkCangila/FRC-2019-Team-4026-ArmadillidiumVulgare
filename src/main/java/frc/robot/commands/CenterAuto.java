@@ -8,12 +8,18 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
+import frc.robot.subsystems.IntakeSubsystem;
 
 public class CenterAuto extends CommandGroup {
   /**
    * Add your docs here.
    */
   public CenterAuto() {
-    addSequential(new DriveTrainCMDS.DriveStraightDist(100, .9, .2, 0));
+    addParallel(new HatchGrabberCMDS.GoUpCMD());
+    addSequential(new DriveTrainCMDS.DriveStraightDist(40, .5, .5, 0));
+    addSequential(new DriveTrainCMDS.DriveStraightDist(93, .9, .2, 0));
+    addParallel(new HatchGrabberCMDS.Eject());
+    addSequential(new DriveTrainCMDS.DriveStraightDist(-10, -.2, -.2, 0));
+
   }
 }

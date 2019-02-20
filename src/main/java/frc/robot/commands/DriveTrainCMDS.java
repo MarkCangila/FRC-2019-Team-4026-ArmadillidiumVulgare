@@ -176,9 +176,9 @@ public class DriveTrainCMDS {
       System.out.println("Max power "+ maxPower);
       averageEncoders = (Robot.driveTrainSubsystem.getEncoderLeft() + Robot.driveTrainSubsystem.getEncoderRight()) / 2;
       double error = ticks - averageEncoders;
-      if (error > 150){
+      if (error > 1000){
         Robot.driveTrainSubsystem.keepDriveStraight(-maxPower, -maxPower, heading);
-      }else if(error < 150 && error > 15){
+      }else if(error > 15){
         Robot.driveTrainSubsystem.keepDriveStraight(-minPower, -minPower, heading);
       }else if(error < 15){
        Robot.driveTrainSubsystem.stop();
@@ -190,5 +190,32 @@ public class DriveTrainCMDS {
     public boolean isFinished(){
       return isFinished;
     }
+  }
+
+  public static class DriveToRightHatchCMD extends Command{
+    private double targetAngle, distance;
+    private boolean isFinished = false;
+    @Override
+    protected void initialize() {
+      isFinished = false;
+    }
+    @Override
+    protected void execute(){
+      targetAngle = Robot.visionSystem.getRightHatchAngle();
+      double power = (Robot.oi.stick.getThrottle() + Robot.oi.stick.getY()) / 2;
+      if(power != -100){
+        Robot.driveTrainSubsystem.keepDriveStraight(power, power, targetAngle);
+      }else{
+        isFinished = true;
+        Robot.driveTrainSubsystem.stop();
+      }
+    }
+
+    @Override 
+   protected boolean isFinished(){
+      return isFinished;
+    }
+    
+
   }
 }

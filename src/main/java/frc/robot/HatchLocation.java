@@ -18,9 +18,15 @@ public class HatchLocation {
     public double otherAngle;
     public String identifier;
     
+    
 public HatchLocation(){}
 
     public String toString(){
         return (String) (identifier + ": " + distance + "ft, " + angle + " dgrs");
+    }
+
+    public boolean isReal(){
+        return !(distance == -100 && angle == -100);
+        
     }
 }
