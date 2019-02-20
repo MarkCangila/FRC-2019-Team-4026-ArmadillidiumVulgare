@@ -48,9 +48,9 @@ public class Robot extends TimedRobot {
   public static BuiltInAccelerometer Accelerometer = new BuiltInAccelerometer(Range.k8G);
 
   public static LinkedHashMap<String, Path> paths = new LinkedHashMap();
-  public static final String[] pathNames = {
+  public static final String[] PATHNAMES = {
     "TestPathInsane",
-    "TestPathNotInsane",
+    "TestPathNotInsane"/*,
     "LeftFrontHatchToLeftCargo",
     "LeftFrontHatchToRightCargo",
     "RightFrontHatchToLeftCargo",
@@ -58,7 +58,7 @@ public class Robot extends TimedRobot {
     "RightCargoToLeftFrontHatch",
     "RightCargoToRightFrontHatch",
     "LeftCargoToLeftFrontHatch",
-    "LeftCargoToRightFrontHatch"
+    "LeftCargoToRightFrontHatch"*/
   };
 
   public static OI oi;
@@ -84,6 +84,7 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     for (String pathName : pathNames) {
       try {
+        System.out.println("Creating path:" + pathName);
         paths.put(
             pathName,
             new Path(
@@ -127,7 +128,9 @@ public class Robot extends TimedRobot {
    * SmartDashboard integrated updating.
    */
   @Override
-  public void robotPeriodic() {}
+  public void robotPeriodic() {
+    flipperSubsystem.printTelemetry();
+  }
 
   /**
    * This function is called once each time the robot enters Disabled mode. You can use it to reset
@@ -156,7 +159,7 @@ public class Robot extends TimedRobot {
     m_autonomousCommand = m_chooser.getSelected();
     driveTrainSubsystem.resetEncoders();
 
-    chosenPath = path_chooser.getSelected();
+    chosenPath = "TestPathNotInsane";
     Command pathFollower;
     if (chosenPath != null) {
       pathFollower = new DriveTrainCMDS.FollowPathCMD(paths.get(chosenPath));

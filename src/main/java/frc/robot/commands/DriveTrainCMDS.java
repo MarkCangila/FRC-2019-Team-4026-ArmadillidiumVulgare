@@ -220,8 +220,8 @@ public class DriveTrainCMDS {
       double desired_heading = Pathfinder.r2d(leftFollower.getHeading());
       double heading_difference = Pathfinder.boundHalfDegrees(desired_heading - heading);
       double turn = 0.8 * (-1.0 / 80.0) * heading_difference;
-      Robot.driveTrainSubsystem.leftPower(-(left_speed - turn));
-      Robot.driveTrainSubsystem.rightPower(-(right_speed + turn));
+      Robot.driveTrainSubsystem.leftPower(-(left_speed + turn));
+      Robot.driveTrainSubsystem.rightPower(-(right_speed - turn));
     }
 
     @Override
