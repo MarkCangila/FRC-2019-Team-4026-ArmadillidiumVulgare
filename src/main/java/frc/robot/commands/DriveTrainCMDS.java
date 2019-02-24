@@ -114,8 +114,8 @@ public class DriveTrainCMDS {
 
       //Power when driving straight is the averaging of the stick values
       power = (Robot.oi.stick.getThrottle() + Robot.oi.stick.getY()) / 2;
-      Robot.driveTrainSubsystem.keepDriveStraight(power, power, targetAngle);
-      //Robot.driveTrainSubsystem.dumbDriveStraight(power);
+      //Robot.driveTrainSubsystem.keepDriveStraight(power, power, targetAngle);
+      Robot.driveTrainSubsystem.dumbDriveStraight(power);
     }
 
     @Override
@@ -201,7 +201,7 @@ public class DriveTrainCMDS {
     }
     @Override
     protected void execute(){
-      targetAngle = Robot.visionSystem.getRightHatchAngle();
+      targetAngle = Robot.visionSystem.hatch1.getAngle();
       double power = (Robot.oi.stick.getThrottle() + Robot.oi.stick.getY()) / 2;
       if(power != -100){
         Robot.driveTrainSubsystem.keepDriveStraight(power, power, targetAngle);

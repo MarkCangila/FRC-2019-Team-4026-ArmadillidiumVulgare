@@ -25,7 +25,7 @@ public class DriveTrainSubsystemPractice extends DriveTrain {
   Encoder rightEncoder;
   Encoder leftEncoder;
   
-  static final double MAXPOWERCHANGE = .075;
+  static final double MAXPOWERCHANGE = .1;
   
   public AHRS navx;
 
@@ -36,7 +36,7 @@ public class DriveTrainSubsystemPractice extends DriveTrain {
 
   @Override
   protected void initDefaultCommand() {
-    setDefaultCommand(new DriveTrainCMDS.ArcadeDriveCMD());
+    setDefaultCommand(new DriveTrainCMDS.TankDrive());
   }
 
   public DriveTrainSubsystemPractice() {
