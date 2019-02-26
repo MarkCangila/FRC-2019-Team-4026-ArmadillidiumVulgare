@@ -82,7 +82,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
-    for (String pathName : pathNames) {
+    for (String pathName : PATHNAMES) {
       try {
         System.out.println("Creating path:" + pathName);
         paths.put(
@@ -112,7 +112,7 @@ public class Robot extends TimedRobot {
     // SmartDashboard.putData("Robot type", robotChooser);
     // CameraServer.getInstance().startAutomaticCapture();
     path_chooser.setDefaultOption("Not Insane Path", "TestPathNotInsane");
-    for (String pathName : pathNames) {
+    for (String pathName : PATHNAMES) {
       path_chooser.addOption(pathName, pathName);
     }
     path_chooser.addOption("No Path", null);
