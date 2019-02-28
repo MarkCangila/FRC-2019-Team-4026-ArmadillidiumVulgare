@@ -24,18 +24,15 @@ public class VisionSystem extends Subsystem {
   // here. Call these from Commands.
 
   public static final int MAX_HATCH_COUNT = 2;
-  public HatchLocation hatch1;
-  public HatchLocation hatch2;
+  public HatchLocation hatch1 = new HatchLocation(.5);
+  public HatchLocation hatch2 = new HatchLocation(.5);
   NetworkTable table;
-  String[] toStrings;
   Boolean inited = false;
   NetworkTableEntry h1a, h1d, h2a, h2d;
   NetworkTableInstance inst;
 
   public VisionSystem(){
     inst = NetworkTableInstance.getDefault();
-    
-    inst.startDSClient();
     
     table = inst.getTable("datatable");
    
@@ -50,8 +47,8 @@ public class VisionSystem extends Subsystem {
    try{
       hatch1.updateAngle((double)table.getEntry("1.botangle").getNumber(-100)); 
       hatch2.updateAngle((double)table.getEntry("2.botangle").getNumber(-100)); 
-     // hatch1.distance = table.getNumber("1.distance", -100);
-     // hatch2.distance = table.getNumber("2.distance", -100);
+      //hatch1.distance = table.getNumber("1.distance", -100);
+      //hatch2.distance = table.getNumber("2.distance", -100);
     
        updateSmartDashboard();
     }catch(Exception e){
@@ -65,7 +62,7 @@ public class VisionSystem extends Subsystem {
 
   private void updateSmartDashboard(){
      
-        SmartDashboard.putStringArray("Hatches Visable", toStrings);
+       // SmartDashboard.putStringArray("Hatches Visable", toStrings);
         SmartDashboard.putNumber("getRightHatchAngle()", hatch1.getAngle());
         SmartDashboard.putNumber("getLeftHatchAngle()", hatch2.getAngle());
 
