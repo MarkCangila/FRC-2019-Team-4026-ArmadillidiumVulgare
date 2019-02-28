@@ -1,33 +1,33 @@
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj.command.Subsystem;
 import com.kauailabs.navx.frc.AHRS;
+import edu.wpi.first.wpilibj.command.Subsystem;
 
-public abstract class DriveTrain extends Subsystem { 
-    public abstract void leftPower(double requestedPower);
+public abstract class DriveTrain extends Subsystem {
+  public abstract void leftPower(double requestedPower);
 
-    public abstract void rightPower(double requestedPower);
+  public abstract void rightPower(double requestedPower);
 
-    public abstract void periodic();
+  public abstract void periodic();
 
-    protected abstract void initDefaultCommand();
+  protected abstract void initDefaultCommand();
 
-    public abstract void stop();
+  public abstract void stop();
 
-    public abstract void keepDriveStraight(double leftDriveVel, double rightDriveVel, double targetAngle);
+  public abstract void keepDriveStraight(
+      double leftDriveVel, double rightDriveVel, double targetAngle);
 
-    public abstract void dumbDriveStraight(double power);
+  public abstract void dumbDriveStraight(double power);
 
-    public abstract int getEncoderLeft();
+  public abstract int getEncoderLeft();
 
-    public abstract int getEncoderRight();
+  public abstract int getEncoderRight();
 
-    public abstract void resetEncoders();
+  public abstract void resetEncoders();
 
-    public static final double TICKS_PER_INCH = 13.3333333333333;
+  public static final double TICKS_PER_INCH = 13.3333333333333;
 
+  public abstract double getAngle();
 
-    public abstract double getAngle();
-
-    public AHRS navx;
+  public AHRS navx;
 }

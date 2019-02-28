@@ -13,7 +13,6 @@ public class FlipperCMDS {
     protected void execute() {
       Robot.flipperSubsystem.setFlipperPower((Robot.oi.stick2.getThrottle() * 0.65));
       Robot.flipperSubsystem.setFlipperPower(Robot.oi.stick2.getThrottle() * 0.65);
-     
     }
 
     @Override
@@ -26,68 +25,66 @@ public class FlipperCMDS {
       Robot.flipperSubsystem.stopFlipper();
     }
   }
-  public static class AutoFlip extends Command{
+
+  public static class AutoFlip extends Command {
     int state = 0;
 
-    private final int closeToFlip = 0; //Set this to the encoder value when the motor is close to flipping
+    private final int closeToFlip =
+        0; // Set this to the encoder value when the motor is close to flipping
     private final double fastPower = .75;
     private final double slowPower = .2;
-
 
     public AutoFlip() {
       requires(Robot.flipperSubsystem);
     }
 
     @Override
-    protected void initialize(){
-      
-    }
+    protected void initialize() {}
 
-    protected void execute (){
-      switch (state){
+    protected void execute() {
+      switch (state) {
         case 0:
           Robot.flipperSubsystem.setFlipperPower(fastPower);
-        if (Math.abs(Robot.flipperSubsystem.getPosition()) > closeToFlip) {
-          state++;
-        }
-        break;
-      case 1:
-        Robot.flipperSubsystem.setFlipperPower(slowPower);
-          if(Math.abs(Robot.flipperSubsystem.getPosition()) > Robot.flipperSubsystem.softLimitForAutoFlip){
+          if (Math.abs(Robot.flipperSubsystem.getPosition()) > closeToFlip) {
+            state++;
+          }
+          break;
+        case 1:
+          Robot.flipperSubsystem.setFlipperPower(slowPower);
+          if (Math.abs(Robot.flipperSubsystem.getPosition())
+              > Robot.flipperSubsystem.softLimitForAutoFlip) {
             state++;
             Robot.flipperSubsystem.stopFlipper();
           }
           break;
-      case 2:
+        case 2:
           Robot.flipperSubsystem.stopFlipper();
-          if(Math.abs(Robot.Accelerometer.getZ()) > 5){
+          if (Math.abs(Robot.Accelerometer.getZ()) > 5) {
             state++;
           }
           break;
-      case 3:
+        case 3:
           Robot.flipperSubsystem.setFlipperPower(-slowPower);
-          if(Robot.flipperSubsystem.getPosition() < 1000){
+          if (Robot.flipperSubsystem.getPosition() < 1000) {
             Robot.flipperSubsystem.stopFlipper();
             state++;
           }
           break;
-      case 4:
-        Robot.flipperSubsystem.stopFlipper();
-        
-      break;
+        case 4:
+          Robot.flipperSubsystem.stopFlipper();
 
-          
+          break;
       }
-
     }
+
     @Override
-    protected void interrupted(){
+    protected void interrupted() {
       Robot.flipperSubsystem.stopFlipper();
       state = 0;
     }
-    protected boolean isFinished(){
+
+    protected boolean isFinished() {
       return true;
     }
   }
 }
-
