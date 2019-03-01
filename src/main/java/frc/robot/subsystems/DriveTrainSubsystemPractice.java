@@ -119,15 +119,11 @@ public class DriveTrainSubsystemPractice extends DriveTrain {
     SmartDashboard.putData("Gyro", dataForGyro);
     SmartDashboard.putNumber("Heading", navx.getYaw());
   }
-
-
-
-
-
+  
   public void keepDriveStraight(double leftDriveVel, double rightDriveVel, double targetAngle) {
-
+    System.out.println("Drive straight "+ leftDriveVel);
 		double error = 0, correctionFactor;
-		error = targetAngle + navx.getAngle();
+		error = targetAngle - navx.getAngle();
 		correctionFactor = (error / 75.0);
 
 		// todo - best practice - conditions on a separate line should be
@@ -145,13 +141,18 @@ public class DriveTrainSubsystemPractice extends DriveTrain {
 			rightDriveVel = -0.9;
 
 		if (targetAngle > (navx.getAngle() - 0.5) || targetAngle < (navx.getAngle() + 0.5)) {
-			rightPower(((leftDriveVel) - correctionFactor));
-			leftPower((rightDriveVel + correctionFactor));
+			rightPower(((rightDriveVel) - correctionFactor));
+			leftPower((leftDriveVel + correctionFactor));
 		} else {
-			rightPower(leftDriveVel);
-			leftPower(rightDriveVel);
+			rightPower(rightDriveVel);
+			leftPower(leftDriveVel);
 		}
   }
+
+
+
+
+  
   
   public double getAngle(){
    return navx.getAngle();

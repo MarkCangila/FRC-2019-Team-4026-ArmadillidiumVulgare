@@ -33,7 +33,7 @@ public class VisionSystem extends Subsystem {
 
   public VisionSystem(){
     inst = NetworkTableInstance.getDefault();
-    
+
     table = inst.getTable("datatable");
    
     //System.err.println("We fuqin out here");

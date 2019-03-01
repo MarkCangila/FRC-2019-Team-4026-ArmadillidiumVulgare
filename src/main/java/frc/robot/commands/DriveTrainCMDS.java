@@ -195,13 +195,19 @@ public class DriveTrainCMDS {
   public static class DriveToRightHatchCMD extends Command{
     private double targetAngle, distance;
     private boolean isFinished = false;
+
+    public DriveToRightHatchCMD(){
+      requires(Robot.driveTrainSubsystem);
+    }
+
     @Override
     protected void initialize() {
       isFinished = false;
     }
+
     @Override
     protected void execute(){
-      targetAngle = Robot.visionSystem.hatch1.getAngle();
+      targetAngle = Robot.visionSystem.hatch1.getAngle() + Robot.driveTrainSubsystem.getAngle();
       double power = (Robot.oi.stick.getThrottle() + Robot.oi.stick.getY()) / 2;
       if(power != -100){
         Robot.driveTrainSubsystem.keepDriveStraight(power, power, targetAngle);
@@ -210,6 +216,7 @@ public class DriveTrainCMDS {
         Robot.driveTrainSubsystem.stop();
       }
     }
+    
 
     @Override 
    protected boolean isFinished(){
