@@ -3,7 +3,6 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Portmap;
 import frc.robot.Robot;
-import frc.robot.subsystems.DriveTrainSubsystem2019;
 
 public class DriveTrainCMDS {
   public static class Turn extends Command {
@@ -54,7 +53,7 @@ public class DriveTrainCMDS {
     protected boolean isFinished() {
       // TODO: Confirm that getAngle just counts up. If it doesn't it will be a lot harder and goal
       // will be required.
-      //Read the documentation, I have confirmed -Walden
+      // Read the documentation, I have confirmed -Walden
       return (float) (Robot.driveTrainSubsystem.getAngle() - startingAngle) > distance;
     }
 
@@ -80,8 +79,7 @@ public class DriveTrainCMDS {
       requires(Robot.driveTrainSubsystem);
     }
 
-    protected void initialize() {
-    }
+    protected void initialize() {}
 
     @Override
     protected void execute() {
@@ -106,15 +104,15 @@ public class DriveTrainCMDS {
 
     protected void initialize() {
       targetAngle = Robot.driveTrainSubsystem.getAngle();
-   //targetAngle = Robot.driveTrainSubsystem.navx.getAngle();
+      // targetAngle = Robot.driveTrainSubsystem.navx.getAngle();
     }
 
     @Override
     protected void execute() {
 
-      //Power when driving straight is the averaging of the stick values
+      // Power when driving straight is the averaging of the stick values
       power = (Robot.oi.stick.getThrottle() + Robot.oi.stick.getY()) / 2;
-      //Robot.driveTrainSubsystem.keepDriveStraight(power, power, targetAngle);
+      // Robot.driveTrainSubsystem.keepDriveStraight(power, power, targetAngle);
       Robot.driveTrainSubsystem.dumbDriveStraight(power);
     }
 
@@ -122,11 +120,9 @@ public class DriveTrainCMDS {
     protected boolean isFinished() {
       return false;
     }
-
-
   }
 
-  public static class ArcadeDriveCMD extends Command{
+  public static class ArcadeDriveCMD extends Command {
     double rightPower, leftPower;
 
     public ArcadeDriveCMD() {
@@ -138,8 +134,8 @@ public class DriveTrainCMDS {
 
     @Override
     protected void execute() {
-      rightPower = Robot.oi.stick.getY() - Robot.oi.stick.getZ()*.75;
-      leftPower = Robot.oi.stick.getY() + Robot.oi.stick.getZ()*.75;
+      rightPower = Robot.oi.stick.getY() - Robot.oi.stick.getZ() * .75;
+      leftPower = Robot.oi.stick.getY() + Robot.oi.stick.getZ() * .75;
       rightPower = Portmap.clipOneToOne(rightPower);
       leftPower = Portmap.clipOneToOne(leftPower);
       Robot.driveTrainSubsystem.leftPower(leftPower);
@@ -152,47 +148,50 @@ public class DriveTrainCMDS {
     }
   }
 
-  public static class DriveStraightDist extends Command{
-    
-  
+  public static class DriveStraightDist extends Command {
+
     private double heading, ticks, maxPower, minPower;
     private double averageEncoders;
     private boolean isFinished;
-    public DriveStraightDist(double distanceInch, double maxPowerVal, double minPowerVal, double headingVal){
+
+    public DriveStraightDist(
+        double distanceInch, double maxPowerVal, double minPowerVal, double headingVal) {
       requires(Robot.driveTrainSubsystem);
       ticks = distanceInch * Robot.driveTrainSubsystem.TICKS_PER_INCH;
       heading = headingVal;
       maxPower = maxPowerVal;
       minPower = minPowerVal;
-
     }
+
     @Override
-    public void initialize(){
+    public void initialize() {
       Robot.driveTrainSubsystem.resetEncoders();
-
     }
 
-    public void execute(){
-      System.out.println("Max power "+ maxPower);
-      averageEncoders = (Robot.driveTrainSubsystem.getEncoderLeft() + Robot.driveTrainSubsystem.getEncoderRight()) / 2;
+    public void execute() {
+      System.out.println("Max power " + maxPower);
+      averageEncoders =
+          (Robot.driveTrainSubsystem.getEncoderLeft() + Robot.driveTrainSubsystem.getEncoderRight())
+              / 2;
       double error = ticks - averageEncoders;
-      if (error > 1000){
+      if (error > 1000) {
         Robot.driveTrainSubsystem.keepDriveStraight(-maxPower, -maxPower, heading);
-      }else if(error > 15){
+      } else if (error > 15) {
         Robot.driveTrainSubsystem.keepDriveStraight(-minPower, -minPower, heading);
-      }else if(error < 15){
-       Robot.driveTrainSubsystem.stop();
+      } else if (error < 15) {
+        Robot.driveTrainSubsystem.stop();
         isFinished = true;
       }
-    System.out.println("Drive Error" + error);
-  }
+      System.out.println("Drive Error" + error);
+    }
+
     @Override
-    public boolean isFinished(){
+    public boolean isFinished() {
       return isFinished;
     }
   }
 
-  public static class DriveToRightHatchCMD extends Command{
+  public static class DriveToRightHatchCMD extends Command {
     private double targetAngle, distance;
     private boolean isFinished = false;
 
@@ -209,20 +208,18 @@ public class DriveTrainCMDS {
     protected void execute(){
       targetAngle = Robot.visionSystem.hatch1.getAngle() + Robot.driveTrainSubsystem.getAngle();
       double power = (Robot.oi.stick.getThrottle() + Robot.oi.stick.getY()) / 2;
-      if(power != -100){
+      if (power != -100) {
         Robot.driveTrainSubsystem.keepDriveStraight(power, power, targetAngle);
-      }else{
+      } else {
         isFinished = true;
         Robot.driveTrainSubsystem.stop();
       }
     }
     
 
-    @Override 
-   protected boolean isFinished(){
+    @Override
+    protected boolean isFinished() {
       return isFinished;
     }
-    
-
   }
 }
