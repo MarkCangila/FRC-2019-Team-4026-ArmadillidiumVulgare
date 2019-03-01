@@ -24,7 +24,7 @@ public class HatchLocation {
   }
 
   public String toString() {
-    return (String) (identifier + ": " + distance + "ft, " + getAngle() + " dgrs");
+    return (String) (identifier + ": " + distance + "ft, " + getAngleDeg() + " dgrs");
   }
 
   public boolean isReal() {
@@ -39,11 +39,14 @@ public class HatchLocation {
     }
   }
   // Will return the last known angle of the hatch if the timeout is not expired.
-  public double getAngle() {
+  public double getAngleRad() {
     if (updateTimer.get() < timeOutMax) {
       return angle;
     } else {
       return -100;
     }
+  }
+  public double getAngleDeg(){
+    return getAngleRad() * (180 / Math.PI);
   }
 }

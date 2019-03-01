@@ -54,8 +54,8 @@ public class VisionSystem extends Subsystem {
   private void updateSmartDashboard() {
 
     // SmartDashboard.putStringArray("Hatches Visable", toStrings);
-    SmartDashboard.putNumber("getRightHatchAngle()", hatch1.getAngle());
-    SmartDashboard.putNumber("getLeftHatchAngle()", hatch2.getAngle());
+    SmartDashboard.putNumber("getRightHatchAngle()", hatch1.getAngleDeg());
+    SmartDashboard.putNumber("getLeftHatchAngle()", hatch2.getAngleDeg());
   }
 
   public void initDefaultCommand() {
