@@ -119,7 +119,10 @@ public class DriveTrainSubsystem2019 extends DriveTrain {
     rightPower(power);
     leftPower(power);
   }
-
+  /*
+  * Please note that powers must be negative to move foreward, this is a side effect of the controller axies being reversed
+  * from what would be accepted.
+  */
   public void keepDriveStraight(double leftDriveVel, double rightDriveVel, double targetAngle) {
     System.out.println("Drive straight " + leftDriveVel);
     double error = 0, correctionFactor;

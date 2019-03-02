@@ -17,6 +17,7 @@ public class HatchLocation {
   public double otherAngle;
   public String identifier;
   public int lastUpdated;
+  private double targetHeading = -100;
   Timer updateTimer = new Timer();
 
   public HatchLocation(double timeOut) {
@@ -36,6 +37,7 @@ public class HatchLocation {
       angle = angleVal;
       updateTimer.reset();
       updateTimer.start();
+      targetHeading = angle + Robot.driveTrainSubsystem.getAngle();
     }
   }
   // Will return the last known angle of the hatch if the timeout is not expired.
@@ -48,5 +50,12 @@ public class HatchLocation {
   }
   public double getAngleDeg(){
     return getAngleRad() * (180 / Math.PI);
+  }
+  public double getTargetHeading(){
+    if (updateTimer.get() < timeOutMax) {
+      return targetHeading;
+    } else {
+      return -100;
+    }
   }
 }
