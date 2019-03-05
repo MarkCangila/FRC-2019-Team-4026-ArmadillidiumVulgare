@@ -225,4 +225,39 @@ public class DriveTrainCMDS {
       end();
     }
   }
+
+  public static class AutoDriveToRightHatchCMD extends Command {
+    private double targetAngle, distance, power;
+
+    public AutoDriveToRightHatchCMD(){
+      requires(Robot.driveTrainSubsystem);
+    }
+
+    @Override
+    protected void execute(){
+      targetAngle = Robot.visionSystem.hatch1.getAngleDeg() + Robot.driveTrainSubsystem.getAngle();
+      power = .5;
+      if (!Robot.visionSystem.hatch1.isReal()) {
+        Robot.driveTrainSubsystem.keepDriveStraight(power, power, targetAngle);
+      } else {
+        Robot.driveTrainSubsystem.stop();
+      }
+    }
+    
+
+    @Override
+    protected boolean isFinished() {
+      return !Robot.visionSystem.hatch1.isReal();
+    }
+
+    @Override
+    protected void end() {
+      Robot.driveTrainSubsystem.stop();
+    }
+
+    @Override
+    protected void interrupted() {
+      end();
+    }
+  }
 }
