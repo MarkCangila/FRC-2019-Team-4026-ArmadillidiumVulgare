@@ -199,11 +199,6 @@ public class DriveTrainCMDS {
     }
 
     @Override
-    protected void initialize() {
-      isFinished = false;
-    }
-
-    @Override
     protected void execute(){
       targetAngle = Robot.visionSystem.hatch1.getAngleDeg() + Robot.driveTrainSubsystem.getAngle();
       power = (Robot.oi.stick.getThrottle() + Robot.oi.stick.getY()) / 2;
