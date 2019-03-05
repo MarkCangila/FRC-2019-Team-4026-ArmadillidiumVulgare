@@ -120,14 +120,14 @@ public class DriveTrainSubsystem2019 extends DriveTrain {
     leftPower(power);
   }
   /*
-  * Please note that powers must be negative to move foreward, this is a side effect of the controller axies being reversed
-  * from what would be accepted.
-  */
+   * Please note that powers must be negative to move foreward, this is a side effect of the controller axies being reversed
+   * from what would be accepted.
+   */
   public void keepDriveStraight(double leftDriveVel, double rightDriveVel, double targetAngle) {
     System.out.println("Drive straight " + leftDriveVel);
     double error = 0, correctionFactor;
     error = targetAngle - navx.getAngle();
-    correctionFactor = (error / 75.0);
+    correctionFactor = (error / 2);
 
     // todo - best practice - conditions on a separate line should be
     // wrapped in brackets

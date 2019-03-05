@@ -20,6 +20,7 @@ import frc.robot.commands.DriveTrainCMDS;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.FlipperCMDS;
 import frc.robot.commands.HatchGrabberCMDS;
+import frc.robot.commands.DriveTrainCMDS.DriveToHatchCMD;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.DriveTrainSubsystemPractice;
 import frc.robot.subsystems.FlipperSubsystem;
@@ -36,6 +37,7 @@ import frc.robot.subsystems.VisionSystem;
  */
 public class Robot extends TimedRobot {
   public static DriveTrainSubsystemPractice driveTrainSubsystem = new DriveTrainSubsystemPractice();
+  // DriveTrainSubsystemPractice();
   public static IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
   // public static DriveTrainSubsystem2018 driveTrainSubsystem = new DriveTrainSubsystem2018();
   // public static DriveTrainSubsystem2019 driveTrainSubsystem = new DriveTrainSubsystem2019();
@@ -66,7 +68,8 @@ public class Robot extends TimedRobot {
     oi.stick1Button8.whileHeld(new DriveTrainCMDS.DriveStraight());
     oi.stick2Button8.whileHeld(new HatchGrabberCMDS.Eject());
     oi.stick2Button9.whileHeld(new FlipperCMDS.AutoFlip());
-    oi.stick1Button6.whileHeld(new DriveTrainCMDS.DriveToRightHatchCMD());
+    oi.stick1Button6.whileHeld(new DriveTrainCMDS.DriveToHatchCMD(DriveToHatchCMD.RIGHT));
+    oi.stick1Button5.whileHeld(new DriveTrainCMDS.DriveToHatchCMD(DriveToHatchCMD.LEFT));
     m_chooser.setDefaultOption("Default Auto", new CenterAuto());
     m_chooser.setDefaultOption("Left Far Auto", new ExampleCommand());
     // chooser.addOption("My Auto", new MyAutoCommand());

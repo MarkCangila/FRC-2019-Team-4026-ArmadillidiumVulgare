@@ -1,6 +1,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
+import frc.robot.HatchLocation;
 import frc.robot.Portmap;
 import frc.robot.Robot;
 
@@ -191,12 +192,18 @@ public class DriveTrainCMDS {
     }
   }
 
-  public static class DriveToRightHatchCMD extends Command {
+  public static class DriveToHatchCMD extends Command {
+    public static final boolean RIGHT = true;
+    public static final boolean LEFT = false;
+    private boolean direction;
     private double targetAngle, distance;
     private boolean isFinished = false;
+    private HatchLocation hatch;
 
-    public DriveToRightHatchCMD(){
+    public DriveToHatchCMD(boolean directionVal) {
+      direction = directionVal;
       requires(Robot.driveTrainSubsystem);
+
     }
 
     @Override
@@ -205,21 +212,40 @@ public class DriveTrainCMDS {
     }
 
     @Override
-    protected void execute(){
-      targetAngle = Robot.visionSystem.hatch1.getTargetHeading();
+    protected void execute() {
+      if (Robot.visionSystem.hatch1.isReal() && Robot.visionSystem.hatch2.isReal()) {
+        if(direction == RIGHT){
+         if (Robot.visionSystem.hatch1.getAngleRad() > Robot.visionSystem.hatch2.getAngleRad()) {
+            hatch = Robot.visionSystem.hatch1;
+          } else {
+            hatch = Robot.visionSystem.hatch2;
+          }
+        }else{
+          if (Robot.visionSystem.hatch1.getAngleRad() < Robot.visionSystem.hatch2.getAngleRad()) {
+            hatch = Robot.visionSystem.hatch1;
+          } else {
+            hatch = Robot.visionSystem.hatch2;
+          }
+        }
+      } else if (Robot.visionSystem.hatch1.isReal()) {
+        hatch = Robot.visionSystem.hatch1;
+      } else {
+        hatch = Robot.visionSystem.hatch2;
+      }
+
+      targetAngle = hatch.getTargetHeading();
       double power = (Robot.oi.stick.getThrottle() + Robot.oi.stick.getY()) / 2;
-      if (power != -100) {
+      if (!(hatch.getAngleRad() == -100)) {
         Robot.driveTrainSubsystem.keepDriveStraight(power, power, targetAngle);
       } else {
-        isFinished = true;
+
         Robot.driveTrainSubsystem.stop();
       }
     }
-    
 
     @Override
     protected boolean isFinished() {
-      return isFinished;
+      return false;
     }
   }
 }
