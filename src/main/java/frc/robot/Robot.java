@@ -20,7 +20,6 @@ import frc.robot.commands.DriveTrainCMDS;
 import frc.robot.commands.ExampleCommand;
 //import frc.robot.commands.FlipperCMDS;
 import frc.robot.commands.HatchGrabberCMDS;
-import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.DriveTrainSubsystem2019;
 //import frc.robot.subsystems.FlipperSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
@@ -35,13 +34,9 @@ import frc.robot.subsystems.VisionSystem;
  * project.
  */
 public class Robot extends TimedRobot {
-<<<<<<< HEAD
-  public static DriveTrainSubsystem2019 driveTrainSubsystem = new DriveTrainSubsystem2019(true);
-=======
   private static final boolean practice = true;
 
   public static DriveTrainSubsystem2019 driveTrainSubsystem = new DriveTrainSubsystem2019(practice);
->>>>>>> origin/master
   public static IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
   // public static DriveTrainSubsystem2018 driveTrainSubsystem = new DriveTrainSubsystem2018();
   // public static DriveTrainSubsystem2019 driveTrainSubsystem = new DriveTrainSubsystem2019();
@@ -55,10 +50,6 @@ public class Robot extends TimedRobot {
   Command m_autonomousCommand;
   SendableChooser<Command> m_chooser = new SendableChooser<>();
 
-<<<<<<< HEAD
-=======
-
->>>>>>> origin/master
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.

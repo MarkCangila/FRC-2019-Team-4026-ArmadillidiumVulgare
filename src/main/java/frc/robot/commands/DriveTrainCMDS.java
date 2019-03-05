@@ -174,15 +174,9 @@ public class DriveTrainCMDS {
           (Robot.driveTrainSubsystem.getEncoderLeft() + Robot.driveTrainSubsystem.getEncoderRight())
               / 2;
       double error = ticks - averageEncoders;
-<<<<<<< HEAD
-      if (error > 150) {
-        Robot.driveTrainSubsystem.keepDriveStraight(-maxPower, -maxPower, heading);
-      } else if (error < 150 && error > 15) {
-=======
       if (error > 1000) {
         Robot.driveTrainSubsystem.keepDriveStraight(-maxPower, -maxPower, heading);
       } else if (error > 15) {
->>>>>>> origin/master
         Robot.driveTrainSubsystem.keepDriveStraight(-minPower, -minPower, heading);
       } else if (error < 15) {
         Robot.driveTrainSubsystem.stop();
