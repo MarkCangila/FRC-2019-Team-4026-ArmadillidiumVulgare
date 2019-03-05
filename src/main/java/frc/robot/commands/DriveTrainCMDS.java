@@ -258,7 +258,7 @@ public class DriveTrainCMDS {
     protected void execute(){
       targetAngle = Robot.visionSystem.hatch1.getAngleDeg() + Robot.driveTrainSubsystem.getAngle();
       power = (Robot.oi.stick.getThrottle() + Robot.oi.stick.getY()) / 2;
-      if (power != -100) {
+      if (!Robot.visionSystem.hatch1.isReal()) {
         Robot.driveTrainSubsystem.keepDriveStraight(power, power, targetAngle);
       } else {
         isFinished = true;
@@ -269,7 +269,7 @@ public class DriveTrainCMDS {
 
     @Override
     protected boolean isFinished() {
-      return power == -100;
+      return !Robot.visionSystem.hatch1.isReal();
     }
 
     @Override
