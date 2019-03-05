@@ -7,16 +7,46 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.Timer;
+
 /** Add your docs here. */
 public class HatchLocation {
-  public double distance;
-  public double angle;
+  private double timeOutMax;
+  private double distance;
+  private double angle = -100;
   public double otherAngle;
   public String identifier;
+  public int lastUpdated;
+  Timer updateTimer = new Timer();
 
-  public HatchLocation() {}
+  public HatchLocation(double timeOut) {
+    timeOutMax = timeOut;
+  }
 
   public String toString() {
-    return (String) (identifier + ": " + distance + "ft, " + angle + " dgrs");
+    return (String) (identifier + ": " + distance + "ft, " + getAngleDeg() + " dgrs");
+  }
+
+  public boolean isReal() {
+    return !(distance == -100 && angle == -100);
+  }
+  // This will set the angle and reset the timer if the angle is deemed valid (!= -100)
+  public void updateAngle(double angleVal) {
+    if (angleVal != -100) {
+      angle = angleVal;
+      updateTimer.reset();
+      updateTimer.start();
+    }
+  }
+  // Will return the last known angle of the hatch if the timeout is not expired.
+  public double getAngleRad() {
+    if (updateTimer.get() < timeOutMax) {
+      return angle;
+    } else {
+      return -100;
+    }
+  }
+  public double getAngleDeg(){
+    return getAngleRad() * (180 / Math.PI);
   }
 }

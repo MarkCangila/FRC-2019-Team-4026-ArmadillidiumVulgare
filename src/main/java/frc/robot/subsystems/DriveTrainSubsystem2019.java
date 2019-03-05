@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.can.BaseMotorController;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj.AnalogGyro;
@@ -14,11 +15,16 @@ public class DriveTrainSubsystem2019 extends DriveTrain {
   public final double TICKS_PER_INCH = 13.3333333333333;
   final WPI_TalonSRX rightDriveMotorTalon;
   final WPI_TalonSRX leftDriveMotorTalon;
-  final VictorSPX rightDriveMotorVictor;
-  final VictorSPX leftDriveMotorVictor;
+  final BaseMotorController rightDriveMotorVictor;
+  final BaseMotorController leftDriveMotorVictor;
 
+<<<<<<< HEAD
   public Encoder rightEncoder;
   public Encoder leftEncoder;
+=======
+  Encoder rightEncoder;
+  Encoder leftEncoder;
+>>>>>>> origin/master
 
   static final double MAXPOWERCHANGE = .075;
 
@@ -29,24 +35,40 @@ public class DriveTrainSubsystem2019 extends DriveTrain {
     setDefaultCommand(new DriveTrainCMDS.TankDrive());
   }
 
+<<<<<<< HEAD
   public DriveTrainSubsystem2019() {
     //  System.out.println();
+=======
+  public DriveTrainSubsystem2019(boolean practice) {
+  //  System.out.println();
+>>>>>>> origin/master
 
     navx = new AnalogGyro(Portmap.GYRO);
 
     // This assumes the robot will start backwards at the beginning of the match.
     // navx.setAngleAdjustment(180);
 
+<<<<<<< HEAD
     rightEncoder =
         new Encoder(
             Portmap.RIGHT_ENCODER_1, Portmap.RIGHT_ENCODER_2, false, Encoder.EncodingType.k4X);
     leftEncoder =
         new Encoder(Portmap.LEFT_ENCODER_1, Portmap.LEFT_ENCODER_2, true, Encoder.EncodingType.k4X);
+=======
+    rightEncoder = new Encoder(Portmap.RIGHT_ENCODER_1, Portmap.RIGHT_ENCODER_2, false);
+    leftEncoder = new Encoder(Portmap.LEFT_ENCODER_1, Portmap.LEFT_ENCODER_2, true);
+>>>>>>> origin/master
 
     rightDriveMotorTalon = new WPI_TalonSRX(Portmap.RIGHTDRIVETALON);
     leftDriveMotorTalon = new WPI_TalonSRX(Portmap.LEFTDRIVETALON);
-    rightDriveMotorVictor = new VictorSPX(Portmap.RIGHTDRIVEVICTOR);
-    leftDriveMotorVictor = new VictorSPX(Portmap.LEFTDRIVEVICTOR);
+    if (practice) {
+      rightDriveMotorVictor = new WPI_TalonSRX(Portmap.RIGHTDRIVEVICTOR);
+      leftDriveMotorVictor = new WPI_TalonSRX(Portmap.LEFTDRIVEVICTOR);
+    }
+    else {
+      rightDriveMotorVictor = new VictorSPX(Portmap.RIGHTDRIVEVICTOR);
+      leftDriveMotorVictor = new VictorSPX(Portmap.LEFTDRIVEVICTOR);
+    }
     // rightDriveMotorVictor.follow(rightDriveMotorTalon);
     // leftDriveMotorVictor.follow(leftDriveMotorTalon);
     // rightDriveMotorTalon.setInverted(true);

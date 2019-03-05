@@ -38,7 +38,9 @@ import java.util.LinkedHashMap;
  * project.
  */
 public class Robot extends TimedRobot {
-  public static DriveTrainSubsystem2019 driveTrainSubsystem = new DriveTrainSubsystem2019();
+  private static final boolean practice = true;
+
+  public static DriveTrainSubsystem2019 driveTrainSubsystem = new DriveTrainSubsystem2019(practice);
   public static IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
   // public static DriveTrainSubsystem2018 driveTrainSubsystem = new DriveTrainSubsystem2018();
   // public static DriveTrainSubsystem2019 driveTrainSubsystem = new DriveTrainSubsystem2019();
@@ -68,13 +70,10 @@ public class Robot extends TimedRobot {
   public static final double k_maxVelocity = 3.772;
   public static final int k_ticksPerRev = 4096;
   public static final double k_wheelDiameter = 0.1524;
-
   Command m_autonomousCommand;
   SendableChooser<Command> m_chooser = new SendableChooser<>();
 
   SendableChooser<String> path_chooser = new SendableChooser<>();
-
-  SendableChooser<DriveTrain> robotChooser = new SendableChooser<>();
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -82,6 +81,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
+<<<<<<< HEAD
     for (String pathName : PATHNAMES) {
       try {
         System.out.println("Creating path:" + pathName);
@@ -94,6 +94,8 @@ public class Robot extends TimedRobot {
         System.out.println("Path name doesn't exist " + ioe);
       }
     }
+=======
+>>>>>>> origin/master
 
     oi = new OI();
     oi.stick2Button1.whileHeld(new HatchGrabberCMDS.GoDownCMD());
@@ -103,6 +105,7 @@ public class Robot extends TimedRobot {
     oi.stick1Button8.whileHeld(new DriveTrainCMDS.DriveStraight());
     oi.stick2Button8.whileHeld(new HatchGrabberCMDS.Eject());
     oi.stick2Button9.whileHeld(new FlipperCMDS.AutoFlip());
+    oi.stick1Button6.whileHeld(new DriveTrainCMDS.DriveToRightHatchCMD());
     m_chooser.setDefaultOption("Default Auto", new CenterAuto());
     m_chooser.setDefaultOption("Left Far Auto", new ExampleCommand());
     // chooser.addOption("My Auto", new MyAutoCommand());
@@ -111,11 +114,15 @@ public class Robot extends TimedRobot {
     SmartDashboard.putData("Auto mode", m_chooser);
     // SmartDashboard.putData("Robot type", robotChooser);
     // CameraServer.getInstance().startAutomaticCapture();
+<<<<<<< HEAD
     path_chooser.setDefaultOption("Not Insane Path", "TestPathNotInsane");
     for (String pathName : PATHNAMES) {
       path_chooser.addOption(pathName, pathName);
     }
     path_chooser.addOption("No Path", null);
+=======
+
+>>>>>>> origin/master
     // driveTrainSubsystem = new DriveTrainSubsystem2019();
 
   }
@@ -156,9 +163,11 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
+    intakeSubsystem.autoInit();
     m_autonomousCommand = m_chooser.getSelected();
     driveTrainSubsystem.resetEncoders();
 
+<<<<<<< HEAD
     chosenPath = "TestPathNotInsane";
     Command pathFollower;
     if (chosenPath != null) {
@@ -166,6 +175,8 @@ public class Robot extends TimedRobot {
       pathFollower.start();
     }
 
+=======
+>>>>>>> origin/master
     /*
      * String autoSelected = SmartDashboard.getString("Auto Selector",
      * "Default"); switch(autoSelected) { case "My Auto": autonomousCommand

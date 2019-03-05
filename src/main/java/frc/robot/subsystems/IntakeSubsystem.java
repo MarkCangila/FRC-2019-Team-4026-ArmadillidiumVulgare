@@ -81,6 +81,14 @@ public class IntakeSubsystem extends Subsystem {
     }
 
     // rightIntakeMotor.setSelectedSensorPosition(0, loopID, timeoutMS);
+<<<<<<< HEAD
+=======
+  }
+
+  public void autoInit() {
+    // rightIntakeMotor.setSelectedSensorPosition(900, loopID, timeoutMS);
+
+>>>>>>> origin/master
   }
 
   @Override

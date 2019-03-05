@@ -178,7 +178,11 @@ public class FlipperSubsystem extends Subsystem {
       flipperPower = 0;
     }
 
+<<<<<<< HEAD
     if (flipperPower > 0 && forewardLimitSwitch.get()) {
+=======
+    if (flipperPower < 0 && forewardLimitSwitch.get()) {
+>>>>>>> origin/master
       flipperPower = 0;
     }
   }
