@@ -24,10 +24,8 @@ import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.HatchGrabberCMDS;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import frc.robot.subsystems.DriveTrainSubsystem2019;
-import frc.robot.subsystems.DriveTrainSubsystemPractice;
 //import frc.robot.subsystems.FlipperSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
-import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.VisionSystem;
 //import frc.robot.subsystems.GyroSubsystem;
 
@@ -38,7 +36,7 @@ import frc.robot.subsystems.VisionSystem;
  * project.
  */
 public class Robot extends TimedRobot {
-  public static DriveTrainSubsystemPractice driveTrainSubsystem = new DriveTrainSubsystemPractice();
+  public static DriveTrainSubsystem2019 driveTrainSubsystem = new DriveTrainSubsystem2019(true);
   public static IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
   // public static DriveTrainSubsystem2018 driveTrainSubsystem = new DriveTrainSubsystem2018();
   //public static DriveTrainSubsystem2019 driveTrainSubsystem = new DriveTrainSubsystem2019();
@@ -53,8 +51,6 @@ public class Robot extends TimedRobot {
 
   Command m_autonomousCommand;
   SendableChooser<Command> m_chooser = new SendableChooser<>();
-
-  SendableChooser<DriveTrain> robotChooser = new SendableChooser<>();
 
   /**
    * This function is run when the robot is first started up and should be used for any
