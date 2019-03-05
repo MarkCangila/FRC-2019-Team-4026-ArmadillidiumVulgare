@@ -18,11 +18,11 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.CenterAuto;
 import frc.robot.commands.DriveTrainCMDS;
 import frc.robot.commands.ExampleCommand;
-import frc.robot.commands.FlipperCMDS;
+//import frc.robot.commands.FlipperCMDS;
 import frc.robot.commands.HatchGrabberCMDS;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.DriveTrainSubsystem2019;
-import frc.robot.subsystems.FlipperSubsystem;
+//import frc.robot.subsystems.FlipperSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.VisionSystem;
 import jaci.pathfinder.PathfinderFRC;
@@ -46,7 +46,7 @@ public class Robot extends TimedRobot {
   // public static DriveTrainSubsystem2019 driveTrainSubsystem = new DriveTrainSubsystem2019();
   public static VisionSystem visionSystem = new VisionSystem();
   public static PowerDistributionPanel PDP = new PowerDistributionPanel(0);
-  public static FlipperSubsystem flipperSubsystem = new FlipperSubsystem();
+  //public static FlipperSubsystem flipperSubsystem = new FlipperSubsystem();
   public static BuiltInAccelerometer Accelerometer = new BuiltInAccelerometer(Range.k8G);
 
   public static LinkedHashMap<String, Path> paths = new LinkedHashMap();
@@ -101,7 +101,7 @@ public class Robot extends TimedRobot {
     oi.stick2Button3.whileHeld(new HatchGrabberCMDS.GoUpCMD());
     oi.stick1Button8.whileHeld(new DriveTrainCMDS.DriveStraight());
     oi.stick2Button8.whileHeld(new HatchGrabberCMDS.Eject());
-    oi.stick2Button9.whileHeld(new FlipperCMDS.AutoFlip());
+    //oi.stick2Button9.whileHeld(new FlipperCMDS.AutoFlip());
     oi.stick1Button6.whileHeld(new DriveTrainCMDS.DriveToRightHatchCMD());
     m_chooser.setDefaultOption("Default Auto", new CenterAuto());
     m_chooser.setDefaultOption("Left Far Auto", new ExampleCommand());
@@ -129,7 +129,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
-    flipperSubsystem.printTelemetry();
+    //flipperSubsystem.printTelemetry();
   }
 
   /**
@@ -189,7 +189,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
-    flipperSubsystem.initEnable();
+    //flipperSubsystem.initEnable();
     // This makes sure that the autonomous stops running when
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove

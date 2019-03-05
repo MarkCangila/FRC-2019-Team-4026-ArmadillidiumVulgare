@@ -1,4 +1,4 @@
-package frc.robot.subsystems;
+/*package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
@@ -69,7 +69,7 @@ public class FlipperSubsystem extends Subsystem {
     leftFlipper.config_kP(loopID, kP, timeoutMS);
     leftFlipper.config_kD(loopID, kD, timeoutMS);
     leftFlipper.config_kI(loopID, kI, timeoutMS);
-      */
+      *//*
 
     leftFlipper.configForwardSoftLimitThreshold(FOREWARD_LIMIT_ENC);
     rightFlipper.configForwardSoftLimitThreshold(FOREWARD_LIMIT_ENC);
@@ -154,7 +154,7 @@ public class FlipperSubsystem extends Subsystem {
             leftPower = 0;
           }
         }
-    */
+    *//*
     if (flipperPower < 0 && reverseLimitSwitch.get()) {
       rightFlipper.setSelectedSensorPosition(0, loopID, timeoutMS);
       leftFlipper.setSelectedSensorPosition(0, loopID, timeoutMS);
@@ -192,3 +192,4 @@ public class FlipperSubsystem extends Subsystem {
     SmartDashboard.putBoolean("Front Limit", forewardLimitSwitch.get());
   }
 }
+*/
