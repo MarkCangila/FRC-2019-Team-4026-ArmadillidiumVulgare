@@ -193,7 +193,6 @@ public class DriveTrainCMDS {
 
   public static class DriveToRightHatchCMD extends Command {
     private double targetAngle, distance, power;
-    private boolean isFinished = false;
 
     public DriveToRightHatchCMD(){
       requires(Robot.driveTrainSubsystem);
@@ -211,7 +210,6 @@ public class DriveTrainCMDS {
       if (power != -100) {
         Robot.driveTrainSubsystem.keepDriveStraight(power, power, targetAngle);
       } else {
-        isFinished = true;
         Robot.driveTrainSubsystem.stop();
       }
     }
