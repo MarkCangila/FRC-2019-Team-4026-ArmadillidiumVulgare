@@ -18,13 +18,8 @@ public class DriveTrainSubsystem2019 extends DriveTrain {
   final BaseMotorController rightDriveMotorVictor;
   final BaseMotorController leftDriveMotorVictor;
 
-<<<<<<< HEAD
   public Encoder rightEncoder;
   public Encoder leftEncoder;
-=======
-  Encoder rightEncoder;
-  Encoder leftEncoder;
->>>>>>> origin/master
 
   static final double MAXPOWERCHANGE = .075;
 
@@ -35,29 +30,16 @@ public class DriveTrainSubsystem2019 extends DriveTrain {
     setDefaultCommand(new DriveTrainCMDS.TankDrive());
   }
 
-<<<<<<< HEAD
-  public DriveTrainSubsystem2019() {
-    //  System.out.println();
-=======
   public DriveTrainSubsystem2019(boolean practice) {
   //  System.out.println();
->>>>>>> origin/master
 
     navx = new AnalogGyro(Portmap.GYRO);
 
     // This assumes the robot will start backwards at the beginning of the match.
     // navx.setAngleAdjustment(180);
 
-<<<<<<< HEAD
-    rightEncoder =
-        new Encoder(
-            Portmap.RIGHT_ENCODER_1, Portmap.RIGHT_ENCODER_2, false, Encoder.EncodingType.k4X);
-    leftEncoder =
-        new Encoder(Portmap.LEFT_ENCODER_1, Portmap.LEFT_ENCODER_2, true, Encoder.EncodingType.k4X);
-=======
     rightEncoder = new Encoder(Portmap.RIGHT_ENCODER_1, Portmap.RIGHT_ENCODER_2, false);
     leftEncoder = new Encoder(Portmap.LEFT_ENCODER_1, Portmap.LEFT_ENCODER_2, true);
->>>>>>> origin/master
 
     rightDriveMotorTalon = new WPI_TalonSRX(Portmap.RIGHTDRIVETALON);
     leftDriveMotorTalon = new WPI_TalonSRX(Portmap.LEFTDRIVETALON);

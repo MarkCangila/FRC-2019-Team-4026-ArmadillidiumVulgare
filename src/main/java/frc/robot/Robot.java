@@ -81,7 +81,6 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
-<<<<<<< HEAD
     for (String pathName : PATHNAMES) {
       try {
         System.out.println("Creating path:" + pathName);
@@ -94,8 +93,6 @@ public class Robot extends TimedRobot {
         System.out.println("Path name doesn't exist " + ioe);
       }
     }
-=======
->>>>>>> origin/master
 
     oi = new OI();
     oi.stick2Button1.whileHeld(new HatchGrabberCMDS.GoDownCMD());
@@ -114,15 +111,11 @@ public class Robot extends TimedRobot {
     SmartDashboard.putData("Auto mode", m_chooser);
     // SmartDashboard.putData("Robot type", robotChooser);
     // CameraServer.getInstance().startAutomaticCapture();
-<<<<<<< HEAD
     path_chooser.setDefaultOption("Not Insane Path", "TestPathNotInsane");
     for (String pathName : PATHNAMES) {
       path_chooser.addOption(pathName, pathName);
     }
     path_chooser.addOption("No Path", null);
-=======
-
->>>>>>> origin/master
     // driveTrainSubsystem = new DriveTrainSubsystem2019();
 
   }
@@ -167,7 +160,6 @@ public class Robot extends TimedRobot {
     m_autonomousCommand = m_chooser.getSelected();
     driveTrainSubsystem.resetEncoders();
 
-<<<<<<< HEAD
     chosenPath = "TestPathNotInsane";
     Command pathFollower;
     if (chosenPath != null) {
@@ -175,8 +167,6 @@ public class Robot extends TimedRobot {
       pathFollower.start();
     }
 
-=======
->>>>>>> origin/master
     /*
      * String autoSelected = SmartDashboard.getString("Auto Selector",
      * "Default"); switch(autoSelected) { case "My Auto": autonomousCommand
