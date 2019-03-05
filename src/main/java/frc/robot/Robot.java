@@ -7,13 +7,11 @@
 
 package frc.robot;
 
-import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.BuiltInAccelerometer;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
-import edu.wpi.first.wpilibj.interfaces.Accelerometer;
 import edu.wpi.first.wpilibj.interfaces.Accelerometer.Range;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -22,12 +20,13 @@ import frc.robot.commands.DriveTrainCMDS;
 import frc.robot.commands.ExampleCommand;
 //import frc.robot.commands.FlipperCMDS;
 import frc.robot.commands.HatchGrabberCMDS;
-import edu.wpi.first.wpilibj.PowerDistributionPanel;
+import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.DriveTrainSubsystem2019;
 //import frc.robot.subsystems.FlipperSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.VisionSystem;
-//import frc.robot.subsystems.GyroSubsystem;
+
+// import frc.robot.subsystems.GyroSubsystem;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -36,29 +35,37 @@ import frc.robot.subsystems.VisionSystem;
  * project.
  */
 public class Robot extends TimedRobot {
+<<<<<<< HEAD
   public static DriveTrainSubsystem2019 driveTrainSubsystem = new DriveTrainSubsystem2019(true);
+=======
+  private static final boolean practice = true;
+
+  public static DriveTrainSubsystem2019 driveTrainSubsystem = new DriveTrainSubsystem2019(practice);
+>>>>>>> origin/master
   public static IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
   // public static DriveTrainSubsystem2018 driveTrainSubsystem = new DriveTrainSubsystem2018();
-  //public static DriveTrainSubsystem2019 driveTrainSubsystem = new DriveTrainSubsystem2019();
+  // public static DriveTrainSubsystem2019 driveTrainSubsystem = new DriveTrainSubsystem2019();
   public static VisionSystem visionSystem = new VisionSystem();
   public static PowerDistributionPanel PDP = new PowerDistributionPanel(0);
   //public static FlipperSubsystem flipperSubsystem = new FlipperSubsystem();
   public static BuiltInAccelerometer Accelerometer = new BuiltInAccelerometer(Range.k8G);
-  
-  
+
   public static OI oi;
-  
 
   Command m_autonomousCommand;
   SendableChooser<Command> m_chooser = new SendableChooser<>();
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/master
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
    */
   @Override
   public void robotInit() {
-    
+
     oi = new OI();
     oi.stick2Button1.whileHeld(new HatchGrabberCMDS.GoDownCMD());
     oi.stick2Button2.whileHeld(new HatchGrabberCMDS.StowCMD());
@@ -67,16 +74,17 @@ public class Robot extends TimedRobot {
     oi.stick1Button8.whileHeld(new DriveTrainCMDS.DriveStraight());
     oi.stick2Button8.whileHeld(new HatchGrabberCMDS.Eject());
     //oi.stick2Button9.whileHeld(new FlipperCMDS.AutoFlip());
+    oi.stick1Button6.whileHeld(new DriveTrainCMDS.DriveToRightHatchCMD());
     m_chooser.setDefaultOption("Default Auto", new CenterAuto());
     m_chooser.setDefaultOption("Left Far Auto", new ExampleCommand());
     // chooser.addOption("My Auto", new MyAutoCommand());
-    //robotChooser.setDefaultOption("Main Bot", new DriveTrainSubsystem2019());
-    //robotChooser.addOption("Pratice Bot", new DriveTrainSubsystemPractice());
+    // robotChooser.setDefaultOption("Main Bot", new DriveTrainSubsystem2019());
+    // robotChooser.addOption("Pratice Bot", new DriveTrainSubsystemPractice());
     SmartDashboard.putData("Auto mode", m_chooser);
-    //SmartDashboard.putData("Robot type", robotChooser);
-    //CameraServer.getInstance().startAutomaticCapture();
+    // SmartDashboard.putData("Robot type", robotChooser);
+    // CameraServer.getInstance().startAutomaticCapture();
 
-    //driveTrainSubsystem = new DriveTrainSubsystem2019();
+    // driveTrainSubsystem = new DriveTrainSubsystem2019();
 
   }
 
@@ -116,9 +124,10 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
+    intakeSubsystem.autoInit();
     m_autonomousCommand = m_chooser.getSelected();
     driveTrainSubsystem.resetEncoders();
-    
+
     /*
      * String autoSelected = SmartDashboard.getString("Auto Selector",
      * "Default"); switch(autoSelected) { case "My Auto": autonomousCommand
@@ -130,7 +139,7 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.start();
     }
-   // System.out.println(intakeSubsystem.rightIntakeMotor.getSelectedSensorVelocity(0));
+    // System.out.println(intakeSubsystem.rightIntakeMotor.getSelectedSensorVelocity(0));
   }
 
   /** This function is called periodically during autonomous. */
@@ -155,7 +164,6 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     Scheduler.getInstance().run();
-
   }
 
   /** This function is called periodically during test mode. */

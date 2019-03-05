@@ -14,76 +14,52 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.HatchLocation;
 
-/**
- * Add your docs here.
- */
-
+/** Add your docs here. */
 public class VisionSystem extends Subsystem {
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
 
-  public static final int MAX_HATCH_COUNT = 3;
-  private HatchLocation[] hatches;
+  public static final int MAX_HATCH_COUNT = 2;
+  public HatchLocation hatch1 = new HatchLocation(.5);
+  public HatchLocation hatch2 = new HatchLocation(.5);
   NetworkTable table;
-  String[] toStrings;
   Boolean inited = false;
+  NetworkTableEntry h1a, h1d, h2a, h2d;
+  NetworkTableInstance inst;
 
-private NetworkTableEntry identifiers;
+  public VisionSystem() {
+    inst = NetworkTableInstance.getDefault();
 
-  public VisionSystem(){
-    NetworkTableInstance inst = NetworkTableInstance.getDefault();
     table = inst.getTable("datatable");
-    try {
-      identifiers = table.getEntry("identifiers");
-    } catch (Exception e){
-      //System.err.println(e);
-    }
 
-    hatches = new HatchLocation[5];
-    toStrings = new String[5];
-    for(int i = 0; i < MAX_HATCH_COUNT; i++){
-      hatches[i] = new HatchLocation();
+    // System.err.println("We fuqin out here");
 
-
-      
-    }
-    inited = true;
-    
-
-    
-
-    
   }
 
   @Override
-  public void periodic(){
-  try{
-   String[] identStr = identifiers.getStringArray(null);
-   if (inited)
-    for(int i = 0; i < MAX_HATCH_COUNT; i++){
-      //hatches[i].distance = 
-      hatches[i].distance = 1;
-      table.getEntry(identStr[i] + ".distance").getDouble(-100);
-      hatches[i].angle = table.getEntry(identStr[i] + ".angle").getDouble(-100);
-      hatches[i].identifier = identStr[i];
-      toStrings[i] = hatches[i].toString();
-     }
-    } catch (Exception e){
-      //System.err.println(e);
+  public void periodic() {
+    try {
+      hatch1.updateAngle((double) table.getEntry("1.botangle").getNumber(-100));
+      hatch2.updateAngle((double) table.getEntry("2.botangle").getNumber(-100));
+      // hatch1.distance = table.getNumber("1.distance", -100);
+      // hatch2.distance = table.getNumber("2.distance", -100);
+
+      updateSmartDashboard();
+    } catch (Exception e) {
+      // System.err.println(e);
     }
-   updateSmartDashboard();
+    SmartDashboard.putBoolean("connectedToTable", inst.isConnected());
   }
 
-  private void updateSmartDashboard(){
-     
-        SmartDashboard.putStringArray("Hatches Visable", toStrings);
-      
+  private void updateSmartDashboard() {
 
-    }
+    // SmartDashboard.putStringArray("Hatches Visable", toStrings);
+    SmartDashboard.putNumber("getRightHatchAngle()", hatch1.getAngleDeg());
+    SmartDashboard.putNumber("getLeftHatchAngle()", hatch2.getAngleDeg());
+  }
 
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
     // setDefaultCommand(new MySpecialCommand());
   }
-
 }

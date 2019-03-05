@@ -112,8 +112,8 @@ public class DriveTrainCMDS {
 
       // Power when driving straight is the averaging of the stick values
       power = (Robot.oi.stick.getThrottle() + Robot.oi.stick.getY()) / 2;
-      Robot.driveTrainSubsystem.keepDriveStraight(power, power, targetAngle);
-      // Robot.driveTrainSubsystem.dumbDriveStraight(power);
+      // Robot.driveTrainSubsystem.keepDriveStraight(power, power, targetAngle);
+      Robot.driveTrainSubsystem.dumbDriveStraight(power);
     }
 
     @Override
@@ -174,9 +174,15 @@ public class DriveTrainCMDS {
           (Robot.driveTrainSubsystem.getEncoderLeft() + Robot.driveTrainSubsystem.getEncoderRight())
               / 2;
       double error = ticks - averageEncoders;
+<<<<<<< HEAD
       if (error > 150) {
         Robot.driveTrainSubsystem.keepDriveStraight(-maxPower, -maxPower, heading);
       } else if (error < 150 && error > 15) {
+=======
+      if (error > 1000) {
+        Robot.driveTrainSubsystem.keepDriveStraight(-maxPower, -maxPower, heading);
+      } else if (error > 15) {
+>>>>>>> origin/master
         Robot.driveTrainSubsystem.keepDriveStraight(-minPower, -minPower, heading);
       } else if (error < 15) {
         Robot.driveTrainSubsystem.stop();
@@ -188,6 +194,48 @@ public class DriveTrainCMDS {
     @Override
     public boolean isFinished() {
       return isFinished;
+    }
+  }
+
+  public static class DriveToRightHatchCMD extends Command {
+    private double targetAngle, distance, power;
+    private boolean isFinished = false;
+
+    public DriveToRightHatchCMD(){
+      requires(Robot.driveTrainSubsystem);
+    }
+
+    @Override
+    protected void initialize() {
+      isFinished = false;
+    }
+
+    @Override
+    protected void execute(){
+      targetAngle = Robot.visionSystem.hatch1.getAngleDeg() + Robot.driveTrainSubsystem.getAngle();
+      power = (Robot.oi.stick.getThrottle() + Robot.oi.stick.getY()) / 2;
+      if (power != -100) {
+        Robot.driveTrainSubsystem.keepDriveStraight(power, power, targetAngle);
+      } else {
+        isFinished = true;
+        Robot.driveTrainSubsystem.stop();
+      }
+    }
+    
+
+    @Override
+    protected boolean isFinished() {
+      return power == -100;
+    }
+
+    @Override
+    protected void end() {
+      Robot.driveTrainSubsystem.stop();
+    }
+
+    @Override
+    protected void interrupted() {
+      end();
     }
   }
 }
