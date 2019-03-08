@@ -74,7 +74,7 @@ public class DriveTrainSubsystem2019 extends DriveTrain {
 
   public void leftPower(double requestedPower) {
     double currentPower = leftDriveMotorTalon.get();
-    double newPower;
+    double newPower; 
     if (requestedPower < currentPower) {
       newPower = Math.max(requestedPower, currentPower - MAXPOWERCHANGE);
     } else if (requestedPower > currentPower) {
@@ -134,7 +134,7 @@ public class DriveTrainSubsystem2019 extends DriveTrain {
     System.out.println("Drive straight " + leftDriveVel);
     double error = 0, correctionFactor;
     error = targetAngle - navx.getAngle();
-    correctionFactor = (error / 2);
+    correctionFactor = (error / 75.0);
 
     // todo - best practice - conditions on a separate line should be
     // wrapped in brackets
@@ -154,6 +154,8 @@ public class DriveTrainSubsystem2019 extends DriveTrain {
       leftPower(leftDriveVel);
     }
   }
+
+  
 
   public double getAngle() {
     return navx.getAngle();

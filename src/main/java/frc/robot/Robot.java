@@ -37,7 +37,7 @@ import frc.robot.subsystems.VisionSystem;
  * project.
  */
 public class Robot extends TimedRobot {
-  private static final boolean practice = true;
+  private static final boolean practice = false;
 
   public static DriveTrainSubsystem2019 driveTrainSubsystem = new DriveTrainSubsystem2019(practice);
   public static IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
