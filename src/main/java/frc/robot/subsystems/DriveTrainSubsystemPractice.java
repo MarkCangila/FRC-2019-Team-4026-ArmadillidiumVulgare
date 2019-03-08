@@ -112,34 +112,43 @@ public class DriveTrainSubsystemPractice extends DriveTrain {
     SmartDashboard.putData("Gyro", dataForGyro);
     SmartDashboard.putNumber("Heading", navx.getYaw());
   }
-
+  
   public void keepDriveStraight(double leftDriveVel, double rightDriveVel, double targetAngle) {
-    System.out.println("Drive straight " + leftDriveVel);
-    double error = 0, correctionFactor;
-    error = targetAngle - getAngle();
-    correctionFactor = (error / 75.0);
+    System.out.println("Drive straight "+ leftDriveVel);
+		double error = 0, correctionFactor;
+		error = targetAngle - getAngle();
+		correctionFactor = (error / 75.0);
 
-    // todo - best practice - conditions on a separate line should be
-    // wrapped in brackets
-    if (leftDriveVel > 0.9) leftDriveVel = 0.9;
-    else if (leftDriveVel < -0.9) leftDriveVel = -0.9;
+		// todo - best practice - conditions on a separate line should be
+		// wrapped in brackets
+		if (leftDriveVel > 0.9)
+			leftDriveVel = 0.9;
+		else if (leftDriveVel < -0.9)
+			leftDriveVel = -0.9;
 
-    // todo - best practice - conditions on a separate line should be
-    // wrapped in brackets
-    if (rightDriveVel > 0.9) rightDriveVel = 0.9;
-    else if (rightDriveVel < -0.9) rightDriveVel = -0.9;
+		// todo - best practice - conditions on a separate line should be
+		// wrapped in brackets
+		if (rightDriveVel > 0.9)
+			rightDriveVel = 0.9;
+		else if (rightDriveVel < -0.9)
+			rightDriveVel = -0.9;
 
-    if (targetAngle > (getAngle() - 0.5) || targetAngle < (getAngle() + 0.5)) {
-      rightPower(((rightDriveVel) - correctionFactor));
-      leftPower((leftDriveVel + correctionFactor));
-    } else {
-      rightPower(rightDriveVel);
-      leftPower(leftDriveVel);
-    }
+		if (targetAngle > (getAngle() - 0.5) || targetAngle < (getAngle() + 0.5)) {
+			rightPower(((rightDriveVel) - correctionFactor));
+			leftPower((leftDriveVel + correctionFactor));
+		} else {
+			rightPower(rightDriveVel);
+			leftPower(leftDriveVel);
+		}
   }
 
-  public double getAngle() {
-    return navx.getAngle();
+
+
+
+  
+  
+  public double getAngle(){
+   return navx.getAngle();
   }
 
   public int getEncoderRight() {

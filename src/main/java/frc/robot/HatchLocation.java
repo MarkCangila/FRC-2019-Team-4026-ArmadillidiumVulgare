@@ -29,7 +29,7 @@ public class HatchLocation {
   }
 
   public boolean isReal() {
-    return !(getAngleRad() == -100);
+    return !(distance == -100 && angle == -100);
   }
   // This will set the angle and reset the timer if the angle is deemed valid (!= -100)
   public void updateAngle(double angleVal) {
@@ -48,12 +48,10 @@ public class HatchLocation {
       return -100;
     }
   }
-
-  public double getAngleDeg() {
+  public double getAngleDeg(){
     return getAngleRad() * (180 / Math.PI);
   }
-
-  public double getTargetHeading() {
+  public double getTargetHeading(){
     if (updateTimer.get() < timeOutMax) {
       return targetHeading;
     } else {
