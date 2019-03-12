@@ -22,6 +22,7 @@ import frc.robot.commands.FlipperCMDS;
 import frc.robot.commands.HatchGrabberCMDS;
 import frc.robot.commands.DriveTrainCMDS.DriveToHatchCMD;
 import frc.robot.subsystems.DriveTrain;
+import frc.robot.subsystems.DriveTrainSubsystem2019;
 import frc.robot.subsystems.DriveTrainSubsystemPractice;
 import frc.robot.subsystems.FlipperSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
@@ -36,11 +37,11 @@ import frc.robot.subsystems.VisionSystem;
  * project.
  */
 public class Robot extends TimedRobot {
-  public static DriveTrainSubsystemPractice driveTrainSubsystem = new DriveTrainSubsystemPractice();
+  //public static DriveTrainSubsystemPractice driveTrainSubsystem = new DriveTrainSubsystemPractice();
   // DriveTrainSubsystemPractice();
   public static IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
   // public static DriveTrainSubsystem2018 driveTrainSubsystem = new DriveTrainSubsystem2018();
-  // public static DriveTrainSubsystem2019 driveTrainSubsystem = new DriveTrainSubsystem2019();
+  public static DriveTrainSubsystem2019 driveTrainSubsystem = new DriveTrainSubsystem2019();
   public static VisionSystem visionSystem = new VisionSystem();
   public static PowerDistributionPanel PDP = new PowerDistributionPanel(0);
   public static FlipperSubsystem flipperSubsystem = new FlipperSubsystem();
@@ -117,10 +118,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
-    intakeSubsystem.autoInit();
-    m_autonomousCommand = m_chooser.getSelected();
-    driveTrainSubsystem.resetEncoders();
-
+    teleopInit();
     /*
      * String autoSelected = SmartDashboard.getString("Auto Selector",
      * "Default"); switch(autoSelected) { case "My Auto": autonomousCommand
@@ -129,16 +127,15 @@ public class Robot extends TimedRobot {
      */
 
     // schedule the autonomous command (example)
-    if (m_autonomousCommand != null) {
-      m_autonomousCommand.start();
-    }
+  
+    
     // System.out.println(intakeSubsystem.rightIntakeMotor.getSelectedSensorVelocity(0));
   }
 
   /** This function is called periodically during autonomous. */
   @Override
   public void autonomousPeriodic() {
-    Scheduler.getInstance().run();
+    teleopPeriodic();
   }
 
   @Override
