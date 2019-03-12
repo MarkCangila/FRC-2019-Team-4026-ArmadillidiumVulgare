@@ -63,6 +63,7 @@ public class Robot extends TimedRobot {
     oi.stick2Button2.whileHeld(new HatchGrabberCMDS.StowCMD());
     oi.stick2Button4.whileHeld(new HatchGrabberCMDS.AlmostDownCMD());
     oi.stick2Button3.whileHeld(new HatchGrabberCMDS.GoUpCMD());
+    oi.stick1Button1.whileHeld(new DriveTrainCMDS.LineUpToNinety(.1, 0, 0));
     oi.stick1Button8.whileHeld(new DriveTrainCMDS.DriveStraight());
     oi.stick2Button8.whileHeld(new HatchGrabberCMDS.Eject());
     oi.stick2Button9.whileHeld(new FlipperCMDS.AutoFlip());
