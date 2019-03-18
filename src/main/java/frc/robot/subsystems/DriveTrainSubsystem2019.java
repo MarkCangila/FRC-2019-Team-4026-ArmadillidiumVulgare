@@ -110,9 +110,9 @@ public class DriveTrainSubsystem2019 extends DriveTrain {
 
     // SmartDashboard.putBoolean("NAVX CONNECTED", navx.isConnected());
     SmartDashboard.putData("Gyro", dataForGyro);
-    SmartDashboard.putNumber("Heading", navx.getAngle());
-    SmartDashboard.putNumber("Right Encoder", rightEncoder.get());
-    SmartDashboard.putNumber("Left Encoder", leftEncoder.get());
+    //SmartDashboard.putNumber("Heading", navx.getAngle());
+    //SmartDashboard.putNumber("Right Encoder", rightEncoder.get());
+    //SmartDashboard.putNumber("Left Encoder", leftEncoder.get());
   }
 
   public void dumbDriveStraight(double power) {

@@ -37,11 +37,11 @@ import frc.robot.subsystems.VisionSystem;
  * project.
  */
 public class Robot extends TimedRobot {
-  //public static DriveTrainSubsystemPractice driveTrainSubsystem = new DriveTrainSubsystemPractice();
+  public static DriveTrainSubsystemPractice driveTrainSubsystem = new DriveTrainSubsystemPractice();
   // DriveTrainSubsystemPractice();
   public static IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
   // public static DriveTrainSubsystem2018 driveTrainSubsystem = new DriveTrainSubsystem2018();
-  public static DriveTrainSubsystem2019 driveTrainSubsystem = new DriveTrainSubsystem2019();
+  //public static DriveTrainSubsystem2019 driveTrainSubsystem = new DriveTrainSubsystem2019();
   public static VisionSystem visionSystem = new VisionSystem();
   public static PowerDistributionPanel PDP = new PowerDistributionPanel(0);
   public static FlipperSubsystem flipperSubsystem = new FlipperSubsystem();
@@ -62,13 +62,14 @@ public class Robot extends TimedRobot {
   public void robotInit() {
 
     oi = new OI();
-    oi.stick2Button1.whileHeld(new HatchGrabberCMDS.GoDownCMD());
     oi.stick2Button2.whileHeld(new HatchGrabberCMDS.StowCMD());
-    oi.stick2Button4.whileHeld(new HatchGrabberCMDS.AlmostDownCMD());
     oi.stick2Button3.whileHeld(new HatchGrabberCMDS.GoUpCMD());
     oi.stick1Button8.whileHeld(new DriveTrainCMDS.DriveStraight());
-    oi.stick2Button8.whileHeld(new HatchGrabberCMDS.Eject());
-    oi.stick2Button9.whileHeld(new FlipperCMDS.AutoFlip());
+
+    oi.stick2Button8.whileHeld(new HatchGrabberCMDS.ReleaseHatch());
+    oi.stick2Button8.whenReleased(new HatchGrabberCMDS.AutoGrabHatch());
+    
+    oi.stick2Button7.whenPressed(new HatchGrabberCMDS.ManualGrabCMD());
     oi.stick1Button6.whileHeld(new DriveTrainCMDS.DriveToHatchCMD(DriveToHatchCMD.RIGHT));
     oi.stick1Button5.whileHeld(new DriveTrainCMDS.DriveToHatchCMD(DriveToHatchCMD.LEFT));
     m_chooser.setDefaultOption("Default Auto", new CenterAuto());
