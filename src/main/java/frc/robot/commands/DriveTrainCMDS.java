@@ -195,7 +195,7 @@ public class DriveTrainCMDS {
     private double targetAngle, distance;
     private boolean isFinished = false;
 
-    public DriveToRightHatchCMD(){
+    public DriveToRightHatchCMD() {
       requires(Robot.driveTrainSubsystem);
     }
 
@@ -205,7 +205,7 @@ public class DriveTrainCMDS {
     }
 
     @Override
-    protected void execute(){
+    protected void execute() {
       targetAngle = Robot.visionSystem.hatch1.getTargetHeading();
       double power = (Robot.oi.stick.getThrottle() + Robot.oi.stick.getY()) / 2;
       if (power != -100) {
@@ -215,7 +215,6 @@ public class DriveTrainCMDS {
         Robot.driveTrainSubsystem.stop();
       }
     }
-    
 
     @Override
     protected boolean isFinished() {
@@ -225,11 +224,11 @@ public class DriveTrainCMDS {
 
   public static class LineUpToNinety extends Command {
     private double target;
-    //Proportional gain
+    // Proportional gain
     private double p;
-    //derivative gain
+    // derivative gain
     private double d;
-    //integral gain
+    // integral gain
     private double i;
     private double lastError;
     private double sumError;
@@ -246,14 +245,11 @@ public class DriveTrainCMDS {
       double current = Robot.driveTrainSubsystem.getAngle();
       if (current > 315 || current <= 45) {
         target = 0;
-      }
-      else if (current > 45 && current <= 135) {
+      } else if (current > 45 && current <= 135) {
         target = 90;
-      }
-      else if (current > 135 && current <= 225) {
+      } else if (current > 135 && current <= 225) {
         target = 180;
-      }
-      else if (current > 225 && current <= 315) {
+      } else if (current > 225 && current <= 315) {
         target = 270;
       }
       lastError = 0;
@@ -269,8 +265,7 @@ public class DriveTrainCMDS {
       }
       if (Math.abs(error) <= 0.5) {
         Robot.driveTrainSubsystem.stop();
-      }
-      else {
+      } else {
         sumError += error;
         double goalPower = p * (error) + d * ((error) - lastError) + i * sumError;
         goalPower = Math.min(1, Math.max(-1, goalPower));

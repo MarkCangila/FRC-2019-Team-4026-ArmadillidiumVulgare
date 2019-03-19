@@ -12,7 +12,7 @@ import frc.robot.Portmap;
 import frc.robot.commands.DriveTrainCMDS;
 
 public class DriveTrainSubsystem2019 extends DriveTrain {
-  public final double TICKS_PER_INCH = 13 + (1/3);
+  public final double TICKS_PER_INCH = 13 + (1 / 3);
   final WPI_TalonSRX rightDriveMotorTalon;
   final WPI_TalonSRX leftDriveMotorTalon;
   final BaseMotorController rightDriveMotorVictor;
@@ -31,7 +31,7 @@ public class DriveTrainSubsystem2019 extends DriveTrain {
   }
 
   public DriveTrainSubsystem2019(boolean practice) {
-  //  System.out.println();
+    //  System.out.println();
 
     navx = new AnalogGyro(Portmap.GYRO);
 
@@ -46,8 +46,7 @@ public class DriveTrainSubsystem2019 extends DriveTrain {
     if (practice) {
       rightDriveMotorVictor = new WPI_TalonSRX(Portmap.RIGHTDRIVEVICTOR);
       leftDriveMotorVictor = new WPI_TalonSRX(Portmap.LEFTDRIVEVICTOR);
-    }
-    else {
+    } else {
       rightDriveMotorVictor = new VictorSPX(Portmap.RIGHTDRIVEVICTOR);
       leftDriveMotorVictor = new VictorSPX(Portmap.LEFTDRIVEVICTOR);
     }
@@ -74,7 +73,7 @@ public class DriveTrainSubsystem2019 extends DriveTrain {
 
   public void leftPower(double requestedPower) {
     double currentPower = leftDriveMotorTalon.get();
-    double newPower; 
+    double newPower;
     if (requestedPower < currentPower) {
       newPower = Math.max(requestedPower, currentPower - MAXPOWERCHANGE);
     } else if (requestedPower > currentPower) {
@@ -127,9 +126,9 @@ public class DriveTrainSubsystem2019 extends DriveTrain {
     leftPower(power);
   }
   /*
-  * Please note that powers must be negative to move foreward, this is a side effect of the controller axies being reversed
-  * from what would be accepted.
-  */
+   * Please note that powers must be negative to move foreward, this is a side effect of the controller axies being reversed
+   * from what would be accepted.
+   */
   public void keepDriveStraight(double leftDriveVel, double rightDriveVel, double targetAngle) {
     System.out.println("Drive straight " + leftDriveVel);
     double error = 0, correctionFactor;
@@ -154,8 +153,6 @@ public class DriveTrainSubsystem2019 extends DriveTrain {
       leftPower(leftDriveVel);
     }
   }
-
-  
 
   public double getAngle() {
     return navx.getAngle();

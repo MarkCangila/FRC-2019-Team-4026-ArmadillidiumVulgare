@@ -54,24 +54,24 @@ public class FlipperCMDS {
           if (Math.abs(Robot.flipperSubsystem.getPosition())
               > Robot.flipperSubsystem.softLimitForAutoFlip) {
             state++;
-            Robot.flipperSubsystem.stopFlipper();
+            // Robot.flipperSubsystem.stopFlipper();
           }
           break;
         case 2:
-          Robot.flipperSubsystem.stopFlipper();
+          // Robot.flipperSubsystem.stopFlipper();
           if (Math.abs(Robot.Accelerometer.getZ()) > 5) {
             state++;
           }
           break;
         case 3:
-          Robot.flipperSubsystem.setFlipperPower(-slowPower);
-          if (Robot.flipperSubsystem.getPosition() < 1000) {
-            Robot.flipperSubsystem.stopFlipper();
-            state++;
-          }
+          // Robot.flipperSubsystem.setFlipperPower(-slowPower);
+          // if (Robot.flipperSubsystem.getPosition() < 1000) {
+          //  Robot.flipperSubsystem.stopFlipper();
+          //  state++;
+          // }
           break;
         case 4:
-          Robot.flipperSubsystem.stopFlipper();
+          //  Robot.flipperSubsystem.stopFlipper();
 
           break;
       }
@@ -79,7 +79,7 @@ public class FlipperCMDS {
 
     @Override
     protected void interrupted() {
-      Robot.flipperSubsystem.stopFlipper();
+      // Robot.flipperSubsystem.stopFlipper();
       state = 0;
     }
 

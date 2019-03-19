@@ -12,10 +12,10 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 public class CenterAuto extends CommandGroup {
   /** Add your docs here. */
   public CenterAuto() {
-    addParallel(new HatchGrabberCMDS.GoUpCMD());
+    //addParallel(new HatchGrabberCMDS.GoUpCMD());
     addSequential(new DriveTrainCMDS.DriveStraightDist(40, .5, .5, 0));
     addSequential(new DriveTrainCMDS.DriveStraightDist(93, .9, .2, 0));
-    addParallel(new HatchGrabberCMDS.Eject());
+    //addParallel(new HatchGrabberCMDS.Eject());
     addSequential(new DriveTrainCMDS.DriveStraightDist(-10, -.2, -.2, 0));
   }
 }

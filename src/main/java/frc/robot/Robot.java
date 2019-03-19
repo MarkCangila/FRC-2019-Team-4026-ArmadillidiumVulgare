@@ -18,10 +18,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.CenterAuto;
 import frc.robot.commands.DriveTrainCMDS;
 import frc.robot.commands.ExampleCommand;
-import frc.robot.commands.FlipperCMDS;
-import frc.robot.commands.HatchGrabberCMDS;
-import frc.robot.subsystems.DriveTrain;
-import frc.robot.subsystems.DriveTrainSubsystem2019;
 import frc.robot.subsystems.DriveTrainSubsystemPractice;
 import frc.robot.subsystems.FlipperSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
@@ -37,19 +33,18 @@ import frc.robot.subsystems.VisionSystem;
  */
 public class Robot extends TimedRobot {
   public static DriveTrainSubsystemPractice driveTrainSubsystem = new DriveTrainSubsystemPractice();
-  public static IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
+  public static IntakeSubsystem intakeSubsystem = null; // new IntakeSubsystem();
   // public static DriveTrainSubsystem2018 driveTrainSubsystem = new DriveTrainSubsystem2018();
 
   public static VisionSystem visionSystem = new VisionSystem();
   public static PowerDistributionPanel PDP = new PowerDistributionPanel(0);
-  public static FlipperSubsystem flipperSubsystem = new FlipperSubsystem();
+  public static FlipperSubsystem flipperSubsystem = null; // new FlipperSubsystem();
   public static BuiltInAccelerometer Accelerometer = new BuiltInAccelerometer(Range.k8G);
 
   public static OI oi;
 
   Command m_autonomousCommand;
   SendableChooser<Command> m_chooser = new SendableChooser<>();
-
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -59,14 +54,14 @@ public class Robot extends TimedRobot {
   public void robotInit() {
 
     oi = new OI();
-    oi.stick2Button1.whileHeld(new HatchGrabberCMDS.GoDownCMD());
-    oi.stick2Button2.whileHeld(new HatchGrabberCMDS.StowCMD());
-    oi.stick2Button4.whileHeld(new HatchGrabberCMDS.AlmostDownCMD());
-    oi.stick2Button3.whileHeld(new HatchGrabberCMDS.GoUpCMD());
-    oi.stick1Button1.whileHeld(new DriveTrainCMDS.LineUpToNinety(.1, 0, 0));
+    // oi.stick2Button1.whileHeld(new HatchGrabberCMDS.GoDownCMD());
+    // oi.stick2Button2.whileHeld(new HatchGrabberCMDS.StowCMD());
+    // oi.stick2Button4.whileHeld(new HatchGrabberCMDS.AlmostDownCMD());
+    // oi.stick2Button3.whileHeld(new HatchGrabberCMDS.GoUpCMD());
+    oi.stick1Button1.whileHeld(new DriveTrainCMDS.LineUpToNinety(.025, 0, 0));
     oi.stick1Button8.whileHeld(new DriveTrainCMDS.DriveStraight());
-    oi.stick2Button8.whileHeld(new HatchGrabberCMDS.Eject());
-    oi.stick2Button9.whileHeld(new FlipperCMDS.AutoFlip());
+    // oi.stick2Button8.whileHeld(new HatchGrabberCMDS.Eject());
+    // oi.stick2Button9.whileHeld(new FlipperCMDS.AutoFlip());
     oi.stick1Button6.whileHeld(new DriveTrainCMDS.DriveToRightHatchCMD());
     m_chooser.setDefaultOption("Default Auto", new CenterAuto());
     m_chooser.setDefaultOption("Left Far Auto", new ExampleCommand());
@@ -89,7 +84,9 @@ public class Robot extends TimedRobot {
    * SmartDashboard integrated updating.
    */
   @Override
-  public void robotPeriodic() {}
+  public void robotPeriodic() {
+    //SmartDash("%f", driveTrainSubsystem.getAngle());
+  }
 
   /**
    * This function is called once each time the robot enters Disabled mode. You can use it to reset
@@ -115,7 +112,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
-    intakeSubsystem.autoInit();
+    // intakeSubsystem.autoInit();
     m_autonomousCommand = m_chooser.getSelected();
     driveTrainSubsystem.resetEncoders();
 
@@ -141,7 +138,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
-    flipperSubsystem.initEnable();
+    // flipperSubsystem.initEnable();
     // This makes sure that the autonomous stops running when
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
