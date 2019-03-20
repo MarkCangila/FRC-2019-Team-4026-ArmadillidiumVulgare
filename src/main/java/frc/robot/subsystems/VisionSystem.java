@@ -11,8 +11,11 @@ import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.AnalogInput;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 import frc.robot.HatchLocation;
 import frc.robot.Portmap;
 
@@ -20,6 +23,7 @@ import frc.robot.Portmap;
 public class VisionSystem extends Subsystem {
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
+  public DoubleSolenoid cameraPiston = new DoubleSolenoid(Portmap.CAMERA_OUT, Portmap.CAMERA_IN);
   private AnalogInput ultrasonic = new AnalogInput(Portmap.ULTRASONIC);
   public static final int MAX_HATCH_COUNT = 2;
   public HatchLocation hatch1 = new HatchLocation(.5);
@@ -81,5 +85,13 @@ public class VisionSystem extends Subsystem {
 		wallDistance = rawVoltage / VFiveMM;
 
 		return wallDistance;
-	}
+  }
+  
+  public void stowCamera(){
+    cameraPiston.set(Value.kReverse);
+  }
+
+  public void extendCamera(){
+    cameraPiston.set(Value.kForward);
+  }
 }

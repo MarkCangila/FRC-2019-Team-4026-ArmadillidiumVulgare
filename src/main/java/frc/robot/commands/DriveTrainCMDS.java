@@ -248,4 +248,33 @@ public class DriveTrainCMDS {
       return false;
     }
   }
+  public static class RetractCamera extends Command {
+    public RetractCamera(){
+
+    }
+
+    public void initialize(){
+      Robot.visionSystem.stowCamera();
+    }
+
+    public boolean isFinished(){
+      return true;
+    }
+  }
+
+  public static class ExtendCamera extends Command {
+    public ExtendCamera(){
+
+    }
+
+    public void initialize(){
+      Robot.visionSystem.extendCamera();
+    }
+
+    public boolean isFinished(){
+      return true;
+    }
+  }
+
+
 }

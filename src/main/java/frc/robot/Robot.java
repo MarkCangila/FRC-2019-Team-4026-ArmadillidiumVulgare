@@ -37,11 +37,11 @@ import frc.robot.subsystems.VisionSystem;
  * project.
  */
 public class Robot extends TimedRobot {
-  public static DriveTrainSubsystemPractice driveTrainSubsystem = new DriveTrainSubsystemPractice();
+  //public static DriveTrainSubsystemPractice driveTrainSubsystem = new DriveTrainSubsystemPractice();
   // DriveTrainSubsystemPractice();
   public static IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
   // public static DriveTrainSubsystem2018 driveTrainSubsystem = new DriveTrainSubsystem2018();
-  //public static DriveTrainSubsystem2019 driveTrainSubsystem = new DriveTrainSubsystem2019();
+  public static DriveTrainSubsystem2019 driveTrainSubsystem = new DriveTrainSubsystem2019();
   public static VisionSystem visionSystem = new VisionSystem();
   public static PowerDistributionPanel PDP = new PowerDistributionPanel(0);
   public static FlipperSubsystem flipperSubsystem = new FlipperSubsystem();
@@ -68,10 +68,13 @@ public class Robot extends TimedRobot {
 
     oi.stick2Button8.whileHeld(new HatchGrabberCMDS.ReleaseHatch());
     oi.stick2Button8.whenReleased(new HatchGrabberCMDS.AutoGrabHatch());
-    
-    oi.stick2Button7.whenPressed(new HatchGrabberCMDS.ManualGrabCMD());
+
+    oi.stick2Button6.whenPressed(new HatchGrabberCMDS.ManualGrabCMD());
+
     oi.stick1Button6.whileHeld(new DriveTrainCMDS.DriveToHatchCMD(DriveToHatchCMD.RIGHT));
     oi.stick1Button5.whileHeld(new DriveTrainCMDS.DriveToHatchCMD(DriveToHatchCMD.LEFT));
+    oi.stick2Button9.whileHeld(new DriveTrainCMDS.RetractCamera());
+    oi.stick2Button10.whileHeld(new DriveTrainCMDS.ExtendCamera());
     m_chooser.setDefaultOption("Default Auto", new CenterAuto());
     m_chooser.setDefaultOption("Left Far Auto", new ExampleCommand());
     // chooser.addOption("My Auto", new MyAutoCommand());

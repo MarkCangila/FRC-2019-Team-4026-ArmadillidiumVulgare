@@ -11,10 +11,12 @@ public class Portmap {
   public static final int RIGHTFLIPPER = 4;
 
 // Solenoids
-  public static final int GRABBER_RELEASED = 1;
-  public static final int GRABBER_GRAB = 0;
+  public static final int GRABBER_RELEASED = 6;
+  public static final int GRABBER_GRAB = 4;
   public static final int GRABBER_STOWED = 2;
   public static final int GRABBER_UP = 3;
+  public static final int CAMERA_IN = 0;
+  public static final int CAMERA_OUT = 1;
 
 // Digital Inputs
   // Limit switches
