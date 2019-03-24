@@ -17,13 +17,11 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.CenterAuto;
 import frc.robot.commands.DriveTrainCMDS;
-import frc.robot.commands.ExampleCommand;
-import frc.robot.commands.FlipperCMDS;
-import frc.robot.commands.HatchGrabberCMDS;
 import frc.robot.commands.DriveTrainCMDS.DriveToHatchCMD;
+import frc.robot.commands.ExampleCommand;
+import frc.robot.commands.HatchGrabberCMDS;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.DriveTrainSubsystem2019;
-import frc.robot.subsystems.DriveTrainSubsystemPractice;
 import frc.robot.subsystems.FlipperSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.VisionSystem;
@@ -37,7 +35,8 @@ import frc.robot.subsystems.VisionSystem;
  * project.
  */
 public class Robot extends TimedRobot {
-  //public static DriveTrainSubsystemPractice driveTrainSubsystem = new DriveTrainSubsystemPractice();
+  // public static DriveTrainSubsystemPractice driveTrainSubsystem = new
+  // DriveTrainSubsystemPractice();
   // DriveTrainSubsystemPractice();
   public static IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
   // public static DriveTrainSubsystem2018 driveTrainSubsystem = new DriveTrainSubsystem2018();
@@ -67,9 +66,9 @@ public class Robot extends TimedRobot {
     oi.stick1Button8.whileHeld(new DriveTrainCMDS.DriveStraight());
 
     oi.stick2Button8.whileHeld(new HatchGrabberCMDS.ReleaseHatch());
-    oi.stick2Button8.whenReleased(new HatchGrabberCMDS.AutoGrabHatch());
+    oi.stick2Button6.whileHeld(new HatchGrabberCMDS.AutoGrabHatch());
 
-    oi.stick2Button6.whenPressed(new HatchGrabberCMDS.ManualGrabCMD());
+    oi.stick2Button7.whileHeld(new HatchGrabberCMDS.ManualGrabCMD());
 
     oi.stick1Button6.whileHeld(new DriveTrainCMDS.DriveToHatchCMD(DriveToHatchCMD.RIGHT));
     oi.stick1Button5.whileHeld(new DriveTrainCMDS.DriveToHatchCMD(DriveToHatchCMD.LEFT));
@@ -131,8 +130,7 @@ public class Robot extends TimedRobot {
      */
 
     // schedule the autonomous command (example)
-  
-    
+
     // System.out.println(intakeSubsystem.rightIntakeMotor.getSelectedSensorVelocity(0));
   }
 

@@ -110,6 +110,7 @@ public class DriveTrainSubsystemPractice extends DriveTrain {
 
     SmartDashboard.putBoolean("NAVX CONNECTED", navx.isConnected());
     SmartDashboard.putData("Gyro", dataForGyro);
+    // SmartDashboard.putData("PDP");
     SmartDashboard.putNumber("Heading", navx.getYaw());
   }
 

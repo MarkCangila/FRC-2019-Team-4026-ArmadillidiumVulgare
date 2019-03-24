@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Sendable;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Portmap;
+import frc.robot.Robot;
 import frc.robot.commands.DriveTrainCMDS;
 
 public class DriveTrainSubsystem2019 extends DriveTrain {
@@ -107,12 +108,13 @@ public class DriveTrainSubsystem2019 extends DriveTrain {
 
   private void updateSmartDashboard() {
     Sendable dataForGyro = navx;
-
+    Sendable pdp = Robot.PDP;
     // SmartDashboard.putBoolean("NAVX CONNECTED", navx.isConnected());
     SmartDashboard.putData("Gyro", dataForGyro);
-    //SmartDashboard.putNumber("Heading", navx.getAngle());
-    //SmartDashboard.putNumber("Right Encoder", rightEncoder.get());
-    //SmartDashboard.putNumber("Left Encoder", leftEncoder.get());
+    SmartDashboard.putData("PDP", pdp);
+    // SmartDashboard.putNumber("Heading", navx.getAngle());
+    // SmartDashboard.putNumber("Right Encoder", rightEncoder.get());
+    // SmartDashboard.putNumber("Left Encoder", leftEncoder.get());
   }
 
   public void dumbDriveStraight(double power) {

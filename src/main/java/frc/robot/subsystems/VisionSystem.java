@@ -15,7 +15,6 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
 import frc.robot.HatchLocation;
 import frc.robot.Portmap;
 
@@ -54,7 +53,7 @@ public class VisionSystem extends Subsystem {
     } catch (Exception e) {
       // System.err.println(e);
     }
-    //SmartDashboard.putBoolean("connectedToTable", inst.isConnected());
+    // SmartDashboard.putBoolean("connectedToTable", inst.isConnected());
   }
 
   private void updateSmartDashboard() {
@@ -70,28 +69,25 @@ public class VisionSystem extends Subsystem {
     // setDefaultCommand(new MySpecialCommand());
   }
 
-  public double calculateWallDistance(boolean averaged)
-	{	
-		double rawVoltage;
-		double wallDistance;
+  public double calculateWallDistance(boolean averaged) {
+    double rawVoltage;
+    double wallDistance;
 
-		if(averaged)
-			rawVoltage = (double)(ultrasonic.getAverageVoltage());
-		else
-			rawVoltage = (double)(ultrasonic.getVoltage());
+    if (averaged) rawVoltage = (double) (ultrasonic.getAverageVoltage());
+    else rawVoltage = (double) (ultrasonic.getVoltage());
 
-		//MB1030
-		double VFiveMM = 0.009671875;
-		wallDistance = rawVoltage / VFiveMM;
+    // MB1030
+    double VFiveMM = 0.009671875;
+    wallDistance = rawVoltage / VFiveMM;
 
-		return wallDistance;
+    return wallDistance;
   }
-  
-  public void stowCamera(){
+
+  public void stowCamera() {
     cameraPiston.set(Value.kReverse);
   }
 
-  public void extendCamera(){
+  public void extendCamera() {
     cameraPiston.set(Value.kForward);
   }
 }

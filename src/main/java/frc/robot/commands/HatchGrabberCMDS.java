@@ -7,11 +7,9 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
-import frc.robot.subsystems.IntakeSubsystem;
-import edu.wpi.first.wpilibj.Timer;
 
 /** An example command. You can replace me with your own command. */
 public class HatchGrabberCMDS {
@@ -19,6 +17,7 @@ public class HatchGrabberCMDS {
   public static class ReleaseHatch extends Command {
     Timer releaseTimer;
     Boolean isFinished;
+
     public ReleaseHatch() {
       // Use requires() here to declare subsystem dependencies
       requires(Robot.intakeSubsystem);
@@ -29,7 +28,6 @@ public class HatchGrabberCMDS {
     @Override
     protected void initialize() {
       Robot.intakeSubsystem.releaseHatch();
-
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -46,9 +44,7 @@ public class HatchGrabberCMDS {
 
     // Called once after isFinished returns true
     @Override
-    protected void end() {
-     
-    }
+    protected void end() {}
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
@@ -57,40 +53,45 @@ public class HatchGrabberCMDS {
       end();
     }
   }
+
   public static class AutoGrabHatch extends Command {
 
     boolean isFinished = false;
-    public AutoGrabHatch(){
+    boolean grabDaHatch = false;
+
+    public AutoGrabHatch() {
       requires(Robot.intakeSubsystem);
     }
 
     @Override
     protected void initialize() {
       Robot.intakeSubsystem.releaseHatch();
+      grabDaHatch = false;
     }
 
-    protected void execute(){
-      if (Robot.intakeSubsystem.armGrabber()){
-        isFinished = true;
+    protected void execute() {
+      if (!grabDaHatch) {
+        if (Robot.intakeSubsystem.armGrabber()) {
+          grabDaHatch = true;
+        } else {
+
+        }
       } else {
-        isFinished = false;
+        Robot.intakeSubsystem.grabHatch();
       }
     }
 
-    protected boolean isFinished(){
-      return isFinished;
+    protected boolean isFinished() {
+      return false;
     }
   }
 
-
-
-  public static class ManualGrabCMD extends Command{
-    public ManualGrabCMD(){
+  public static class ManualGrabCMD extends Command {
+    public ManualGrabCMD() {
       requires(Robot.intakeSubsystem);
     }
 
-    protected void initialize(){
-    }
+    protected void initialize() {}
 
     protected void execute() {
       Robot.intakeSubsystem.grabHatch();
@@ -101,7 +102,6 @@ public class HatchGrabberCMDS {
       return false;
     }
   }
-
 
   public static class StopCMD extends Command {
     public StopCMD() {
@@ -143,7 +143,6 @@ public class HatchGrabberCMDS {
       return false;
     }
   }
-
 
   public static class StowCMD extends Command {
     public StowCMD() {

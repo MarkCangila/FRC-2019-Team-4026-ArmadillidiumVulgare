@@ -203,7 +203,6 @@ public class DriveTrainCMDS {
     public DriveToHatchCMD(boolean directionVal) {
       direction = directionVal;
       requires(Robot.driveTrainSubsystem);
-
     }
 
     @Override
@@ -214,13 +213,13 @@ public class DriveTrainCMDS {
     @Override
     protected void execute() {
       if (Robot.visionSystem.hatch1.isReal() && Robot.visionSystem.hatch2.isReal()) {
-        if(direction == RIGHT){
-         if (Robot.visionSystem.hatch1.getAngleRad() > Robot.visionSystem.hatch2.getAngleRad()) {
+        if (direction == RIGHT) {
+          if (Robot.visionSystem.hatch1.getAngleRad() > Robot.visionSystem.hatch2.getAngleRad()) {
             hatch = Robot.visionSystem.hatch1;
           } else {
             hatch = Robot.visionSystem.hatch2;
           }
-        }else{
+        } else {
           if (Robot.visionSystem.hatch1.getAngleRad() < Robot.visionSystem.hatch2.getAngleRad()) {
             hatch = Robot.visionSystem.hatch1;
           } else {
@@ -248,33 +247,28 @@ public class DriveTrainCMDS {
       return false;
     }
   }
+
   public static class RetractCamera extends Command {
-    public RetractCamera(){
+    public RetractCamera() {}
 
-    }
-
-    public void initialize(){
+    public void initialize() {
       Robot.visionSystem.stowCamera();
     }
 
-    public boolean isFinished(){
+    public boolean isFinished() {
       return true;
     }
   }
 
   public static class ExtendCamera extends Command {
-    public ExtendCamera(){
+    public ExtendCamera() {}
 
-    }
-
-    public void initialize(){
+    public void initialize() {
       Robot.visionSystem.extendCamera();
     }
 
-    public boolean isFinished(){
+    public boolean isFinished() {
       return true;
     }
   }
-
-
 }
