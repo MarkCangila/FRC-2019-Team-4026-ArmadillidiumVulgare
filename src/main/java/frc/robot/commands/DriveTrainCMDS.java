@@ -288,4 +288,64 @@ public class DriveTrainCMDS {
       rightTraj = right;
     }
   }
+
+  public static class AutoLineUpToNinety extends Command {
+    private double target;
+    // Proportional gain
+    private double p;
+    // derivative gain
+    private double d;
+    // integral gain
+    private double i;
+    private double lastError;
+    private double sumError;
+    private double error;
+
+    public AutoLineUpToNinety(double p, double d, double i) {
+      requires(Robot.driveTrainSubsystem);
+      this.p = p;
+      this.d = d;
+      this.i = i;
+    }
+
+    @Override
+    protected void initialize() {
+      double current = Robot.driveTrainSubsystem.getAngle();
+      if (current > 315 || current <= 45) {
+        target = 0;
+      } else if (current > 45 && current <= 135) {
+        target = 90;
+      } else if (current > 135 && current <= 225) {
+        target = 180;
+      } else if (current > 225 && current <= 315) {
+        target = 270;
+      }
+      lastError = 0;
+      sumError = 0;
+    }
+
+    @Override
+    protected void execute() {
+      double current = Robot.driveTrainSubsystem.getAngle();
+      error = target - current;
+      if (target == 0 && current > 180) {
+        error = 360 - current;
+      }
+      if (Math.abs(error) <= 0.5) {
+        Robot.driveTrainSubsystem.stop();
+      } else {
+        sumError += error;
+        double goalPower = p * (error) + d * ((error) - lastError) + i * sumError;
+        goalPower = Math.min(1, Math.max(-1, goalPower));
+        lastError = error;
+        Robot.driveTrainSubsystem.rightPower(-goalPower);
+        Robot.driveTrainSubsystem.leftPower(goalPower);
+      }
+    }
+
+    @Override
+    protected boolean isFinished() {
+      return Math.abs(error) <= 0.5;
+    }
+  }
 }
