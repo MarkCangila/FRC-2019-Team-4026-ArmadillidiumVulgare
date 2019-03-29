@@ -55,7 +55,7 @@ public class Robot extends TimedRobot{
   SendableChooser<Command> m_chooser = new SendableChooser<>();
 
   public static LinkedHashMap<String, Path> paths = new LinkedHashMap<>();
-  String[] pathNames = {"TestPath", "CenterToHatch"};
+  String[] pathNames = {"TestPath", "CenterToHatch", "HatchToReload", "ReloadToHatch"};
   Command path = new DriveTrainCMDS.FollowPath(paths.get("TestPath"));
 
   /**

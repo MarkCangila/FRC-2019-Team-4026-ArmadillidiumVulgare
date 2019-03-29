@@ -58,7 +58,7 @@ public class DriveTrainCMDS {
       // TODO: Confirm that getAngle just counts up. If it doesn't it will be a lot harder and goal
       // will be required.
       // Read the documentation, I have confirmed -Walden
-      return (float) (Robot.driveTrainSubsystem.getAngle() - startingAngle) > distance;
+      return (float) Math.abs(Robot.driveTrainSubsystem.getAngle() - startingAngle) > distance;
     }
 
     @Override
