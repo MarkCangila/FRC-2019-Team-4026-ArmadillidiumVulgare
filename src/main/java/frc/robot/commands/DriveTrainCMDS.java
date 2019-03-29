@@ -3,6 +3,10 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Portmap;
 import frc.robot.Robot;
+import jaci.pathfinder.Pathfinder;
+import jaci.pathfinder.PathfinderFRC;
+import jaci.pathfinder.Trajectory;
+import jaci.pathfinder.followers.EncoderFollower;
 
 public class DriveTrainCMDS {
   public static class Turn extends Command {
@@ -195,7 +199,7 @@ public class DriveTrainCMDS {
     private double targetAngle, distance;
     private boolean isFinished = false;
 
-    public DriveToRightHatchCMD(){
+    public DriveToRightHatchCMD() {
       requires(Robot.driveTrainSubsystem);
     }
 
@@ -205,7 +209,7 @@ public class DriveTrainCMDS {
     }
 
     @Override
-    protected void execute(){
+    protected void execute() {
       targetAngle = Robot.visionSystem.hatch1.getTargetHeading();
       double power = (Robot.oi.stick.getThrottle() + Robot.oi.stick.getY()) / 2;
       if (power != -100) {
@@ -215,11 +219,73 @@ public class DriveTrainCMDS {
         Robot.driveTrainSubsystem.stop();
       }
     }
-    
 
     @Override
     protected boolean isFinished() {
       return isFinished;
+    }
+  }
+
+  public static class FollowPath extends Command {
+    Trajectory leftTraj;
+    Trajectory rightTraj;
+    EncoderFollower leftFollow;
+    EncoderFollower rightFollow;
+    //TODO: Fix these numbers
+    final double maxSpeed = 3.772241849;
+    final int ticksPerRev = 4096;
+    //Diameter in meters
+    final double wheelDiameter = (6.0 / 12.0) / 3.2808;
+
+
+    public FollowPath(Path path) {
+      leftTraj = path.leftTraj;
+      rightTraj = path.rightTraj;
+      requires(Robot.driveTrainSubsystem);
+    }
+
+    @Override
+    protected void initialize() {
+      leftFollow = new EncoderFollower(leftTraj);
+      rightFollow = new EncoderFollower(rightTraj);
+
+      leftFollow.configureEncoder(Robot.driveTrainSubsystem.getEncoderLeft(), ticksPerRev, wheelDiameter);
+      rightFollow.configureEncoder(Robot.driveTrainSubsystem.getEncoderRight(), ticksPerRev, wheelDiameter);
+
+      leftFollow.configurePIDVA(1.0, 0.0, 0.0, 1 / maxSpeed, 0);
+      rightFollow.configurePIDVA(1.0, 0.0, 0.0, 1 / maxSpeed, 0);
+    }
+
+    @Override
+    protected void execute() {
+      if (leftFollow.isFinished() && rightFollow.isFinished()) {
+        Robot.driveTrainSubsystem.stop();
+      }
+      else {
+        double left_speed = leftFollow.calculate(Robot.driveTrainSubsystem.getEncoderLeft());
+        double right_speed = rightFollow.calculate(Robot.driveTrainSubsystem.getEncoderRight());
+        double heading = Robot.driveTrainSubsystem.getAngle();
+        double desired_heading = Pathfinder.r2d(leftFollow.getHeading());
+        double heading_difference = Pathfinder.boundHalfDegrees(desired_heading - heading);
+        double turn =  0.8 * (-1.0/80.0) * heading_difference;
+        Robot.driveTrainSubsystem.leftPower(left_speed + turn);
+        Robot.driveTrainSubsystem.rightPower(right_speed - turn);
+      }
+    }
+
+    @Override
+    protected boolean isFinished() {
+      return leftFollow.isFinished() && rightFollow.isFinished();
+    }
+  }
+
+  public static class Path {
+    Trajectory leftTraj;
+    Trajectory rightTraj;
+
+    public Path(Trajectory left, Trajectory right) {
+      leftTraj = left;
+      rightTraj = right;
     }
   }
 }

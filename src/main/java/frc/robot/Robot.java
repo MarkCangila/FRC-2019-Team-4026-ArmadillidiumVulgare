@@ -7,6 +7,10 @@
 
 package frc.robot;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+
 import edu.wpi.first.wpilibj.BuiltInAccelerometer;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -20,12 +24,12 @@ import frc.robot.commands.DriveTrainCMDS;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.FlipperCMDS;
 import frc.robot.commands.HatchGrabberCMDS;
-import frc.robot.subsystems.DriveTrain;
-import frc.robot.subsystems.DriveTrainSubsystem2019;
+import frc.robot.commands.DriveTrainCMDS.Path;
 import frc.robot.subsystems.DriveTrainSubsystemPractice;
 import frc.robot.subsystems.FlipperSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.VisionSystem;
+import jaci.pathfinder.PathfinderFRC;
 
 // import frc.robot.subsystems.GyroSubsystem;
 
@@ -35,7 +39,7 @@ import frc.robot.subsystems.VisionSystem;
  * the package after creating this project, you must also update the build.gradle file in the
  * project.
  */
-public class Robot extends TimedRobot {
+public class Robot extends TimedRobot{
   public static DriveTrainSubsystemPractice driveTrainSubsystem = new DriveTrainSubsystemPractice();
   public static IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
   // public static DriveTrainSubsystem2018 driveTrainSubsystem = new DriveTrainSubsystem2018();
@@ -50,13 +54,16 @@ public class Robot extends TimedRobot {
   Command m_autonomousCommand;
   SendableChooser<Command> m_chooser = new SendableChooser<>();
 
+  public static LinkedHashMap<String, Path> paths = new LinkedHashMap<>();
+  String[] pathNames = {"TestPath", "CenterToHatch"};
+  Command path = new DriveTrainCMDS.FollowPath(paths.get("TestPath"));
 
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
    */
   @Override
-  public void robotInit() {
+  public void robotInit(){
 
     oi = new OI();
     oi.stick2Button1.whileHeld(new HatchGrabberCMDS.GoDownCMD());
@@ -78,6 +85,14 @@ public class Robot extends TimedRobot {
 
     // driveTrainSubsystem = new DriveTrainSubsystem2019();
 
+    for (String pathName : pathNames) {
+      try {
+        paths.put(pathName, new DriveTrainCMDS.Path(PathfinderFRC.getTrajectory(pathName + ".right"), PathfinderFRC.getTrajectory(pathName + ".left")));
+      }
+      catch (IOException e) {
+        System.out.println("IOException: " + e);
+      }
+    }
   }
 
   /**
@@ -130,6 +145,7 @@ public class Robot extends TimedRobot {
       m_autonomousCommand.start();
     }
     // System.out.println(intakeSubsystem.rightIntakeMotor.getSelectedSensorVelocity(0));
+    path.start();
   }
 
   /** This function is called periodically during autonomous. */

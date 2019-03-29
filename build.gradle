@@ -3,13 +3,13 @@ plugins {
     id "edu.wpi.first.GradleRIO" version "2019.2.1"
     id "com.diffplug.gradle.spotless" version "3.17.0"
 }
-
+/*
 spotless {
   java {
-    target '**/*.java'
+    target '**//*.java'
     googleJavaFormat()
   }
-}
+}*/
 
 def ROBOT_MAIN_CLASS = "frc.robot.Main"
 

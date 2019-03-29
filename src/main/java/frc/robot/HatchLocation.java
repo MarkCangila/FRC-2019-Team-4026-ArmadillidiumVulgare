@@ -48,10 +48,12 @@ public class HatchLocation {
       return -100;
     }
   }
-  public double getAngleDeg(){
+
+  public double getAngleDeg() {
     return getAngleRad() * (180 / Math.PI);
   }
-  public double getTargetHeading(){
+
+  public double getTargetHeading() {
     if (updateTimer.get() < timeOutMax) {
       return targetHeading;
     } else {
