@@ -57,7 +57,7 @@ public class Robot extends TimedRobot{
 
   public static LinkedHashMap<String, Path> paths = new LinkedHashMap<>();
   String[] pathNames = {"TestPath", "CenterToHatch", "HatchToReload", "ReloadToHatch"};
-  Command autoTest = new PathingAuto();
+  Command autoTest;
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -94,6 +94,8 @@ public class Robot extends TimedRobot{
         System.out.println("IOException: " + e);
       }
     }
+
+    autoTest = new PathingAuto();
   }
 
   /**
