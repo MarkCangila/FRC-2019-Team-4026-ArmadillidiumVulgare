@@ -21,7 +21,7 @@ public class DriveTrainSubsystemPractice extends DriveTrain {
   Encoder rightEncoder;
   Encoder leftEncoder;
 
-  static final double MAXPOWERCHANGE = .1;
+  static final double MAXPOWERCHANGE = 1;
 
   public AHRS navx;
 
