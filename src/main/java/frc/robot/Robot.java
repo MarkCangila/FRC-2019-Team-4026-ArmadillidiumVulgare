@@ -24,6 +24,7 @@ import frc.robot.commands.DriveTrainCMDS;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.FlipperCMDS;
 import frc.robot.commands.HatchGrabberCMDS;
+import frc.robot.commands.PathingAuto;
 import frc.robot.commands.DriveTrainCMDS.Path;
 import frc.robot.subsystems.DriveTrainSubsystemPractice;
 import frc.robot.subsystems.FlipperSubsystem;
@@ -46,7 +47,7 @@ public class Robot extends TimedRobot{
 
   public static VisionSystem visionSystem = new VisionSystem();
   public static PowerDistributionPanel PDP = new PowerDistributionPanel(0);
-  public static FlipperSubsystem flipperSubsystem = new FlipperSubsystem();
+  public static FlipperSubsystem flipperSubsystem = null;
   public static BuiltInAccelerometer Accelerometer = new BuiltInAccelerometer(Range.k8G);
 
   public static OI oi;
@@ -56,7 +57,7 @@ public class Robot extends TimedRobot{
 
   public static LinkedHashMap<String, Path> paths = new LinkedHashMap<>();
   String[] pathNames = {"TestPath", "CenterToHatch", "HatchToReload", "ReloadToHatch"};
-  Command path = new DriveTrainCMDS.FollowPath(paths.get("TestPath"));
+  Command autoTest = new PathingAuto();
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -72,7 +73,7 @@ public class Robot extends TimedRobot{
     oi.stick2Button3.whileHeld(new HatchGrabberCMDS.GoUpCMD());
     oi.stick1Button8.whileHeld(new DriveTrainCMDS.DriveStraight());
     oi.stick2Button8.whileHeld(new HatchGrabberCMDS.Eject());
-    oi.stick2Button9.whileHeld(new FlipperCMDS.AutoFlip());
+    //oi.stick2Button9.whileHeld(new FlipperCMDS.AutoFlip());
     oi.stick1Button6.whileHeld(new DriveTrainCMDS.DriveToRightHatchCMD());
     m_chooser.setDefaultOption("Default Auto", new CenterAuto());
     m_chooser.setDefaultOption("Left Far Auto", new ExampleCommand());
@@ -145,7 +146,7 @@ public class Robot extends TimedRobot{
       m_autonomousCommand.start();
     }
     // System.out.println(intakeSubsystem.rightIntakeMotor.getSelectedSensorVelocity(0));
-    path.start();
+    autoTest.start();
   }
 
   /** This function is called periodically during autonomous. */
