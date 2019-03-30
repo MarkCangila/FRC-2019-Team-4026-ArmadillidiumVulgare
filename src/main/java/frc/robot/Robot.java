@@ -159,6 +159,7 @@ public class Robot extends TimedRobot{
 
   @Override
   public void teleopInit() {
+    Scheduler.getInstance().removeAll();
     flipperSubsystem.initEnable();
     // This makes sure that the autonomous stops running when
     // teleop starts running. If you want the autonomous to
