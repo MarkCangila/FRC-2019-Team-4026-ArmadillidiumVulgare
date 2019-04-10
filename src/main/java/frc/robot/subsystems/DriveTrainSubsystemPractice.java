@@ -13,10 +13,10 @@ import frc.robot.commands.DriveTrainCMDS;
 
 public class DriveTrainSubsystemPractice extends DriveTrain {
 
-  final WPI_TalonSRX rightDriveMotorTalon;
-  final WPI_TalonSRX leftDriveMotorTalon;
-  final WPI_TalonSRX rightDriveMotorTalon2;
-  final WPI_TalonSRX leftDriveMotorTalon2;
+  public final WPI_TalonSRX rightDriveMotorTalon;
+  public final WPI_TalonSRX leftDriveMotorTalon;
+  public final WPI_TalonSRX rightDriveMotorTalon2;
+  public final WPI_TalonSRX leftDriveMotorTalon2;
 
   Encoder rightEncoder;
   Encoder leftEncoder;

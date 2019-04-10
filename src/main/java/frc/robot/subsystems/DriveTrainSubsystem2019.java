@@ -13,8 +13,8 @@ import frc.robot.commands.DriveTrainCMDS;
 
 public class DriveTrainSubsystem2019 extends DriveTrain {
   public final double TICKS_PER_INCH = 13.3333333333333;
-  final WPI_TalonSRX rightDriveMotorTalon;
-  final WPI_TalonSRX leftDriveMotorTalon;
+  public final WPI_TalonSRX rightDriveMotorTalon;
+  public final WPI_TalonSRX leftDriveMotorTalon;
   final VictorSPX rightDriveMotorVictor;
   final VictorSPX leftDriveMotorVictor;
 

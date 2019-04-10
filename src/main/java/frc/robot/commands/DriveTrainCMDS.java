@@ -84,8 +84,24 @@ public class DriveTrainCMDS {
 
     @Override
     protected void execute() {
-      Robot.driveTrainSubsystem.leftPower(Robot.oi.stick.getThrottle());
-      Robot.driveTrainSubsystem.rightPower(Robot.oi.stick.getY());
+      double leftPower = Robot.oi.stick.getThrottle();
+      double rightPower = Robot.oi.stick.getY();
+      double currentLeft = Robot.driveTrainSubsystem.leftDriveMotorTalon.get();
+      double currentRight = Robot.driveTrainSubsystem.rightDriveMotorTalon.get();
+      //TODO: Set these to the 2 left motors
+      double totalAmpsLeft = Robot.PDP.getCurrent(motor1) + Robot.PDP.getCurrent(motor2);
+      //TODO: Set these to 2 right motors
+      double totalAmpsRight = Robot.PDP.getCurrent(motor3) + Robot.PDP.getCurrent(motor4);
+      //TODO: Insert Max
+      double maxAmps = [insert number here];
+      double predictedAmpsRight = totalAmpsRight / Math.abs(currentRight);
+      double predictedAmpsLeft = totalAmpsLeft / Math.abs(currentLeft);
+      double allowedSpeedLeft = maxAmps / totalAmpsLeft;
+      double allowedSpeedRight = maxAmps / totalAmpsRight;
+      leftPower = Math.max(allowedSpeedLeft, Math.min(-allowedSpeedLeft, leftPower));
+      rightPower = Math.max(allowedSpeedRight, Math.min(-allowedSpeedRight, rightPower));
+      Robot.driveTrainSubsystem.leftPower(leftPower);
+      Robot.driveTrainSubsystem.rightPower(rightPower);
     }
 
     @Override
@@ -115,6 +131,28 @@ public class DriveTrainCMDS {
       power = (Robot.oi.stick.getThrottle() + Robot.oi.stick.getY()) / 2;
       // Robot.driveTrainSubsystem.keepDriveStraight(power, power, targetAngle);
       Robot.driveTrainSubsystem.dumbDriveStraight(power);
+    }
+
+    @Override
+    protected boolean isFinished() {
+      return false;
+    }
+  }
+
+  public static class TankDriveUncapped extends Command {
+    double rightPower, leftPower;
+
+    public TankDriveUncapped() {
+      // Use requires() here to declare subsystem dependencies
+      requires(Robot.driveTrainSubsystem);
+    }
+
+    protected void initialize() {}
+
+    @Override
+    protected void execute() {
+      Robot.driveTrainSubsystem.leftPower(Robot.oi.stick.getThrottle());
+      Robot.driveTrainSubsystem.rightPower(Robot.oi.stick.getY());
     }
 
     @Override
