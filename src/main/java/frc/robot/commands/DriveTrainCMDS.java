@@ -6,6 +6,8 @@ import frc.robot.Portmap;
 import frc.robot.Robot;
 
 public class DriveTrainCMDS {
+
+  
   public static class Turn extends Command {
     private float distance;
     private boolean direction;
@@ -13,6 +15,7 @@ public class DriveTrainCMDS {
     // private float startingYaw;
     private double startingAngle;
     private final double MAX_TURN_SPEED = 0.4;
+    
 
     // Dist is in degrees. If direct is true turn right else turn left
     public Turn(float dist, boolean direct) {
@@ -195,6 +198,7 @@ public class DriveTrainCMDS {
   public static class DriveToHatchCMD extends Command {
     public static final boolean RIGHT = true;
     public static final boolean LEFT = false;
+    private final int visonTurnFactor = 1;
     private boolean direction;
     private double targetAngle, distance;
     private boolean isFinished = false;
@@ -235,6 +239,7 @@ public class DriveTrainCMDS {
       targetAngle = hatch.getTargetHeading();
       double power = (Robot.oi.stick.getThrottle() + Robot.oi.stick.getY()) / 2;
       if (!(hatch.getAngleRad() == -100)) {
+        targetAngle = targetAngle * visonTurnFactor;
         Robot.driveTrainSubsystem.keepDriveStraight(power, power, targetAngle);
       } else {
 

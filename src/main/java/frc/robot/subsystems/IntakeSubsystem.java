@@ -86,6 +86,16 @@ public class IntakeSubsystem extends Subsystem {
     }
   }
 
+  public boolean armRelease(){
+    if (!getHatchSwitches()) {
+      releaseHatch();
+      return true;
+    } else {
+      return false;
+    }
+  }
+  
+
   public boolean getHatchSwitches() {
     // This might have to be reversed.
 

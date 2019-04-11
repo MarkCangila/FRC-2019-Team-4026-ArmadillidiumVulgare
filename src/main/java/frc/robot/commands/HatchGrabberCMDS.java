@@ -164,4 +164,45 @@ public class HatchGrabberCMDS {
       return false;
     }
   }
+
+  public static class AutoPlaceHatch extends Command {
+
+    boolean isFinished = false;
+    boolean releaseDaHatch = false;
+    boolean armed = false;
+
+    public AutoPlaceHatch() {
+      requires(Robot.intakeSubsystem);
+    }
+
+    @Override
+    protected void initialize() {
+      Robot.intakeSubsystem.grabHatch();
+      armed = false;
+      releaseDaHatch = false;
+    }
+
+    protected void execute() {
+    if(!armed){
+      if(Robot.intakeSubsystem.getHatchSwitches()){
+        armed = true;
+      }
+    } else {
+      if (!releaseDaHatch) {
+        if (Robot.intakeSubsystem.armRelease()) {
+          releaseDaHatch = true;
+        } else {
+
+        }
+      } else {
+        Robot.intakeSubsystem.releaseHatch();
+      }
+    }
+  }
+
+    protected boolean isFinished() {
+      return false;
+    }
+  }
+  
 }
