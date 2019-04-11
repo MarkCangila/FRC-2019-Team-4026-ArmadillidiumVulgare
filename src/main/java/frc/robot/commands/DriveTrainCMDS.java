@@ -1,5 +1,6 @@
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.HatchLocation;
 import frc.robot.Portmap;
@@ -74,6 +75,9 @@ public class DriveTrainCMDS {
   public static class TankDrive extends Command {
 
     double rightPower, leftPower;
+    //Timeout in seconds
+    final double timeOutOverLimit = 1;
+    Timer timeOutTimer = new Timer();
 
     public TankDrive() {
       // Use requires() here to declare subsystem dependencies
@@ -88,18 +92,27 @@ public class DriveTrainCMDS {
       double rightPower = Robot.oi.stick.getY();
       double currentLeft = Robot.driveTrainSubsystem.leftDriveMotorTalon.get();
       double currentRight = Robot.driveTrainSubsystem.rightDriveMotorTalon.get();
-      //TODO: Set these to the 2 left motors
-      double totalAmpsLeft = Robot.PDP.getCurrent(motor1) + Robot.PDP.getCurrent(motor2);
-      //TODO: Set these to 2 right motors
-      double totalAmpsRight = Robot.PDP.getCurrent(motor3) + Robot.PDP.getCurrent(motor4);
-      //TODO: Insert Max
-      double maxAmps = [insert number here];
+      double totalAmpsLeft = Robot.PDP.getCurrent(0) + Robot.PDP.getCurrent(1);
+      double totalAmpsRight = Robot.PDP.getCurrent(2) + Robot.PDP.getCurrent(3);
+      //Multiply by 2 because 2 motors
+      double maxAmps = 40 * 2;
       double predictedAmpsRight = totalAmpsRight / Math.abs(currentRight);
       double predictedAmpsLeft = totalAmpsLeft / Math.abs(currentLeft);
-      double allowedSpeedLeft = maxAmps / totalAmpsLeft;
-      double allowedSpeedRight = maxAmps / totalAmpsRight;
-      leftPower = Math.max(allowedSpeedLeft, Math.min(-allowedSpeedLeft, leftPower));
-      rightPower = Math.max(allowedSpeedRight, Math.min(-allowedSpeedRight, rightPower));
+      if (predictedAmpsRight * rightPower > maxAmps || predictedAmpsLeft * leftPower > maxAmps) {
+        if (timeOutTimer.get() > timeOutOverLimit) {
+          double allowedSpeedLeft = maxAmps / totalAmpsLeft;
+          double allowedSpeedRight = maxAmps / totalAmpsRight;
+          leftPower = Math.max(allowedSpeedLeft, Math.min(-allowedSpeedLeft, leftPower));
+          rightPower = Math.max(allowedSpeedRight, Math.min(-allowedSpeedRight, rightPower));
+        }
+        else if (timeOutTimer.get() == 0) {
+          timeOutTimer.start();
+        }
+      } else {
+        timeOutTimer.stop();
+        timeOutTimer.reset();
+      }
+
       Robot.driveTrainSubsystem.leftPower(leftPower);
       Robot.driveTrainSubsystem.rightPower(rightPower);
     }
