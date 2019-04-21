@@ -21,7 +21,7 @@ public class DriveTrainSubsystem2019 extends DriveTrain {
   Encoder rightEncoder;
   Encoder leftEncoder;
 
-  static final double MAXPOWERCHANGE = .075;
+  static final double MAXPOWERCHANGE = .16 ;
 
   public AnalogGyro navx;
 
