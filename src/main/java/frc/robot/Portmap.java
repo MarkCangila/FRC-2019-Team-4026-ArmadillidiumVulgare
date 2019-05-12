@@ -6,13 +6,12 @@ public class Portmap {
   public static final int LEFTDRIVEVICTOR = 6;
   public static final int RIGHTDRIVETALON = 2;
   public static final int RIGHTDRIVEVICTOR = 7;
-  public static final int HATCHGRABBER = 5;
+  public static final int FRONTINTAKEMOTOR = 5;
+  public static final int BACKINTAKEMOTOR = 6;
   public static final int LEFTFLIPPER = 3;
   public static final int RIGHTFLIPPER = 4;
 
   // Solenoids
-  public static final int EJECTOR_OUT = 1;
-  public static final int EJECTOR_IN = 0;
 
   // Digital Inputs
   // Limit switches
