@@ -41,10 +41,10 @@ public class DriveTrainSubsystemPractice extends DriveTrain {
 
     rightEncoder = new Encoder(Portmap.RIGHT_ENCODER_1, Portmap.RIGHT_ENCODER_2, false);
     leftEncoder = new Encoder(Portmap.LEFT_ENCODER_1, Portmap.LEFT_ENCODER_2, true);
-    rightDriveMotorTalon = new WPI_TalonSRX(Portmap.LEFTDRIVETALON);
-    leftDriveMotorTalon = new WPI_TalonSRX(Portmap.RIGHTDRIVETALON);
-    rightDriveMotorTalon2 = new WPI_TalonSRX(Portmap.LEFTDRIVETALON2);
-    leftDriveMotorTalon2 = new WPI_TalonSRX(Portmap.RIGHTDRIVETALON2);
+    rightDriveMotorTalon = new WPI_TalonSRX(Portmap.RIGHTDRIVETALON);
+    leftDriveMotorTalon = new WPI_TalonSRX(Portmap.LEFTDRIVETALON);
+    rightDriveMotorTalon2 = new WPI_TalonSRX(Portmap.RIGHTDRIVETALON2);
+    leftDriveMotorTalon2 = new WPI_TalonSRX(Portmap.LEFTDRIVETALON2);
     rightDriveMotorTalon.setNeutralMode(NeutralMode.Brake);
     leftDriveMotorTalon.setNeutralMode(NeutralMode.Brake);
     rightDriveMotorTalon2.setNeutralMode(NeutralMode.Brake);
