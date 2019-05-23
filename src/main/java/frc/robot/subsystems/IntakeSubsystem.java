@@ -36,7 +36,7 @@ public class IntakeSubsystem extends Subsystem {
 
   @Override
   public void initDefaultCommand() {
-    setDefaultCommand(new ShooterCMDS.Shoot());
+    setDefaultCommand(new ShooterCMDS.Stop());
   }
 
   public void printTelemetry() {

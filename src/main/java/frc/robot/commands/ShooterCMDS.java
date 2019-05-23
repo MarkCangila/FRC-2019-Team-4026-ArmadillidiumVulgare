@@ -23,11 +23,32 @@ public class ShooterCMDS {
       Robot.intakeSubsystem.backIntakeMotor.set(0);
     }
   }
+  public static class ShootSlow extends Command {
+    public ShootSlow() {
+      requires(Robot.intakeSubsystem);
+    }
 
-  public static class Shoot extends Command {
+    @Override
+    protected boolean isFinished() {
+      return false;
+    }
+
+    @Override
+    protected void initialize() {}
+
+    // Called repeatedly when this Command is scheduled to run
+    @Override
+    protected void execute() {
+      Robot.intakeSubsystem.frontIntakeMotor.set(-0.25);
+      Robot.intakeSubsystem.backIntakeMotor.set(0.35);
+    }
+
+  }
+
+  public static class ShootFast extends Command {
     
 
-    public Shoot() {
+    public ShootFast() {
       // Use requires() here to declare subsystem dependencies
       requires(Robot.intakeSubsystem);
     }
@@ -39,8 +60,8 @@ public class ShooterCMDS {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-      Robot.intakeSubsystem.frontIntakeMotor.set(-Math.abs(Robot.oi.stick2.getThrottle()/2));
-      Robot.intakeSubsystem.backIntakeMotor.set(Math.abs(Robot.oi.stick2.getThrottle()/2));
+      Robot.intakeSubsystem.frontIntakeMotor.set(-0.5);
+      Robot.intakeSubsystem.backIntakeMotor.set(.6);
     }
 
     // Make this return true when this Command no longer needs to run execute()
