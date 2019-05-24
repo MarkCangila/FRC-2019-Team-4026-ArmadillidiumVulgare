@@ -25,7 +25,7 @@ public class OI {
   // number it is.
   public Joystick stick = new Joystick(0);
   public Joystick stick2 = new Joystick(1);
-  public Button stick1Button2 = new JoystickButton(stick, 2);
+  public Button stick1Button1 = new JoystickButton(stick, 1);
   public Button stick2Button4 = new JoystickButton(stick2, 4);
   public Button stick1Button8 = new JoystickButton(stick, 8);
   public Button stick1Button5 = new JoystickButton(stick, 5);

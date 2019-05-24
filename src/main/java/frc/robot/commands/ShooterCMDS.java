@@ -3,9 +3,29 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
+import frc.robot.subsystems.IntakeSubsystem;
 
 /** An example command. You can replace me with your own command. */
 public class ShooterCMDS {
+  public static class ToggleServo extends Command{
+
+    @Override
+    protected void execute() {
+      if (Robot.intakeSubsystem.status == IntakeSubsystem.servoState.CLOSED){
+        Robot.intakeSubsystem.ballFeeder.set(0);
+        Robot.intakeSubsystem.status = IntakeSubsystem.servoState.OPEN;
+      }
+      else {
+        Robot.intakeSubsystem.ballFeeder.set(90);
+        Robot.intakeSubsystem.status = IntakeSubsystem.servoState.CLOSED;
+      }
+    }
+    @Override
+    protected boolean isFinished() {
+      return false;
+    }
+
+  }
 
   public static class Stop extends Command{
     public Stop(){

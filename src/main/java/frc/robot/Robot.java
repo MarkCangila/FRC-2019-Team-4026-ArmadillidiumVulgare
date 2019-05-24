@@ -55,6 +55,7 @@ public class Robot extends TimedRobot {
     oi.stick1Button6.whileHeld(new ShooterCMDS.ShootFast());
     oi.stick1Button5.whileHeld(new ShooterCMDS.ShootSlow());
     oi.stick2Button1.whileHeld(new ShooterCMDS.Stop());
+    oi.stick1Button1.whenPressed(new ShooterCMDS.ToggleServo());
     SmartDashboard.putData("Auto mode", m_chooser);
   }
 

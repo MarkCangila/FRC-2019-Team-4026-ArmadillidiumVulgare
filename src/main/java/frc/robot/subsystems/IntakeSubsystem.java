@@ -8,17 +8,25 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+
+import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Portmap;
 import frc.robot.commands.ShooterCMDS;
 
+
 /** An example subsystem. You can replace me with your own Subsystem. */
 public class IntakeSubsystem extends Subsystem {
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
+  public Servo ballFeeder = new Servo(Portmap.BALLSERVO);
   public WPI_TalonSRX backIntakeMotor = new WPI_TalonSRX(Portmap.BACKINTAKEMOTOR);
   public WPI_TalonSRX frontIntakeMotor = new WPI_TalonSRX(Portmap.FRONTINTAKEMOTOR);
+  public enum servoState{
+    OPEN, CLOSED;
+  }
+  public servoState status = servoState.CLOSED;
 
   public IntakeSubsystem() {}
 

@@ -11,6 +11,7 @@ public class Portmap {
   public static final int LEFTFLIPPER = 3;
   public static final int RIGHTFLIPPER = 4;
 
+  public static final int BALLSERVO = 9;
   // Solenoids
 
   // Digital Inputs
