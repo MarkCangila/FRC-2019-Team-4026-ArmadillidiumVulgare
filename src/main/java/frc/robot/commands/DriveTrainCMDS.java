@@ -18,13 +18,17 @@ public class DriveTrainCMDS {
 
     @Override
     protected void execute() {
-      Robot.driveTrainSubsystem.rightPower(-Robot.oi.stick.getThrottle() * .5);
-      Robot.driveTrainSubsystem.leftPower(-Robot.oi.stick.getY() * .5);
+      Robot.driveTrainSubsystem.rightPower(-Robot.oi.stick2.getThrottle() * .5);
+      Robot.driveTrainSubsystem.leftPower(-Robot.oi.stick2.getY() * .5);
     }
 
     @Override
     protected boolean isFinished() {
       return false;
+    }
+    protected void end(){
+      Robot.driveTrainSubsystem.leftPower(0);
+      Robot.driveTrainSubsystem.rightPower(0);
     }
   }
 
@@ -46,7 +50,7 @@ public class DriveTrainCMDS {
     protected void execute() {
 
       // Power when driving straight is the averaging of the stick values
-      power = (Robot.oi.stick.getThrottle() + Robot.oi.stick.getY()) / 2 * .15;
+      power = (Robot.oi.stick2.getThrottle() + Robot.oi.stick2.getY()) / 4;
       // Robot.driveTrainSubsystem.keepDriveStraight(power, power, targetAngle);
       Robot.driveTrainSubsystem.dumbDriveStraight(power);
     }
