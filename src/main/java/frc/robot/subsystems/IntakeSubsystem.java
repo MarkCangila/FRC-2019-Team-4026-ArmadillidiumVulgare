@@ -25,10 +25,7 @@ public class IntakeSubsystem extends Subsystem {
   public WPI_TalonSRX backIntakeMotor = new WPI_TalonSRX(Portmap.BACKINTAKEMOTOR);
   public WPI_TalonSRX frontIntakeMotor = new WPI_TalonSRX(Portmap.FRONTINTAKEMOTOR);
   
-  public enum servoState{
-    OPEN, CLOSED;
-  }
-  public servoState status = servoState.CLOSED;
+  public boolean isOpen = false;
 
   public IntakeSubsystem() {
     backIntakeMotor.setNeutralMode(NeutralMode.Coast);

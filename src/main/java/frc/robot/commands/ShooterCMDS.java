@@ -10,20 +10,28 @@ public class ShooterCMDS {
   public static class ToggleServo extends Command{
 
     @Override
-    protected void execute() {
-      if (Robot.intakeSubsystem.status == IntakeSubsystem.servoState.CLOSED){
-        Robot.intakeSubsystem.ballFeeder.set(0);
-        Robot.intakeSubsystem.status = IntakeSubsystem.servoState.OPEN;
+    protected void initialize() {
+      if (Robot.intakeSubsystem.isOpen){
+        Robot.intakeSubsystem.ballFeeder.set(1);
+        Robot.intakeSubsystem.isOpen = false;
       }
       else {
-        Robot.intakeSubsystem.ballFeeder.set(90);
-        Robot.intakeSubsystem.status = IntakeSubsystem.servoState.CLOSED;
+        Robot.intakeSubsystem.ballFeeder.set(0.55);
+        Robot.intakeSubsystem.isOpen = true;
       }
     }
     @Override
-    protected boolean isFinished() {
-      return false;
+    protected void execute() {
     }
+    @Override
+    protected boolean isFinished() {
+      return true;
+    }
+
+    public void end(){
+   
+    }
+    
 
   }
 
