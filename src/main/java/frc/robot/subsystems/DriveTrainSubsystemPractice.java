@@ -7,11 +7,12 @@ import com.kauailabs.navx.frc.AHRS.SerialDataType;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Sendable;
 import edu.wpi.first.wpilibj.SerialPort;
+import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Portmap;
 import frc.robot.commands.DriveTrainCMDS;
 
-public class DriveTrainSubsystemPractice extends DriveTrain {
+public class DriveTrainSubsystemPractice extends Subsystem {
 
   final WPI_TalonSRX rightDriveMotorTalon;
   final WPI_TalonSRX leftDriveMotorTalon;
@@ -22,6 +23,7 @@ public class DriveTrainSubsystemPractice extends DriveTrain {
   Encoder leftEncoder;
 
   static final double MAXPOWERCHANGE = .1;
+  public static final double TICKS_PER_INCH = 13.3333333333333;
 
   public AHRS navx;
 
