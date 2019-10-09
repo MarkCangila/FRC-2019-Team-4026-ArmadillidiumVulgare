@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
 public class DriveTrainCMDS {
+  public static final double SPEEDMOD = 0.5; 
 
   public static class TankDrive extends Command {
 
@@ -18,8 +19,8 @@ public class DriveTrainCMDS {
 
     @Override
     protected void execute() {
-      Robot.driveTrainSubsystem.rightPower(-Robot.oi.stick2.getThrottle() * .5);
-      Robot.driveTrainSubsystem.leftPower(-Robot.oi.stick2.getY() * .5);
+      Robot.driveTrainSubsystem.rightPower(-Robot.oi.stick2.getThrottle() * SPEEDMOD);
+      Robot.driveTrainSubsystem.leftPower(-Robot.oi.stick2.getY() * SPEEDMOD);
     }
 
     @Override
@@ -50,7 +51,7 @@ public class DriveTrainCMDS {
     protected void execute() {
 
       // Power when driving straight is the averaging of the stick values
-      power = (Robot.oi.stick2.getThrottle() + Robot.oi.stick2.getY()) / 4;
+      power = (Robot.oi.stick2.getThrottle() + Robot.oi.stick2.getY()*SPEEDMOD/2);
       // Robot.driveTrainSubsystem.keepDriveStraight(power, power, targetAngle);
       Robot.driveTrainSubsystem.dumbDriveStraight(power);
     }
