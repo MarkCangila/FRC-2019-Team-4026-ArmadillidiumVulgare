@@ -1,10 +1,58 @@
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
 public class DriveTrainCMDS {
-  public static final double SPEEDMOD = 0.5; 
+  public static  double SPEEDMOD = 1.00; 
+  
+public static class FastMode extends Command {
+
+  public FastMode(){
+  }
+
+  @Override
+  protected void execute() {
+    if (SPEEDMOD == .75){
+      SPEEDMOD = 1;
+    }
+    if (SPEEDMOD == 1){
+      SPEEDMOD = .75;
+    }
+  }
+
+    @Override
+    protected boolean isFinished() {
+      return false;
+    }
+
+    protected void end(){
+      
+    }
+
+}
+
+public static class StopDrive extends Command {
+
+    public StopDrive() {
+      requires(Robot.driveTrainSubsystem);
+    }
+
+    @Override
+    protected void execute() {
+      SPEEDMOD = 0;
+    }
+    @Override
+    protected boolean isFinished() {
+      return false;
+    }
+
+    protected void end(){
+      SPEEDMOD = .75;
+    }
+
+}
 
   public static class TankDrive extends Command {
 
@@ -51,7 +99,7 @@ public class DriveTrainCMDS {
     protected void execute() {
 
       // Power when driving straight is the averaging of the stick values
-      power = (Robot.oi.stick2.getThrottle() + Robot.oi.stick2.getY()*SPEEDMOD/2);
+      power = (Robot.oi.stick2.getY() *SPEEDMOD);
       // Robot.driveTrainSubsystem.keepDriveStraight(power, power, targetAngle);
       Robot.driveTrainSubsystem.dumbDriveStraight(power);
     }

@@ -51,10 +51,11 @@ public class Robot extends TimedRobot {
 
     oi = new OI();
     
-    oi.stick2Button1.whileHeld(new DriveTrainCMDS.DriveStraight());
+    //oi.stick2Button8.whenPressed(new DriveTrainCMDS.FastMode());
+    oi.stick2Button8.whileHeld(new DriveTrainCMDS.DriveStraight());
     oi.stick2Button6.whileHeld(new ShooterCMDS.ShootFast());
     oi.stick2Button5.whileHeld(new ShooterCMDS.ShootSlow());
-    oi.stick2Button8.whileHeld(new DriveTrainCMDS.TankDrive());
+    oi.stick2Button7.whileHeld(new DriveTrainCMDS.StopDrive());
     oi.stick2Button2.whileHeld(new ShooterCMDS.Stop());
     oi.stick1Button1.whenReleased(new ShooterCMDS.ToggleServo());
     SmartDashboard.putData("Auto mode", m_chooser);

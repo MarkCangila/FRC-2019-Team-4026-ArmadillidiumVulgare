@@ -31,6 +31,7 @@ public class DriveTrainSubsystemPractice extends Subsystem {
 
   @Override
   protected void initDefaultCommand() {
+    setDefaultCommand(new DriveTrainCMDS.TankDrive());
   }
 
   public DriveTrainSubsystemPractice() {
