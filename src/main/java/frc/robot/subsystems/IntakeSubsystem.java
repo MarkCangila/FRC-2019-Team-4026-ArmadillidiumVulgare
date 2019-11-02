@@ -51,7 +51,7 @@ public class IntakeSubsystem extends Subsystem {
      * }
      *
      */
-    System.out.println(getHatchSwitches());
+    // System.out.println(getHatchSwitches());
     printTelemetry();
   }
 
