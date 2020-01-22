@@ -184,10 +184,10 @@ public class FlipperSubsystem extends Subsystem {
   }
 
   public void printTelemetry() {
-    SmartDashboard.putNumber("Encoder Value Right", rightFlipper.getSelectedSensorPosition(loopID));
-    SmartDashboard.putNumber("Encoder Value Left", leftFlipper.getSelectedSensorPosition(loopID));
-    SmartDashboard.putNumber("Speed Right", rightFlipper.get());
-    SmartDashboard.putNumber("Speed Left", leftFlipper.get());
+    // SmartDashboard.putNumber("Encoder Value Right",
+    // rightFlipper.getSelectedSensorPosition(loopID));
+    // SmartDashboard.putNumber("Encoder Value Left",
+    // leftFlipper.getSelectedSensorPosition(loopID));
     SmartDashboard.putBoolean("Reverse Limit", reverseLimitSwitch.get());
     SmartDashboard.putBoolean("Front Limit", forewardLimitSwitch.get());
   }

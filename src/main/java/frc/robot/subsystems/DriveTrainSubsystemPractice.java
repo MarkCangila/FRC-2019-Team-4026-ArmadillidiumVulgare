@@ -21,7 +21,7 @@ public class DriveTrainSubsystemPractice extends DriveTrain {
   Encoder rightEncoder;
   Encoder leftEncoder;
 
-  static final double MAXPOWERCHANGE = .1;
+  static final double MAXPOWERCHANGE = 1;
 
   public AHRS navx;
 
@@ -110,6 +110,7 @@ public class DriveTrainSubsystemPractice extends DriveTrain {
 
     SmartDashboard.putBoolean("NAVX CONNECTED", navx.isConnected());
     SmartDashboard.putData("Gyro", dataForGyro);
+    // SmartDashboard.putData("PDP");
     SmartDashboard.putNumber("Heading", navx.getYaw());
   }
   

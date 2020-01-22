@@ -7,28 +7,33 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
 /** An example command. You can replace me with your own command. */
 public class HatchGrabberCMDS {
 
-  public static class Eject extends Command {
+  public static class ReleaseHatch extends Command {
+    Timer releaseTimer;
+    Boolean isFinished;
 
-    public Eject() {
+    public ReleaseHatch() {
       // Use requires() here to declare subsystem dependencies
-      // requires(Robot.intakeSubsystem);
+      requires(Robot.intakeSubsystem);
+      releaseTimer = new Timer();
     }
 
     // Called just before this Command runs the first time
     @Override
-    protected void initialize() {}
+    protected void initialize() {
+      Robot.intakeSubsystem.releaseHatch();
+    }
 
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-      Robot.intakeSubsystem.ejector.set(DoubleSolenoid.Value.kForward);
+      Robot.intakeSubsystem.releaseHatch();
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -39,15 +44,62 @@ public class HatchGrabberCMDS {
 
     // Called once after isFinished returns true
     @Override
-    protected void end() {
-      Robot.intakeSubsystem.ejector.set(DoubleSolenoid.Value.kReverse);
-    }
+    protected void end() {}
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     @Override
     protected void interrupted() {
       end();
+    }
+  }
+
+  public static class AutoGrabHatch extends Command {
+
+    boolean isFinished = false;
+    boolean grabDaHatch = false;
+
+    public AutoGrabHatch() {
+      requires(Robot.intakeSubsystem);
+    }
+
+    @Override
+    protected void initialize() {
+      Robot.intakeSubsystem.releaseHatch();
+      grabDaHatch = false;
+    }
+
+    protected void execute() {
+      if (!grabDaHatch) {
+        if (Robot.intakeSubsystem.armGrabber()) {
+          grabDaHatch = true;
+        } else {
+
+        }
+      } else {
+        Robot.intakeSubsystem.grabHatch();
+      }
+    }
+
+    protected boolean isFinished() {
+      return false;
+    }
+  }
+
+  public static class ManualGrabCMD extends Command {
+    public ManualGrabCMD() {
+      requires(Robot.intakeSubsystem);
+    }
+
+    protected void initialize() {}
+
+    protected void execute() {
+      Robot.intakeSubsystem.grabHatch();
+    }
+
+    @Override
+    protected boolean isFinished() {
+      return false;
     }
   }
 
@@ -78,55 +130,15 @@ public class HatchGrabberCMDS {
 
     @Override
     protected void initialize() {
-      Robot.intakeSubsystem.goUp();
+      Robot.intakeSubsystem.moveGrabberUp();
     }
 
     @Override
     protected void execute() {
-      Robot.intakeSubsystem.goUp();
+      Robot.intakeSubsystem.moveGrabberUp();
     }
 
     @Override
-    protected boolean isFinished() {
-      return false;
-    }
-  }
-
-  public static class GoDownCMD extends Command {
-    public GoDownCMD() {
-      requires(Robot.intakeSubsystem);
-    }
-
-    @Override
-    protected void initialize() {
-      Robot.intakeSubsystem.goDown();
-    }
-
-    @Override
-    protected void execute() {
-      Robot.intakeSubsystem.goDown();
-    }
-
-    @Override
-    protected boolean isFinished() {
-      return false;
-    }
-  }
-
-  public static class AlmostDownCMD extends Command {
-
-    public AlmostDownCMD() {
-      requires(Robot.intakeSubsystem);
-    }
-
-    protected void initialize() {
-      Robot.intakeSubsystem.goAlmostDown();
-    }
-
-    protected void execute() {
-      Robot.intakeSubsystem.goAlmostDown();
-    }
-
     protected boolean isFinished() {
       return false;
     }
@@ -153,28 +165,44 @@ public class HatchGrabberCMDS {
     }
   }
 
-  public static class ManualControlCMD extends Command {
-    public ManualControlCMD() {
+  public static class AutoPlaceHatch extends Command {
+
+    boolean isFinished = false;
+    boolean releaseDaHatch = false;
+    boolean armed = false;
+
+    public AutoPlaceHatch() {
       requires(Robot.intakeSubsystem);
     }
 
     @Override
-    protected void initialize() {}
+    protected void initialize() {
+      Robot.intakeSubsystem.grabHatch();
+      armed = false;
+      releaseDaHatch = false;
+    }
 
-    @Override
     protected void execute() {
-      Robot.intakeSubsystem.rightIntakeMotor.set(Robot.oi.stick2.getY() * .75);
-    }
+    if(!armed){
+      if(Robot.intakeSubsystem.getHatchSwitches()){
+        armed = true;
+      }
+    } else {
+      if (!releaseDaHatch) {
+        if (Robot.intakeSubsystem.armRelease()) {
+          releaseDaHatch = true;
+        } else {
 
-    @Override
-    protected void interrupted() {
-      Robot.intakeSubsystem.stop();
-      super.interrupted();
+        }
+      } else {
+        Robot.intakeSubsystem.releaseHatch();
+      }
     }
+  }
 
-    @Override
     protected boolean isFinished() {
       return false;
     }
   }
+  
 }

@@ -5,6 +5,8 @@ import frc.robot.Portmap;
 import frc.robot.Robot;
 
 public class DriveTrainCMDS {
+
+  
   public static class Turn extends Command {
     private float distance;
     private boolean direction;
@@ -12,6 +14,7 @@ public class DriveTrainCMDS {
     // private float startingYaw;
     private double startingAngle;
     private final double MAX_TURN_SPEED = 0.4;
+    
 
     // Dist is in degrees. If direct is true turn right else turn left
     public Turn(float dist, boolean direct) {
@@ -191,7 +194,13 @@ public class DriveTrainCMDS {
     }
   }
 
-  public static class DriveToRightHatchCMD extends Command {
+
+  public static class DriveToHatchCMD extends Command {
+    public static final boolean RIGHT = true;
+    public static final boolean LEFT = false;
+    private final int visonTurnFactor = 1;
+    private boolean direction;
+
     private double targetAngle, distance;
     private boolean isFinished = false;
 
@@ -205,10 +214,34 @@ public class DriveTrainCMDS {
     }
 
     @Override
-    protected void execute(){
-      targetAngle = Robot.visionSystem.hatch1.getTargetHeading();
+
+    protected void execute() {
+      if (Robot.visionSystem.hatch1.isReal() && Robot.visionSystem.hatch2.isReal()) {
+        if (direction == RIGHT) {
+          if (Robot.visionSystem.hatch1.getAngleRad() > Robot.visionSystem.hatch2.getAngleRad()) {
+            hatch = Robot.visionSystem.hatch1;
+          } else {
+            hatch = Robot.visionSystem.hatch2;
+          }
+        } else {
+          if (Robot.visionSystem.hatch1.getAngleRad() < Robot.visionSystem.hatch2.getAngleRad()) {
+            hatch = Robot.visionSystem.hatch1;
+          } else {
+            hatch = Robot.visionSystem.hatch2;
+          }
+        }
+      } else if (Robot.visionSystem.hatch1.isReal()) {
+        hatch = Robot.visionSystem.hatch1;
+      } else {
+        hatch = Robot.visionSystem.hatch2;
+      }
+
+      targetAngle = hatch.getTargetHeading();
       double power = (Robot.oi.stick.getThrottle() + Robot.oi.stick.getY()) / 2;
-      if (power != -100) {
+      if (!(hatch.getAngleRad() == -100)) {
+        targetAngle = targetAngle * visonTurnFactor;
+
+   
         Robot.driveTrainSubsystem.keepDriveStraight(power, power, targetAngle);
       } else {
         isFinished = true;
@@ -220,6 +253,30 @@ public class DriveTrainCMDS {
     @Override
     protected boolean isFinished() {
       return isFinished;
+    }
+  }
+
+  public static class RetractCamera extends Command {
+    public RetractCamera() {}
+
+    public void initialize() {
+      Robot.visionSystem.stowCamera();
+    }
+
+    public boolean isFinished() {
+      return true;
+    }
+  }
+
+  public static class ExtendCamera extends Command {
+    public ExtendCamera() {}
+
+    public void initialize() {
+      Robot.visionSystem.extendCamera();
+    }
+
+    public boolean isFinished() {
+      return true;
     }
   }
 }

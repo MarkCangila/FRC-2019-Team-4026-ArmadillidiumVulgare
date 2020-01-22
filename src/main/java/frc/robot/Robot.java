@@ -7,6 +7,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.BuiltInAccelerometer;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -17,8 +18,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.CenterAuto;
 import frc.robot.commands.DriveTrainCMDS;
+import frc.robot.commands.DriveTrainCMDS.DriveToHatchCMD;
 import frc.robot.commands.ExampleCommand;
-import frc.robot.commands.FlipperCMDS;
 import frc.robot.commands.HatchGrabberCMDS;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.DriveTrainSubsystem2019;
@@ -36,8 +37,13 @@ import frc.robot.subsystems.VisionSystem;
  * project.
  */
 public class Robot extends TimedRobot {
-  public static DriveTrainSubsystemPractice driveTrainSubsystem = new DriveTrainSubsystemPractice();
+
+  //public static DriveTrainSubsystemPractice driveTrainSubsystem = new DriveTrainSubsystemPractice();
+  // DriveTrainSubsystemPractice();
   public static IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
+  // public static DriveTrainSubsystem2018 driveTrainSubsystem = new DriveTrainSubsystem2018();
+  public static DriveTrainSubsystem2019 driveTrainSubsystem = new DriveTrainSubsystem2019();
+
   // public static DriveTrainSubsystem2018 driveTrainSubsystem = new DriveTrainSubsystem2018();
 
   public static VisionSystem visionSystem = new VisionSystem();
@@ -59,14 +65,21 @@ public class Robot extends TimedRobot {
   public void robotInit() {
 
     oi = new OI();
-    oi.stick2Button1.whileHeld(new HatchGrabberCMDS.GoDownCMD());
     oi.stick2Button2.whileHeld(new HatchGrabberCMDS.StowCMD());
-    oi.stick2Button4.whileHeld(new HatchGrabberCMDS.AlmostDownCMD());
     oi.stick2Button3.whileHeld(new HatchGrabberCMDS.GoUpCMD());
     oi.stick1Button8.whileHeld(new DriveTrainCMDS.DriveStraight());
-    oi.stick2Button8.whileHeld(new HatchGrabberCMDS.Eject());
-    oi.stick2Button9.whileHeld(new FlipperCMDS.AutoFlip());
-    oi.stick1Button6.whileHeld(new DriveTrainCMDS.DriveToRightHatchCMD());
+
+    //oi.stick2Button5.whileHeld(new HatchGrabberCMDS.AutoPlaceHatch());
+    oi.stick2Button8.whileHeld(new HatchGrabberCMDS.ReleaseHatch());
+    oi.stick2Button6.whileHeld(new HatchGrabberCMDS.AutoGrabHatch());
+
+    oi.stick2Button7.whileHeld(new HatchGrabberCMDS.ManualGrabCMD());
+
+    oi.stick1Button6.whileHeld(new DriveTrainCMDS.DriveToHatchCMD(DriveToHatchCMD.RIGHT));
+    oi.stick1Button5.whileHeld(new DriveTrainCMDS.DriveToHatchCMD(DriveToHatchCMD.LEFT));
+    oi.stick2Button9.whileHeld(new DriveTrainCMDS.RetractCamera());
+    oi.stick2Button10.whileHeld(new DriveTrainCMDS.ExtendCamera());
+
     m_chooser.setDefaultOption("Default Auto", new CenterAuto());
     m_chooser.setDefaultOption("Left Far Auto", new ExampleCommand());
     // chooser.addOption("My Auto", new MyAutoCommand());
@@ -74,7 +87,7 @@ public class Robot extends TimedRobot {
     // robotChooser.addOption("Pratice Bot", new DriveTrainSubsystemPractice());
     SmartDashboard.putData("Auto mode", m_chooser);
     // SmartDashboard.putData("Robot type", robotChooser);
-    // CameraServer.getInstance().startAutomaticCapture();
+    CameraServer.getInstance().startAutomaticCapture().setResolution(320, 240);
 
     // driveTrainSubsystem = new DriveTrainSubsystem2019();
 
@@ -114,10 +127,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
-    intakeSubsystem.autoInit();
-    m_autonomousCommand = m_chooser.getSelected();
-    driveTrainSubsystem.resetEncoders();
-
+    teleopInit();
     /*
      * String autoSelected = SmartDashboard.getString("Auto Selector",
      * "Default"); switch(autoSelected) { case "My Auto": autonomousCommand
@@ -126,16 +136,14 @@ public class Robot extends TimedRobot {
      */
 
     // schedule the autonomous command (example)
-    if (m_autonomousCommand != null) {
-      m_autonomousCommand.start();
-    }
+
     // System.out.println(intakeSubsystem.rightIntakeMotor.getSelectedSensorVelocity(0));
   }
 
   /** This function is called periodically during autonomous. */
   @Override
   public void autonomousPeriodic() {
-    Scheduler.getInstance().run();
+    teleopPeriodic();
   }
 
   @Override

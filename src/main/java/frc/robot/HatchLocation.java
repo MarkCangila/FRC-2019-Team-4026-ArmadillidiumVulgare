@@ -37,7 +37,7 @@ public class HatchLocation {
       angle = angleVal;
       updateTimer.reset();
       updateTimer.start();
-      targetHeading = angle + Robot.driveTrainSubsystem.getAngle();
+      
     }
   }
   // Will return the last known angle of the hatch if the timeout is not expired.
@@ -53,6 +53,7 @@ public class HatchLocation {
   }
   public double getTargetHeading(){
     if (updateTimer.get() < timeOutMax) {
+      targetHeading = getAngleDeg() + Robot.driveTrainSubsystem.getAngle();
       return targetHeading;
     } else {
       return -100;

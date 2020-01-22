@@ -11,15 +11,21 @@ public class Portmap {
   public static final int RIGHTFLIPPER = 4;
 
   // Solenoids
-  public static final int EJECTOR_OUT = 1;
-  public static final int EJECTOR_IN = 0;
+  public static final int GRABBER_RELEASED = 4;
+  public static final int GRABBER_GRAB = 6;
+  public static final int GRABBER_STOWED = 2;
+  public static final int GRABBER_UP = 3;
+  public static final int CAMERA_IN = 0;
+  public static final int CAMERA_OUT = 1;
 
   // Digital Inputs
   // Limit switches
-  public static final int HATCH_REVERSE_LIMIT = 4;
+  public static final int HATCH_SENSOR_SWITCH1 = 7;
+  public static final int HATCH_SENSOR_SWITCH2 = 8;
+
   public static final int FLIPPER_REVERSE_LIMIT = 5;
   public static final int FLIPPER_FOREWARD_LIMIT = 6;
-
+  // Encoders
   public static final int RIGHT_ENCODER_1 = 0;
   public static final int RIGHT_ENCODER_2 = 1;
   public static final int LEFT_ENCODER_1 = 2;
@@ -27,6 +33,7 @@ public class Portmap {
 
   // Analog sensors
   public static final int GYRO = 0;
+  public static final int ULTRASONIC = 1;
 
   public static double clipOneToOne(double val) {
     val = Math.min(1, val);
