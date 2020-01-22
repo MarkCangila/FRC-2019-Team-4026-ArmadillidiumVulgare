@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.can.BaseMotorController;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj.AnalogGyro;
@@ -12,11 +13,11 @@ import frc.robot.Robot;
 import frc.robot.commands.DriveTrainCMDS;
 
 public class DriveTrainSubsystem2019 extends DriveTrain {
-  public final double TICKS_PER_INCH = 13.3333333333333;
+  public final double TICKS_PER_INCH = 13 + (1/3);
   final WPI_TalonSRX rightDriveMotorTalon;
   final WPI_TalonSRX leftDriveMotorTalon;
-  final VictorSPX rightDriveMotorVictor;
-  final VictorSPX leftDriveMotorVictor;
+  final BaseMotorController rightDriveMotorVictor;
+  final BaseMotorController leftDriveMotorVictor;
 
   Encoder rightEncoder;
   Encoder leftEncoder;
@@ -30,8 +31,8 @@ public class DriveTrainSubsystem2019 extends DriveTrain {
     setDefaultCommand(new DriveTrainCMDS.TankDrive());
   }
 
-  public DriveTrainSubsystem2019() {
-    //  System.out.println();
+  public DriveTrainSubsystem2019(boolean practice) {
+  //  System.out.println();
 
     navx = new AnalogGyro(Portmap.GYRO);
 
@@ -43,8 +44,14 @@ public class DriveTrainSubsystem2019 extends DriveTrain {
 
     rightDriveMotorTalon = new WPI_TalonSRX(Portmap.RIGHTDRIVETALON);
     leftDriveMotorTalon = new WPI_TalonSRX(Portmap.LEFTDRIVETALON);
-    rightDriveMotorVictor = new VictorSPX(Portmap.RIGHTDRIVEVICTOR);
-    leftDriveMotorVictor = new VictorSPX(Portmap.LEFTDRIVEVICTOR);
+    if (practice) {
+      rightDriveMotorVictor = new WPI_TalonSRX(Portmap.RIGHTDRIVEVICTOR);
+      leftDriveMotorVictor = new WPI_TalonSRX(Portmap.LEFTDRIVEVICTOR);
+    }
+    else {
+      rightDriveMotorVictor = new VictorSPX(Portmap.RIGHTDRIVEVICTOR);
+      leftDriveMotorVictor = new VictorSPX(Portmap.LEFTDRIVEVICTOR);
+    }
     // rightDriveMotorVictor.follow(rightDriveMotorTalon);
     // leftDriveMotorVictor.follow(leftDriveMotorTalon);
     // rightDriveMotorTalon.setInverted(true);
@@ -68,7 +75,7 @@ public class DriveTrainSubsystem2019 extends DriveTrain {
 
   public void leftPower(double requestedPower) {
     double currentPower = leftDriveMotorTalon.get();
-    double newPower;
+    double newPower; 
     if (requestedPower < currentPower) {
       newPower = Math.max(requestedPower, currentPower - MAXPOWERCHANGE);
     } else if (requestedPower > currentPower) {
@@ -122,14 +129,14 @@ public class DriveTrainSubsystem2019 extends DriveTrain {
     leftPower(power);
   }
   /*
-   * Please note that powers must be negative to move foreward, this is a side effect of the controller axies being reversed
-   * from what would be accepted.
-   */
+  * Please note that powers must be negative to move foreward, this is a side effect of the controller axies being reversed
+  * from what would be accepted.
+  */
   public void keepDriveStraight(double leftDriveVel, double rightDriveVel, double targetAngle) {
     System.out.println("Drive straight " + leftDriveVel);
     double error = 0, correctionFactor;
     error = targetAngle - navx.getAngle();
-    correctionFactor = (error / 2);
+    correctionFactor = (error / 75.0);
 
     // todo - best practice - conditions on a separate line should be
     // wrapped in brackets
@@ -149,6 +156,8 @@ public class DriveTrainSubsystem2019 extends DriveTrain {
       leftPower(leftDriveVel);
     }
   }
+
+  
 
   public double getAngle() {
     return navx.getAngle();

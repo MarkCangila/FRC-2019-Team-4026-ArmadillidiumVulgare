@@ -1,7 +1,6 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
-import frc.robot.HatchLocation;
 import frc.robot.Portmap;
 import frc.robot.Robot;
 
@@ -195,17 +194,17 @@ public class DriveTrainCMDS {
     }
   }
 
+
   public static class DriveToHatchCMD extends Command {
     public static final boolean RIGHT = true;
     public static final boolean LEFT = false;
     private final int visonTurnFactor = 1;
     private boolean direction;
+
     private double targetAngle, distance;
     private boolean isFinished = false;
-    private HatchLocation hatch;
 
-    public DriveToHatchCMD(boolean directionVal) {
-      direction = directionVal;
+    public DriveToRightHatchCMD(){
       requires(Robot.driveTrainSubsystem);
     }
 
@@ -215,6 +214,7 @@ public class DriveTrainCMDS {
     }
 
     @Override
+
     protected void execute() {
       if (Robot.visionSystem.hatch1.isReal() && Robot.visionSystem.hatch2.isReal()) {
         if (direction == RIGHT) {
@@ -240,16 +240,19 @@ public class DriveTrainCMDS {
       double power = (Robot.oi.stick.getThrottle() + Robot.oi.stick.getY()) / 2;
       if (!(hatch.getAngleRad() == -100)) {
         targetAngle = targetAngle * visonTurnFactor;
+
+   
         Robot.driveTrainSubsystem.keepDriveStraight(power, power, targetAngle);
       } else {
-
+        isFinished = true;
         Robot.driveTrainSubsystem.stop();
       }
     }
+    
 
     @Override
     protected boolean isFinished() {
-      return false;
+      return isFinished;
     }
   }
 
