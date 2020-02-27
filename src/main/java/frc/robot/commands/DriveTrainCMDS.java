@@ -1,6 +1,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
+import frc.robot.HatchLocation;
 import frc.robot.Portmap;
 import frc.robot.Robot;
 
@@ -204,7 +205,9 @@ public class DriveTrainCMDS {
     private double targetAngle, distance;
     private boolean isFinished = false;
 
-    public DriveToRightHatchCMD(){
+
+    HatchLocation hatch;
+    public DriveToHatchCMD(){
       requires(Robot.driveTrainSubsystem);
     }
 

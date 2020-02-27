@@ -42,7 +42,7 @@ public class Robot extends TimedRobot {
   // DriveTrainSubsystemPractice();
   public static IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
   // public static DriveTrainSubsystem2018 driveTrainSubsystem = new DriveTrainSubsystem2018();
-  public static DriveTrainSubsystem2019 driveTrainSubsystem = new DriveTrainSubsystem2019();
+  public static DriveTrainSubsystem2019 driveTrainSubsystem = new DriveTrainSubsystem2019(false);
 
   // public static DriveTrainSubsystem2018 driveTrainSubsystem = new DriveTrainSubsystem2018();
 
@@ -75,8 +75,8 @@ public class Robot extends TimedRobot {
 
     oi.stick2Button7.whileHeld(new HatchGrabberCMDS.ManualGrabCMD());
 
-    oi.stick1Button6.whileHeld(new DriveTrainCMDS.DriveToHatchCMD(DriveToHatchCMD.RIGHT));
-    oi.stick1Button5.whileHeld(new DriveTrainCMDS.DriveToHatchCMD(DriveToHatchCMD.LEFT));
+ //   oi.stick1Button6.whileHeld(new DriveTrainCMDS.DriveToHatchCMD(DriveToHatchCMD.RIGHT));
+ //   oi.stick1Button5.whileHeld(new DriveTrainCMDS.DriveToHatchCMD(DriveToHatchCMD.LEFT));
     oi.stick2Button9.whileHeld(new DriveTrainCMDS.RetractCamera());
     oi.stick2Button10.whileHeld(new DriveTrainCMDS.ExtendCamera());
 
