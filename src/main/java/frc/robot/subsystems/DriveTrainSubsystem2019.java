@@ -7,10 +7,16 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj.AnalogGyro;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Sendable;
+import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.geometry.Pose2d;
+import edu.wpi.first.wpilibj.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
+import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Portmap;
 import frc.robot.Robot;
 import frc.robot.commands.DriveTrainCMDS;
+import frc.robot.Constants;
 
 public class DriveTrainSubsystem2019 extends DriveTrain {
   public final double TICKS_PER_INCH = 13 + (1/3);
@@ -18,6 +24,7 @@ public class DriveTrainSubsystem2019 extends DriveTrain {
   final WPI_TalonSRX leftDriveMotorTalon;
   final BaseMotorController rightDriveMotorVictor;
   final BaseMotorController leftDriveMotorVictor;
+  final DifferentialDrive drive;
 
   Encoder rightEncoder;
   Encoder leftEncoder;
@@ -25,6 +32,8 @@ public class DriveTrainSubsystem2019 extends DriveTrain {
   static final double MAXPOWERCHANGE = .16 ;
 
   public AnalogGyro navx;
+
+  private final DifferentialDriveOdometry odometry;
 
   @Override
   protected void initDefaultCommand() {
@@ -64,13 +73,22 @@ public class DriveTrainSubsystem2019 extends DriveTrain {
     rightDriveMotorVictor.follow(rightDriveMotorTalon);
     leftDriveMotorVictor.follow(leftDriveMotorTalon);
 
+    leftEncoder.setDistancePerPulse(Constants.distancePerPulse);
+    rightEncoder.setDistancePerPulse(Constants.distancePerPulse);
+
     navx.calibrate();
     resetEncoders();
+
+    drive = new DifferentialDrive(leftDriveMotorTalon, rightDriveMotorTalon);
+
+    odometry = new DifferentialDriveOdometry(getAngleRot2d());
   }
 
   @Override
   public void periodic() {
     updateSmartDashboard();
+
+    odometry.update(getAngleRot2d(), leftEncoder.getDistance(), rightEncoder.getDistance());
   }
 
   public void leftPower(double requestedPower) {
@@ -174,5 +192,23 @@ public class DriveTrainSubsystem2019 extends DriveTrain {
   public void resetEncoders() {
     rightEncoder.reset();
     leftEncoder.reset();
+  }
+
+  public DifferentialDriveWheelSpeeds getWheelSpeeds() {
+    return new DifferentialDriveWheelSpeeds(leftEncoder.getRate(), rightEncoder.getRate());
+  }
+
+  public Rotation2d getAngleRot2d() {
+    return navx.getRotation2d();
+  } 
+
+  public Pose2d getPose() {
+    return odometry.getPoseMeters();
+  }
+
+  public void tankDriveVolts(double leftVolts, double rightVolts) {
+    leftDriveMotorTalon.setVoltage(leftVolts);
+    rightDriveMotorTalon.setVoltage(-rightVolts);
+    drive.feed();
   }
 }
