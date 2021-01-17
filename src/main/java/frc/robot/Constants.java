@@ -9,7 +9,7 @@ public class Constants {
     public static final double kaVoltSecondsSquaredPerMeter = 0;
     public static final double kPDriveVel = 0;
     // TODO: Measure the horizontal distance between wheels and set trackwidth
-    public static final double kTrackwidthMeters = 0.69;
+    public static final double kTrackwidthMeters = 0.6096;
     public static final DifferentialDriveKinematics kDriveKinematics =
         new DifferentialDriveKinematics(kTrackwidthMeters);
     // TODO: We should set this - I'm leaving it at 3 for now bc I know our robot is capable of it

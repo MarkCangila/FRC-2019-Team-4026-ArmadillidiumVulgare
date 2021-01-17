@@ -72,7 +72,7 @@ public class Robot extends TimedRobot {
     //oi.stick2Button5.whileHeld(new HatchGrabberCMDS.AutoPlaceHatch());
 
 
-    m_chooser.setDefaultOption("Default Auto", getTrajCommandFromJSON("testJson"));
+    m_chooser.setDefaultOption("Default Auto", getTrajCommandFromJSON("TestPathOne.wpilib.json"));
     // chooser.addOption("My Auto", new MyAutoCommand());
     // robotChooser.setDefaultOption("Main Bot", new DriveTrainSubsystem2019());
     // robotChooser.addOption("Pratice Bot", new DriveTrainSubsystemPractice());
@@ -161,7 +161,7 @@ public class Robot extends TimedRobot {
   public Command getTrajCommandFromJSON(String trajectoryJSON) {
     Trajectory traj = new Trajectory();
     try {
-      Path trajPath = Filesystem.getDeployDirectory().toPath().resolve(trajectoryJSON);
+      Path trajPath = Filesystem.getDeployDirectory().toPath().resolve("paths\\output\\" + trajectoryJSON);
       traj = TrajectoryUtil.fromPathweaverJson(trajPath);
     } catch (IOException ex) {
       DriverStation.reportError("Unable to open trajectory: " + trajectoryJSON, ex.getStackTrace());
