@@ -21,11 +21,12 @@ public class Portmap {
   // Digital Inputs
   // Limit switches
   public static final int HATCH_SENSOR_SWITCH1 = 7;
-  //Doesn't exist
+  //Not Connected
   public static final int HATCH_SENSOR_SWITCH2 = 8;
-
+  //Not Connected
   public static final int FLIPPER_REVERSE_LIMIT = 5;
-  public static final int FLIPPER_FOREWARD_LIMIT = 6;
+
+  public static final int FLIPPER_FOREWARD_LIMIT = 0;
   // Encoders
   public static final int RIGHT_ENCODER_1 = 1;
   public static final int RIGHT_ENCODER_2 = 2;
