@@ -141,7 +141,6 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
-    driveTrainSubsystem.setDefaultCommand(new DriveTrainCMDS.TankDrive());
     // This makes sure that the autonomous stops running when
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
@@ -149,6 +148,7 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
+    driveTrainSubsystem.setDefaultCommand(new DriveTrainCMDS.TankDrive());
   }
 
   /** This function is called periodically during operator control. */
