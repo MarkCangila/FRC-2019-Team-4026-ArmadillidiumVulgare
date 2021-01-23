@@ -118,7 +118,8 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
-    teleopInit();
+    m_chooser.getSelected().schedule();
+    //teleopInit();
     /*
      * String autoSelected = SmartDashboard.getString("Auto Selector",
      * "Default"); switch(autoSelected) { case "My Auto": autonomousCommand
