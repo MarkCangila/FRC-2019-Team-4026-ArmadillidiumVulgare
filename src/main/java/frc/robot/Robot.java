@@ -26,6 +26,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryUtil;
+import frc.robot.commands.DriveTrainCMDS;
 import frc.robot.subsystems.DriveTrainSubsystem2019;
 import frc.robot.subsystems.VisionSystem;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -140,6 +141,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
+    driveTrainSubsystem.setDefaultCommand(new DriveTrainCMDS.TankDrive());
     // This makes sure that the autonomous stops running when
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
