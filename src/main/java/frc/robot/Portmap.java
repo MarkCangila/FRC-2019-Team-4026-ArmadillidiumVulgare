@@ -27,10 +27,10 @@ public class Portmap {
   public static final int FLIPPER_REVERSE_LIMIT = 5;
   public static final int FLIPPER_FOREWARD_LIMIT = 6;
   // Encoders
-  public static final int RIGHT_ENCODER_1 = 0;
-  public static final int RIGHT_ENCODER_2 = 1;
-  public static final int LEFT_ENCODER_1 = 2;
-  public static final int LEFT_ENCODER_2 = 3;
+  public static final int RIGHT_ENCODER_1 = 1;
+  public static final int RIGHT_ENCODER_2 = 2;
+  public static final int LEFT_ENCODER_1 = 3;
+  public static final int LEFT_ENCODER_2 = 4;
 
   // Analog sensors
   public static final int GYRO = 0;
