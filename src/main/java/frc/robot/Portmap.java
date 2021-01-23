@@ -21,6 +21,7 @@ public class Portmap {
   // Digital Inputs
   // Limit switches
   public static final int HATCH_SENSOR_SWITCH1 = 7;
+  //Doesn't exist
   public static final int HATCH_SENSOR_SWITCH2 = 8;
 
   public static final int FLIPPER_REVERSE_LIMIT = 5;
