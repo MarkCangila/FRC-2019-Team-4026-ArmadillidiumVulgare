@@ -7,7 +7,7 @@ public class Constants {
     public static final double ksVolts = 1.21;
     public static final double kvVoltSecondsPerMeter = 3.32;
     public static final double kaVoltSecondsSquaredPerMeter = 0.0438;
-    public static final double kPDriveVel = 0.714;
+    public static final double kPDriveVel = 0.203;
     // TODO: Measure the horizontal distance between wheels and set trackwidth
     public static final double kTrackwidthMeters = 1.3025332494619235;
     public static final DifferentialDriveKinematics kDriveKinematics =
@@ -19,5 +19,5 @@ public class Constants {
     public static final double kRamseteB = 2;
     public static final double kRamseteZeta = 0.7;
     // This is most likely correct - it's the distance in meters per encoder pulse
-    public static final double distancePerPulse = 0.000116889336036886;
+    public static final double distancePerPulse = 0.00193739;
 }

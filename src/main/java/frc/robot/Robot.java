@@ -7,6 +7,7 @@
 
 package frc.robot;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 
@@ -72,7 +73,6 @@ public class Robot extends TimedRobot {
 
     //oi.stick2Button5.whileHeld(new HatchGrabberCMDS.AutoPlaceHatch());
 
-
     m_chooser.setDefaultOption("Default Auto", getTrajCommandFromJSON("TestPathOne.wpilib.json"));
     // chooser.addOption("My Auto", new MyAutoCommand());
     // robotChooser.setDefaultOption("Main Bot", new DriveTrainSubsystem2019());
@@ -119,6 +119,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
+    boolean test = m_chooser.getSelected() == null;
     m_chooser.getSelected().schedule();
     //teleopInit();
     /*
@@ -164,7 +165,8 @@ public class Robot extends TimedRobot {
   public Command getTrajCommandFromJSON(String trajectoryJSON) {
     Trajectory traj = new Trajectory();
     try {
-      Path trajPath = Filesystem.getDeployDirectory().toPath().resolve("paths\\output\\" + trajectoryJSON);
+      Path dir = Filesystem.getDeployDirectory().toPath();
+      Path trajPath = Filesystem.getDeployDirectory().toPath().resolve("paths/output/" + trajectoryJSON);
       traj = TrajectoryUtil.fromPathweaverJson(trajPath);
     } catch (IOException ex) {
       DriverStation.reportError("Unable to open trajectory: " + trajectoryJSON, ex.getStackTrace());
