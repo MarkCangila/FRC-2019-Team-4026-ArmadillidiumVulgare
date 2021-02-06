@@ -28,10 +28,13 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryUtil;
 import frc.robot.commands.DriveTrainCMDS;
+import frc.robot.commands.GTADriveCmd;
 import frc.robot.subsystems.DriveTrainSubsystem2019;
 import frc.robot.subsystems.VisionSystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
+import edu.wpi.first.wpilibj2.command.button.Button;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 // import frc.robot.subsystems.GyroSubsystem;
 
@@ -120,7 +123,7 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     boolean test = m_chooser.getSelected() == null;
-    m_chooser.getSelected().schedule();
+    //m_chooser.getSelected().schedule();
     //teleopInit();
     /*
      * String autoSelected = SmartDashboard.getString("Auto Selector",
@@ -149,7 +152,10 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
-    driveTrainSubsystem.setDefaultCommand(new DriveTrainCMDS.TankDrive());
+    Button rightTrigger =
+        new JoystickButton(OI.stick, 8);
+    Button leftTrigger = new JoystickButton(OI.stick, 7);
+    driveTrainSubsystem.setDefaultCommand(new GTADriveCmd(driveTrainSubsystem, () -> OI.stick.getX(), () -> OI.stick.getThrottle(), () -> rightTrigger.get(), () -> leftTrigger.get()));
   }
 
   /** This function is called periodically during operator control. */
