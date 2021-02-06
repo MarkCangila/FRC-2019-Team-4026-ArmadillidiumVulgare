@@ -30,11 +30,13 @@ public class DriveTrainSubsystem2019 extends DriveTrain {
   Encoder rightEncoder;
   Encoder leftEncoder;
 
-  static final double MAXPOWERCHANGE = .16 ;
+  static double MAXPOWERCHANGE = .16 ;
 
   public AnalogGyro navx;
 
   private final DifferentialDriveOdometry odometry;
+
+  private boolean brakeMode = true;
 
   // These three are brought over from differential drive in order to bring over it's curvature
   // drive code
@@ -281,4 +283,29 @@ public class DriveTrainSubsystem2019 extends DriveTrain {
     leftPower(leftMotorOutput);
     rightPower(rightMotorOutput);
   }
+
+  public void toggleBrakemode() {
+    if (brakeMode) {
+      leftDriveMotorTalon.setNeutralMode(NeutralMode.Coast);
+      leftDriveMotorVictor.setNeutralMode(NeutralMode.Coast);
+      rightDriveMotorTalon.setNeutralMode(NeutralMode.Coast);
+      rightDriveMotorVictor.setNeutralMode(NeutralMode.Coast);
+    }
+    if (!brakeMode) {
+      leftDriveMotorTalon.setNeutralMode(NeutralMode.Brake);
+      leftDriveMotorVictor.setNeutralMode(NeutralMode.Brake);
+      rightDriveMotorTalon.setNeutralMode(NeutralMode.Brake);
+      rightDriveMotorVictor.setNeutralMode(NeutralMode.Brake);
+    }
+    brakeMode = !brakeMode;
+  }
+
+  public void enableRamping() {
+    MAXPOWERCHANGE = 0.16;
+  }
+
+  public void disableRamping() {
+    MAXPOWERCHANGE = 2;
+  }
+
 }

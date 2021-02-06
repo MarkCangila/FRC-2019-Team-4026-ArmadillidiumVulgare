@@ -152,10 +152,13 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
-    Button rightTrigger =
-        new JoystickButton(OI.stick, 8);
+    Button rightTrigger = new JoystickButton(OI.stick, 8);
     Button leftTrigger = new JoystickButton(OI.stick, 7);
+    Button leftBumper = new JoystickButton(OI.stick, 5);
+    Button rightBumper = new JoystickButton(OI.stick, 6);
     driveTrainSubsystem.setDefaultCommand(new GTADriveCmd(driveTrainSubsystem, () -> OI.stick.getX(), () -> OI.stick.getThrottle(), () -> rightTrigger.get(), () -> leftTrigger.get()));
+    rightBumper.whileHeld(new DriveTrainCMDS.ToggleBrakeCommand(driveTrainSubsystem));
+    leftBumper.whileHeld(new DriveTrainCMDS.DisableRampingCommand(driveTrainSubsystem));
   }
 
   /** This function is called periodically during operator control. */
