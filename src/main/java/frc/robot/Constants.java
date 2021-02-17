@@ -13,7 +13,7 @@ public class Constants {
     public static final DifferentialDriveKinematics kDriveKinematics =
         new DifferentialDriveKinematics(kTrackwidthMeters);
     // TODO: We should set this - I'm leaving it at 3 for now bc I know our robot is capable of it
-    public static final double kMaxSpeedMetersPerSecond = 3;
+    public static final double kMaxSpeedMetersPerSecond = 0.5;
     public static final double kMaxAccelerationMetersPerSecondSquared = 3;
     // These are the values explicity recommended as correct for almost all bots
     public static final double kRamseteB = 2;

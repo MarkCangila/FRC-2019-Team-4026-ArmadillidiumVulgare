@@ -73,7 +73,7 @@ public class Robot extends TimedRobot {
 
     //oi.stick2Button5.whileHeld(new HatchGrabberCMDS.AutoPlaceHatch());
 
-    m_chooser.setDefaultOption("Default Auto", getTrajCommandFromJSON("TestPathOne.wpilib.json"));
+    m_chooser.setDefaultOption("Default Auto", getTrajCommandFromJSON("TestPathThree.wpilib.json"));
     // chooser.addOption("My Auto", new MyAutoCommand());
     // robotChooser.setDefaultOption("Main Bot", new DriveTrainSubsystem2019());
     // robotChooser.addOption("Pratice Bot", new DriveTrainSubsystemPractice());
