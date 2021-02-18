@@ -17,9 +17,12 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.controller.RamseteController;
 import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
+import edu.wpi.first.wpilibj.geometry.Pose2d;
+import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj.interfaces.Accelerometer.Range;
@@ -61,6 +64,10 @@ public class Robot extends TimedRobot {
   CommandBase m_autonomousCommand;
   SendableChooser<Command> m_chooser = new SendableChooser<>();
 
+  Timer timeTraj = new Timer();
+  double startTime;
+
+  Trajectory trajec;
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -100,7 +107,11 @@ public class Robot extends TimedRobot {
    * any subsystem information you want to clear when the robot is disabled.
    */
   @Override
-  public void disabledInit() {}
+  public void disabledInit() {
+    driveTrainSubsystem.odometry.resetPosition(new Pose2d(), new Rotation2d());
+    driveTrainSubsystem.resetEncoders();
+    driveTrainSubsystem.navx.reset();
+  }
 
   @Override
   public void disabledPeriodic() {
@@ -121,6 +132,8 @@ public class Robot extends TimedRobot {
   public void autonomousInit() {
     boolean test = m_chooser.getSelected() == null;
     m_chooser.getSelected().schedule();
+
+    startTime = timeTraj.getFPGATimestamp();
     //teleopInit();
     /*
      * String autoSelected = SmartDashboard.getString("Auto Selector",
@@ -138,6 +151,9 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousPeriodic() {
     teleopPeriodic();
+    SmartDashboard.putNumber("TotalTime", trajec.getTotalTimeSeconds());
+    SmartDashboard.putNumber("CurTurn", trajec.sample(timeTraj.getFPGATimestamp() - startTime).curvatureRadPerMeter);
+    SmartDashboard.putNumber("CurSpeed", trajec.sample(timeTraj.getFPGATimestamp() - startTime).velocityMetersPerSecond);
   }
 
   @Override
@@ -168,6 +184,7 @@ public class Robot extends TimedRobot {
       Path dir = Filesystem.getDeployDirectory().toPath();
       Path trajPath = Filesystem.getDeployDirectory().toPath().resolve("paths/output/" + trajectoryJSON);
       traj = TrajectoryUtil.fromPathweaverJson(trajPath);
+      trajec = traj;
     } catch (IOException ex) {
       DriverStation.reportError("Unable to open trajectory: " + trajectoryJSON, ex.getStackTrace());
       return null;

@@ -33,7 +33,7 @@ public class DriveTrainSubsystem2019 extends DriveTrain {
 
   public AnalogGyro navx;
 
-  private final DifferentialDriveOdometry odometry;
+  public final DifferentialDriveOdometry odometry;
 
   @Override
   protected void initDefaultCommand() {
@@ -137,9 +137,11 @@ public class DriveTrainSubsystem2019 extends DriveTrain {
     // SmartDashboard.putBoolean("NAVX CONNECTED", navx.isConnected());
     SmartDashboard.putData("Gyro", dataForGyro);
     SmartDashboard.putData("PDP", pdp);
-    // SmartDashboard.putNumber("Heading", navx.getAngle());
-    // SmartDashboard.putNumber("Right Encoder", rightEncoder.get());
-    // SmartDashboard.putNumber("Left Encoder", leftEncoder.get());
+    SmartDashboard.putNumber("Heading", navx.getAngle());
+    SmartDashboard.putNumber("Right Encoder", rightEncoder.get());
+    SmartDashboard.putNumber("Left Encoder", leftEncoder.get());
+    SmartDashboard.putNumber("Odometry x", odometry.getPoseMeters().getX());
+    SmartDashboard.putNumber("Odomtry.y", odometry.getPoseMeters().getY());
   }
 
   public void dumbDriveStraight(double power) {
@@ -207,8 +209,10 @@ public class DriveTrainSubsystem2019 extends DriveTrain {
   }
 
   public void tankDriveVolts(double leftVolts, double rightVolts) {
-    leftDriveMotorTalon.setVoltage(leftVolts);
-    rightDriveMotorTalon.setVoltage(-rightVolts);
+    leftDriveMotorTalon.setVoltage(-leftVolts);
+    rightDriveMotorTalon.setVoltage(rightVolts);
+    SmartDashboard.putNumber("Drivetrain.LeftVolts", leftVolts);
+    SmartDashboard.putNumber("DriveTrain.rightVolt", -rightVolts);
     drive.feed();
   }
 }
